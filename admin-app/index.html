@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка СЦТО | Правка Дисков</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="../frontend/css/style.css">
+    <link rel="stylesheet" href="../frontend/css/neon.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar neon-border">
+            <div class="sidebar-header">
+                <h2>Админ-панель</h2>
+                <div class="app-version" id="appVersion">v1.0.0</div>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-btn active" data-page="dashboard">
+                    <span>📊</span> Панель управления
+                </button>
+                <button class="sidebar-btn" data-page="catalog-admin">
+                    <span>📦</span> Каталог
+                </button>
+                <button class="sidebar-btn" data-page="gallery-admin">
+                    <span>🖼️</span> Галерея
+                </button>
+                <button class="sidebar-btn" data-page="reviews-admin">
+                    <span>⭐</span> Отзывы
+                </button>
+                <button class="sidebar-btn" data-page="support-admin">
+                    <span>💬</span> Поддержка
+                </button>
+                <button class="sidebar-btn" data-page="logs">
+                    <span>📋</span> Логи
+                </button>
+                <button class="sidebar-btn" data-page="settings">
+                    <span>⚙️</span> Настройки
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="neon-button logout-btn" id="adminLogout">
+                    Выйти
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Панель управления</h1>
+                </div>
+                <div class="header-right">
+                    <span class="admin-user" id="adminUserName">Администратор</span>
+                    <div class="window-controls">
+                        <button class="control-btn minimize" id="minimizeBtn">─</button>
+                        <button class="control-btn maximize" id="maximizeBtn">□</button>
+                        <button class="control-btn close" id="closeBtn">×</button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="admin-body" id="adminBody">
+                <div class="page active" id="dashboard-page">
+                    <div class="stats-grid">
+                        <div class="stat-card neon-card">
+                            <h3>Товаров в каталоге</h3>
+                            <div class="stat-number" id="productsCount">0</div>
+                        </div>
+                        <div class="stat-card neon-card">
+                            <h3>Фото в галерее</h3>
+                            <div class="stat-number" id="photosCount">0</div>
+                        </div>
+                        <div class="stat-card neon-card">
+                            <h3>Отзывов</h3>
+                            <div class="stat-number" id="reviewsCount">0</div>
+                        </div>
+                        <div class="stat-card neon-card">
+                            <h3>Сообщений поддержки</h3>
+                            <div class="stat-number" id="supportCount">0</div>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h2>Последние сообщения поддержки</h2>
+                        <div class="support-list" id="recentSupport">
+                            <div class="support-item">
+                                <div class="support-author">Иван Иванов</div>
+                                <div class="support-message">Здравствуйте! Хочу узнать о правке диска R16...</div>
+                                <div class="support-time">10:30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="catalog-admin-page">
+                    <div class="admin-section">
+                        <div class="section-header">
+                            <h2>Управление каталогом</h2>
+                            <button class="neon-button" id="addProductBtn">➕ Добавить товар</button>
+                        </div>
+                        <div class="products-grid" id="productsGrid">
+                            <div class="skeleton-product"></div>
+                            <div class="skeleton-product"></div>
+                            <div class="skeleton-product"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="gallery-admin-page">
+                    <div class="admin-section">
+                        <div class="section-header">
+                            <h2>Управление галереей</h2>
+                            <button class="neon-button" id="addPhotoBtn">➕ Добавить фото</button>
+                        </div>
+                        <div class="photos-grid" id="photosGrid">
+                            <div class="skeleton-photo"></div>
+                            <div class="skeleton-photo"></div>
+                            <div class="skeleton-photo"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="support-admin-page">
+                    <div class="admin-section">
+                        <h2>Чаты поддержки</h2>
+                        <div class="support-chats" id="supportChats">
+                            <div class="chat-list-item active">
+                                <div class="chat-user">Иван Иванов</div>
+                                <div class="chat-preview">Здравствуйте! Хочу узнать о правке...</div>
+                                <div class="chat-time">10:30</div>
+                            </div>
+                        </div>
+                        <div class="chat-window" id="chatWindow">
+                            <div class="chat-messages-admin" id="chatMessagesAdmin"></div>
+                            <div class="chat-input-admin">
+                                <input type="text" id="adminChatInput" class="neon-input" placeholder="Введите сообщение...">
+                                <button class="neon-button" id="sendAdminMessage">Отправить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="logs-page">
+                    <div class="admin-section">
+                        <div class="section-header">
+                            <h2>Логи сервера</h2>
+                            <button class="neon-button" id="clearLogsBtn">Очистить логи</button>
+                        </div>
+                        <div class="logs-container" id="logsContainer">
+                            <div class="log-item">[INFO] Сервер запущен</div>
+                            <div class="log-item">[INFO] Подключение к базе данных установлено</div>
+                            <div class="log-item">[DEBUG] Загрузка конфигурации...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeProductModal">&times;</span>
+            <h2>Добавить товар в каталог</h2>
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label>Название товара/услуги</label>
+                    <input type="text" class="neon-input" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea class="neon-input" id="productDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Цена</label>
+                    <input type="text" class="neon-input" id="productPrice" placeholder="от 1 500 ₽" required>
+                </div>
+                <div class="form-group">
+                    <label>Изображение (URL)</label>
+                    <input type="url" class="neon-input" id="productImage" value="images/placeholder.jpg">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="productActive" checked>
+                        Активен (показывать на сайте)
+                    </label>
+                </div>
+                <button type="submit" class="neon-button full-width">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addPhotoModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closePhotoModal">&times;</span>
+            <h2>Добавить фото в галерею</h2>
+            <form id="addPhotoForm">
+                <div class="form-group">
+                    <label>URL изображения</label>
+                    <input type="url" class="neon-input" id="photoUrl" required>
+                </div>
+                <div class="form-group">
+                    <label>Описание/подпись</label>
+                    <textarea class="neon-input" id="photoCaption" rows="2" required></textarea>
+                </div>
+                <button type="submit" class="neon-button full-width">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin-main.js"></script>
+</body>
+</html>

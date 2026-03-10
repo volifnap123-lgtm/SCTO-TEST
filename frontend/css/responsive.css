@@ -1,0 +1,311 @@
+@media (max-width: 1200px) {
+    .main-header {
+        padding: 15px 30px;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .map-container {
+        max-width: 90%;
+    }
+
+    #dgismap {
+        height: 450px;
+    }
+
+    .main-footer {
+        padding: 30px 40px;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-header {
+        padding: 12px 25px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .nav-btn {
+        padding: 8px 15px;
+        font-size: 15px;
+    }
+
+    .profile-icon {
+        font-size: 28px;
+    }
+
+    .map-container {
+        max-width: 85%;
+    }
+
+    #dgismap {
+        height: 400px;
+    }
+
+    .footer-section {
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .menu-left {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        margin: 5px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .profile-icon {
+        font-size: 26px;
+    }
+
+    .main-content {
+        margin-top: 120px;
+        padding: 20px 15px;
+    }
+
+    .map-container {
+        max-width: 100%;
+        margin: 0 10px;
+    }
+
+    #dgismap {
+        height: 350px;
+    }
+
+    .main-footer {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 25px;
+    }
+
+    .footer-section {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .footer-section h3 {
+        font-size: 18px;
+    }
+
+    .footer-section p {
+        font-size: 14px;
+    }
+
+    .social-icon-bg {
+        width: 45px;
+        height: 45px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-header {
+        padding: 12px 15px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .nav-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .profile-icon {
+        font-size: 24px;
+    }
+
+    .main-content {
+        margin-top: 110px;
+        padding: 15px 10px;
+    }
+
+    .map-container {
+        margin: 0 5px;
+        border-radius: 15px;
+    }
+
+    #dgismap {
+        height: 300px;
+    }
+
+    .main-footer {
+        padding: 25px 15px;
+    }
+
+    .footer-section h3 {
+        font-size: 16px;
+    }
+
+    .footer-section p {
+        font-size: 13px;
+    }
+
+    .social-icon-bg {
+        width: 40px;
+        height: 40px;
+        font-size: 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 25px 20px;
+    }
+
+    .neon-curve.top-left {
+        width: 300px;
+        height: 300px;
+        top: -50px;
+        left: -50px;
+    }
+
+    .neon-curve.bottom-right {
+        width: 400px;
+        height: 400px;
+        bottom: -100px;
+        right: -100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        padding: 10px 12px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    .nav-btn {
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    .profile-icon {
+        font-size: 22px;
+    }
+
+    #dgismap {
+        height: 250px;
+    }
+
+    .footer-section h3 {
+        font-size: 15px;
+    }
+
+    .footer-section p {
+        font-size: 12px;
+    }
+
+    .social-icon-bg {
+        width: 35px;
+        height: 35px;
+        font-size: 11px;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        padding: 20px 15px;
+    }
+
+    .neon-curve.top-left,
+    .neon-curve.bottom-right {
+        display: none;
+    }
+
+    .neon-curve.center-wave {
+        height: 100px;
+        top: 35%;
+    }
+}
+
+@media (max-width: 375px) {
+    .main-header {
+        padding: 8px 10px;
+    }
+
+    .logo {
+        font-size: 15px;
+    }
+
+    .nav-btn {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .profile-icon {
+        font-size: 20px;
+    }
+
+    .main-footer {
+        padding: 20px 10px;
+    }
+
+    .footer-section h3 {
+        font-size: 14px;
+    }
+
+    .footer-section p {
+        font-size: 11px;
+    }
+
+    .social-icon-bg {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 320px) {
+    .main-header {
+        padding: 6px 8px;
+    }
+
+    .logo {
+        font-size: 14px;
+    }
+
+    .nav-btn {
+        padding: 5px 7px;
+        font-size: 10px;
+    }
+
+    .profile-icon {
+        font-size: 18px;
+    }
+
+    .footer-section h3 {
+        font-size: 13px;
+    }
+
+    .footer-section p {
+        font-size: 10px;
+    }
+
+    .social-icon-bg {
+        width: 28px;
+        height: 28px;
+        font-size: 9px;
+    }
+}

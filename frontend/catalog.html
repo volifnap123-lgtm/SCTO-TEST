@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Каталог услуг СЦТО 'Правка Дисков' — правка литых и штампованных дисков">
+    <meta name="keywords" content="правка дисков, ремонт дисков, СЦТО, Улан-Удэ, автомобильные диски, каталог услуг">
+    <meta name="author" content="СЦТО Правка Дисков">
+    <title>Каталог | СЦТО "ПРАВКА ДИСКОВ"</title>
+    
+    <meta property="og:title" content="Каталог услуг - СЦТО Правка Дисков">
+    <meta property="og:description" content="Полный каталог услуг по правке автомобильных дисков">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="neon-curve top-left"></div>
+    <div class="neon-curve bottom-right"></div>
+    <div class="neon-curve center-wave"></div>
+
+    <header class="main-header">
+        <div class="menu-left">
+            <button class="nav-btn" data-page="index">Главное меню</button>
+            <button class="nav-btn active" data-page="catalog">Каталог</button>
+            <button class="nav-btn" data-page="gallery">Галерея</button>
+            <button class="nav-btn" data-page="reviews">Отзывы</button>
+        </div>
+        <div class="logo">СЦТО "ПРАВКА ДИСКОВ"</div>
+        <div class="menu-right">
+            <button class="profile-btn" id="profileBtn">
+                <div class="profile-icon">👤</div>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title neon-text">Каталог услуг</h1>
+        <div class="catalog-grid" id="catalog-grid">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-section contacts">
+            <h3>Контакты</h3>
+            <p>📞 +7 (3012) XXX-XX-XX</p>
+            <p>✉️ Sidorova_1967@mail.ru</p>
+        </div>
+        <div class="footer-section social-links">
+            <h3>Мы в сети</h3>
+            <a href="https://2gis.ru/ulanude/firm/5207815350139447" target="_blank" class="social-icon">
+                <div class="social-icon-bg">2ГИС</div>
+            </a>
+        </div>
+        <div class="footer-section address">
+            <h3>Адрес</h3>
+            <p>ул. Революции 1905 года, 13а</p>
+            <p>г. Улан-Удэ</p>
+            <p>Ежедневно 08:30–20:00</p>
+        </div>
+    </footer>
+
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeProfileModal">&times;</span>
+            <div id="profileContent">
+                <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/catalog.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

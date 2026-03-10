@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Личный кабинет пользователя СЦТО 'Правка Дисков'">
+    <meta name="keywords" content="личный кабинет, профиль, авторизация, СЦТО, Улан-Удэ">
+    <meta name="author" content="СЦТО Правка Дисков">
+    <title>Профиль | СЦТО "ПРАВКА ДИСКОВ"</title>
+    
+    <meta property="og:title" content="Личный кабинет - СЦТО Правка Дисков">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="neon-curve top-left"></div>
+    <div class="neon-curve bottom-right"></div>
+    <div class="neon-curve center-wave"></div>
+
+    <header class="main-header">
+        <div class="menu-left">
+            <button class="nav-btn" data-page="index">Главное меню</button>
+            <button class="nav-btn" data-page="catalog">Каталог</button>
+            <button class="nav-btn" data-page="gallery">Галерея</button>
+            <button class="nav-btn" data-page="reviews">Отзывы</button>
+        </div>
+        <div class="logo">СЦТО "ПРАВКА ДИСКОВ"</div>
+        <div class="menu-right">
+            <button class="profile-btn active" id="profileBtn">
+                <div class="profile-icon">👤</div>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title neon-text">Личный кабинет</h1>
+        
+        <div class="profile-container neon-border" id="profile-container">
+            <div id="auth-form">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Вход</button>
+                    <button class="auth-tab" data-tab="register">Регистрация</button>
+                </div>
+                
+                <div class="auth-content">
+                    <div class="tab-content active" id="login-tab">
+                        <h2>Вход в аккаунт</h2>
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label for="login-email">Email</label>
+                                <input type="email" id="login-email" class="neon-input" required placeholder="Введите email">
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Пароль</label>
+                                <input type="password" id="login-password" class="neon-input" required placeholder="Введите пароль">
+                            </div>
+                            <button type="submit" class="neon-button full-width">Войти</button>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-content" id="register-tab">
+                        <h2>Регистрация</h2>
+                        <form id="register-form">
+                            <div class="form-group">
+                                <label for="reg-name">Имя</label>
+                                <input type="text" id="reg-name" class="neon-input" required placeholder="Введите ваше имя">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-phone">Телефон</label>
+                                <input type="tel" id="reg-phone" class="neon-input" required placeholder="+7 (___) ___-__-__">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Email</label>
+                                <input type="email" id="reg-email" class="neon-input" required placeholder="Введите email">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Пароль</label>
+                                <input type="password" id="reg-password" class="neon-input" required placeholder="Придумайте пароль">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password-confirm">Подтвердите пароль</label>
+                                <input type="password" id="reg-password-confirm" class="neon-input" required placeholder="Повторите пароль">
+                            </div>
+                            <button type="submit" class="neon-button full-width">Зарегистрироваться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="user-dashboard" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar neon-border">👤</div>
+                    <h2 id="user-name">Добро пожаловать!</h2>
+                    <p id="user-email"></p>
+                    <p id="user-phone"></p>
+                </div>
+                
+                <div class="dashboard-section">
+                    <h3>Обратиться в поддержку</h3>
+                    <button class="neon-button" id="open-chat-btn">Написать в поддержку</button>
+                </div>
+                
+                <div class="dashboard-section">
+                    <h3>Оставить отзыв</h3>
+                    <button class="neon-button" id="open-review-btn">Написать отзыв</button>
+                </div>
+                
+                <div class="dashboard-section">
+                    <button class="neon-button logout-btn" id="logout-btn">Выйти из аккаунта</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-section contacts">
+            <h3>Контакты</h3>
+            <p>📞 +7 (3012) XXX-XX-XX</p>
+            <p>✉️ Sidorova_1967@mail.ru</p>
+        </div>
+        <div class="footer-section social-links">
+            <h3>Мы в сети</h3>
+            <a href="https://2gis.ru/ulanude/firm/5207815350139447" target="_blank" class="social-icon">
+                <div class="social-icon-bg">2ГИС</div>
+            </a>
+        </div>
+        <div class="footer-section address">
+            <h3>Адрес</h3>
+            <p>ул. Революции 1905 года, 13а</p>
+            <p>г. Улан-Удэ</p>
+            <p>Ежедневно 08:30–20:00</p>
+        </div>
+    </footer>
+
+    <div class="modal" id="chatModal">
+        <div class="modal-content chat-modal">
+            <span class="close-btn" id="closeChatModal">&times;</span>
+            <h2>Чат с поддержкой</h2>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="chat-message-input" class="neon-input" placeholder="Введите сообщение...">
+                <button class="neon-button" id="send-message-btn">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeReviewModal">&times;</span>
+            <h2>Оставить отзыв</h2>
+            <form id="review-form">
+                <div class="form-group">
+                    <label>Ваша оценка:</label>
+                    <div class="rating-input">
+                        <input type="radio" id="star5" name="rating" value="5" checked>
+                        <label for="star5" class="neon-star">★</label>
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4" class="neon-star">★</label>
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3" class="neon-star">★</label>
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2" class="neon-star">★</label>
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1" class="neon-star">★</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="review-text">Текст отзыва:</label>
+                    <textarea id="review-text" class="neon-input" rows="5" required placeholder="Расскажите о вашем опыте..."></textarea>
+                </div>
+                <button type="submit" class="neon-button full-width">Отправить отзыв</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
