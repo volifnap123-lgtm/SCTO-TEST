@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация клиента уже выполнена в supabase.js
+    
     const navBtns = document.querySelectorAll('.nav-btn');
     const profileBtn = document.getElementById('profileBtn');
     const profileModal = document.getElementById('profileModal');
