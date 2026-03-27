@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-message-input');
     const sendMessageBtn = document.getElementById('send-message-btn');
+    const supabase = window.supabaseClient;
 
     if (closeChatModal) {
         closeChatModal.addEventListener('click', function() {
@@ -23,16 +24,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function sendMessage() {
+    async function sendMessage() {
         const message = chatInput.value.trim();
+        const user = JSON.parse(localStorage.getItem('user'));
         
         if (message) {
-            addMessage(message, 'user');
-            chatInput.value = '';
-            
-            setTimeout(() => {
-                addMessage('Ваше сообщение получено. Оператор ответит вам в ближайшее время.', 'support');
-            }, 1000);
+            const messageData = {
+                name: user ? user.name : 'Гость',
+                message: message,
+                read: false
+            };
+
+            try {
+                const { data, error } = await supabase
+                    .from('support_messages')
+                    .insert([messageData]);
+                
+                if (error) throw error;
+                
+                addMessage(message, 'user');
+                chatInput.value = '';
+                
+                setTimeout(() => {
+                    addMessage('Ваше сообщение получено! Мы ответим вам в ближайшее время.', 'support');
+                }, 1000);
+            } catch (error) {
+                console.error('Ошибка отправки сообщения:', error);
+                addMessage('Произошла ошибка при отправке сообщения. Попробуйте позже.', 'support');
+            }
         }
     }
 

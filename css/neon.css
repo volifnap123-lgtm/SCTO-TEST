@@ -1,15 +1,85 @@
 .neon-text {
     color: var(--yellow-neon);
-    text-shadow: 0 0 5px var(--yellow-neon-glow), 0 0 10px var(--yellow-neon-glow);
-    animation: neon-flicker 1.5s infinite alternate;
+    text-shadow: 
+        0 0 5px var(--yellow-neon),
+        0 0 10px var(--yellow-neon),
+        0 0 20px var(--yellow-neon),
+        0 0 40px var(--yellow-neon-glow);
+    animation: neon-glow 3s ease-in-out infinite;
 }
 
-@keyframes neon-flicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        text-shadow: 0 0 5px var(--yellow-neon-glow), 0 0 10px var(--yellow-neon-glow);
+@keyframes neon-glow {
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 
+            0 0 5px var(--yellow-neon),
+            0 0 10px var(--yellow-neon),
+            0 0 20px var(--yellow-neon),
+            0 0 40px var(--yellow-neon-glow);
     }
-    20%, 24%, 55% {
-        text-shadow: none;
+    50% {
+        opacity: 0.95;
+        text-shadow: 
+            0 0 3px var(--yellow-neon),
+            0 0 8px var(--yellow-neon),
+            0 0 15px var(--yellow-neon),
+            0 0 30px var(--yellow-neon-glow);
+    }
+}
+
+.neon-text-flicker {
+    color: var(--yellow-neon);
+    text-shadow: 
+        0 0 5px var(--yellow-neon),
+        0 0 10px var(--yellow-neon),
+        0 0 20px var(--yellow-neon);
+    animation: neon-flicker-real 4s linear infinite;
+}
+
+@keyframes neon-flicker-real {
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 
+            0 0 5px var(--yellow-neon),
+            0 0 10px var(--yellow-neon),
+            0 0 20px var(--yellow-neon),
+            0 0 40px var(--yellow-neon-glow);
+    }
+    3% {
+        opacity: 0.85;
+        text-shadow: 
+            0 0 3px var(--yellow-neon),
+            0 0 6px var(--yellow-neon);
+    }
+    6% {
+        opacity: 1;
+        text-shadow: 
+            0 0 5px var(--yellow-neon),
+            0 0 10px var(--yellow-neon),
+            0 0 20px var(--yellow-neon);
+    }
+    7% {
+        opacity: 0.9;
+    }
+    9% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 
+            0 0 5px var(--yellow-neon),
+            0 0 10px var(--yellow-neon),
+            0 0 20px var(--yellow-neon),
+            0 0 40px var(--yellow-neon-glow);
+    }
+    52% {
+        opacity: 0.8;
+        text-shadow: 
+            0 0 2px var(--yellow-neon),
+            0 0 5px var(--yellow-neon);
+    }
+    54% {
+        opacity: 1;
     }
 }
 
@@ -88,6 +158,11 @@
 
 .neon-button:active {
     transform: translateY(0);
+}
+
+.neon-button:focus {
+    outline: none;
+    text-decoration: none;
 }
 
 .neon-button::before {

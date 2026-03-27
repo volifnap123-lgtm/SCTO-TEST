@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/neon.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/auth.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
     <div class="neon-curve top-left"></div>
     <div class="neon-curve bottom-right"></div>
-    <div class="neon-curve center-wave"></div>
 
     <header class="main-header">
         <div class="menu-left">
@@ -30,6 +30,10 @@
         </div>
         <div class="logo">СЦТО "ПРАВКА ДИСКОВ"</div>
         <div class="menu-right">
+            <button class="theme-toggle" id="themeToggle" title="Сменить тему">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
             <button class="profile-btn active" id="profileBtn">
                 <div class="profile-icon">👤</div>
             </button>
@@ -39,79 +43,181 @@
     <main class="main-content">
         <h1 class="page-title neon-text">Личный кабинет</h1>
         
-        <div class="profile-container neon-border" id="profile-container">
-            <div id="auth-form">
+        <div class="profile-container" id="profile-container">
+            <div id="auth-form" class="auth-section">
                 <div class="auth-tabs">
-                    <button class="auth-tab active" data-tab="login">Вход</button>
-                    <button class="auth-tab" data-tab="register">Регистрация</button>
+                    <button class="auth-tab active" data-tab="login">
+                        <span class="tab-icon">🔐</span>
+                        Вход
+                    </button>
+                    <button class="auth-tab" data-tab="register">
+                        <span class="tab-icon">📝</span>
+                        Регистрация
+                    </button>
                 </div>
                 
                 <div class="auth-content">
                     <div class="tab-content active" id="login-tab">
-                        <h2>Вход в аккаунт</h2>
-                        <form id="login-form">
+                        <div class="auth-header">
+                            <h2>С возвращением!</h2>
+                            <p>Войдите в свой аккаунт</p>
+                        </div>
+                        <form id="login-form" class="auth-form">
                             <div class="form-group">
-                                <label for="login-email">Email</label>
-                                <input type="email" id="login-email" class="neon-input" required placeholder="Введите email">
+                                <label for="login-email">
+                                    <span class="label-icon">📧</span>
+                                    Email
+                                </label>
+                                <input type="email" id="login-email" class="neon-input" required placeholder="example@mail.ru">
                             </div>
                             <div class="form-group">
-                                <label for="login-password">Пароль</label>
-                                <input type="password" id="login-password" class="neon-input" required placeholder="Введите пароль">
+                                <label for="login-password">
+                                    <span class="label-icon">🔒</span>
+                                    Пароль
+                                </label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="login-password" class="neon-input" required placeholder="Введите пароль">
+                                    <button type="button" class="password-toggle" onclick="togglePassword('login-password', this)">
+                                        <span class="eye">👁️</span>
+                                    </button>
+                                </div>
                             </div>
-                            <button type="submit" class="neon-button full-width">Войти</button>
+                            <div class="form-group captcha-group">
+                                <label>
+                                    <span class="label-icon">🛡️</span>
+                                    Проверка
+                                </label>
+                                <div class="math-captcha">
+                                    <span class="captcha-question" id="captcha-question"></span>
+                                    <input type="number" id="captcha-answer" class="neon-input captcha-input" required placeholder="?">
+                                </div>
+                            </div>
+                            <button type="submit" class="neon-button auth-btn">
+                                <span>🚀</span> Войти
+                            </button>
+                            <div class="auth-footer">
+                                <a href="#" class="forgot-password">Забыли пароль?</a>
+                            </div>
                         </form>
                     </div>
                     
                     <div class="tab-content" id="register-tab">
-                        <h2>Регистрация</h2>
-                        <form id="register-form">
+                        <div class="auth-header">
+                            <h2>Создайте аккаунт</h2>
+                            <p>Присоединяйтесь к нам</p>
+                        </div>
+                        <form id="register-form" class="auth-form">
                             <div class="form-group">
-                                <label for="reg-name">Имя</label>
-                                <input type="text" id="reg-name" class="neon-input" required placeholder="Введите ваше имя">
+                                <label for="reg-name">
+                                    <span class="label-icon">👤</span>
+                                    Имя
+                                </label>
+                                <input type="text" id="reg-name" class="neon-input" required placeholder="Ваше имя">
                             </div>
                             <div class="form-group">
-                                <label for="reg-phone">Телефон</label>
+                                <label for="reg-phone">
+                                    <span class="label-icon">📱</span>
+                                    Телефон
+                                </label>
                                 <input type="tel" id="reg-phone" class="neon-input" required placeholder="+7 (___) ___-__-__">
                             </div>
                             <div class="form-group">
-                                <label for="reg-email">Email</label>
-                                <input type="email" id="reg-email" class="neon-input" required placeholder="Введите email">
+                                <label for="reg-email">
+                                    <span class="label-icon">📧</span>
+                                    Email
+                                </label>
+                                <input type="email" id="reg-email" class="neon-input" required placeholder="example@mail.ru">
                             </div>
                             <div class="form-group">
-                                <label for="reg-password">Пароль</label>
-                                <input type="password" id="reg-password" class="neon-input" required placeholder="Придумайте пароль">
+                                <label for="reg-password">
+                                    <span class="label-icon">🔒</span>
+                                    Пароль
+                                </label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="reg-password" class="neon-input" required placeholder="Минимум 6 символов" minlength="6">
+                                    <button type="button" class="password-toggle" onclick="togglePassword('reg-password', this)">
+                                        <span class="eye">👁️</span>
+                                    </button>
+                                </div>
+                                <div class="password-strength" id="password-strength">
+                                    <div class="strength-bar"></div>
+                                    <span class="strength-text"></span>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="reg-password-confirm">Подтвердите пароль</label>
-                                <input type="password" id="reg-password-confirm" class="neon-input" required placeholder="Повторите пароль">
+                                <label for="reg-password-confirm">
+                                    <span class="label-icon">🔒</span>
+                                    Подтвердите пароль
+                                </label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="reg-password-confirm" class="neon-input" required placeholder="Повторите пароль">
+                                    <button type="button" class="password-toggle" onclick="togglePassword('reg-password-confirm', this)">
+                                        <span class="eye">👁️</span>
+                                    </button>
+                                </div>
                             </div>
-                            <button type="submit" class="neon-button full-width">Зарегистрироваться</button>
+                            <div class="form-group captcha-group">
+                                <label>
+                                    <span class="label-icon">🛡️</span>
+                                    Проверка
+                                </label>
+                                <div class="math-captcha">
+                                    <span class="captcha-question" id="captcha-question-reg"></span>
+                                    <input type="number" id="captcha-answer-reg" class="neon-input captcha-input" required placeholder="?">
+                                </div>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="agree-terms" required>
+                                    <span class="checkmark"></span>
+                                    <span>Согласен с <a href="#" class="terms-link">условиями использования</a></span>
+                                </label>
+                            </div>
+                            <button type="submit" class="neon-button auth-btn">
+                                <span>✨</span> Зарегистрироваться
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
             
-            <div id="user-dashboard" style="display: none;">
-                <div class="user-info">
-                    <div class="user-avatar neon-border">👤</div>
-                    <h2 id="user-name">Добро пожаловать!</h2>
-                    <p id="user-email"></p>
-                    <p id="user-phone"></p>
+            <div id="user-dashboard" class="dashboard-section" style="display: none;">
+                <div class="user-profile-card">
+                    <div class="user-avatar-large neon-border">
+                        <span id="user-avatar-icon">👤</span>
+                    </div>
+                    <div class="user-info-detailed">
+                        <h2 id="user-name">Добро пожаловать!</h2>
+                        <div class="user-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">📧</span>
+                                <span id="user-email"></span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📱</span>
+                                <span id="user-phone"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="dashboard-section">
-                    <h3>Обратиться в поддержку</h3>
-                    <button class="neon-button" id="open-chat-btn">Написать в поддержку</button>
+                <div class="dashboard-actions">
+                    <button class="action-card" id="open-chat-btn">
+                        <span class="action-icon">💬</span>
+                        <span class="action-title">Поддержка</span>
+                        <span class="action-desc">Задать вопрос</span>
+                    </button>
+                    
+                    <button class="action-card" id="open-review-btn">
+                        <span class="action-icon">⭐</span>
+                        <span class="action-title">Оставить отзыв</span>
+                        <span class="action-desc">Поделиться впечатлениями</span>
+                    </button>
                 </div>
                 
-                <div class="dashboard-section">
-                    <h3>Оставить отзыв</h3>
-                    <button class="neon-button" id="open-review-btn">Написать отзыв</button>
-                </div>
-                
-                <div class="dashboard-section">
-                    <button class="neon-button logout-btn" id="logout-btn">Выйти из аккаунта</button>
-                </div>
+                <button class="neon-button logout-btn" id="logout-btn">
+                    <span>🚪</span> Выйти из аккаунта
+                </button>
             </div>
         </div>
     </main>
@@ -139,7 +245,7 @@
     <div class="modal" id="chatModal">
         <div class="modal-content chat-modal">
             <span class="close-btn" id="closeChatModal">&times;</span>
-            <h2>Чат с поддержкой</h2>
+            <h2>💬 Чат с поддержкой</h2>
             <div class="chat-messages" id="chat-messages"></div>
             <div class="chat-input">
                 <input type="text" id="chat-message-input" class="neon-input" placeholder="Введите сообщение...">
@@ -151,8 +257,8 @@
     <div class="modal" id="reviewModal">
         <div class="modal-content">
             <span class="close-btn" id="closeReviewModal">&times;</span>
-            <h2>Оставить отзыв</h2>
-            <form id="review-form">
+            <h2>⭐ Оставить отзыв</h2>
+            <form id="review-form" class="auth-form">
                 <div class="form-group">
                     <label>Ваша оценка:</label>
                     <div class="rating-input">
@@ -169,10 +275,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="review-text">Текст отзыва:</label>
+                    <label for="review-text">
+                        <span class="label-icon">📝</span>
+                        Текст отзыва:
+                    </label>
                     <textarea id="review-text" class="neon-input" rows="5" required placeholder="Расскажите о вашем опыте..."></textarea>
                 </div>
-                <button type="submit" class="neon-button full-width">Отправить отзыв</button>
+                <button type="submit" class="neon-button full-width">
+                    <span>🚀</span> Отправить отзыв
+                </button>
             </form>
         </div>
     </div>

@@ -3,276 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Отзывы клиентов СЦТО 'Правка Дисков' — реальные отзывы с 2ГИС">
-    <meta name="keywords" content="отзывы, правка дисков, СЦТО, Улан-Удэ, 2ГИС, отзывы клиентов">
+    <meta name="description" content="Отзывы клиентов СЦТО 'Правка Дисков' — реальные отзывы">
+    <meta name="keywords" content="отзывы, правка дисков, СЦТО, Улан-Удэ, отзывы клиентов">
     <meta name="author" content="СЦТО Правка Дисков">
     <title>Отзывы | СЦТО "ПРАВКА ДИСКОВ"</title>
     
     <meta property="og:title" content="Отзывы клиентов - СЦТО Правка Дисков">
-    <meta property="og:description" content="Реальные отзывы клиентов с 2ГИС">
+    <meta property="og:description" content="Реальные отзывы клиентов">
     <meta property="og:type" content="website">
     
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/neon.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/gallery.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
-        .reviews-container {
+        .reviews-page {
             max-width: 1000px;
             margin: 0 auto;
-            background: var(--white);
+            padding: 20px;
+        }
+        
+        .reviews-header {
+            background: var(--card-bg);
             border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            position: relative;
-            height: 600px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 3px solid var(--yellow-neon);
+            margin-bottom: 30px;
         }
         
-        .review-main {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+        .dgis-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #00a3ff, #0077cc);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
             margin-bottom: 20px;
         }
         
-        .review-author {
-            display: flex;
-            align-items: center;
+        .rating-big {
+            font-size: 80px;
+            font-weight: bold;
+            color: var(--orange-main);
+            text-shadow: 0 0 30px var(--yellow-neon-glow);
+            margin: 10px 0;
         }
         
-        .author-avatar {
-            width: 60px;
-            height: 60px;
+        .rating-stars {
+            font-size: 40px;
+            color: var(--yellow-neon);
+            text-shadow: 0 0 15px var(--yellow-neon-glow);
+            margin: 15px 0;
+        }
+        
+        .rating-count {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+        
+        .leave-review-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
+            color: white;
+            border: 2px solid var(--yellow-neon);
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.4);
+        }
+        
+        .leave-review-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(255, 152, 0, 0.5);
+        }
+        
+        .reviews-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .review-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .review-card:hover {
+            border-color: var(--yellow-neon);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .review-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .review-author-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .review-avatar {
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
-            background: var(--gray-light);
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-right: 15px;
-            border: 2px solid var(--yellow-neon);
-            box-shadow: 0 0 10px var(--yellow-neon-glow);
+            font-size: 22px;
+            color: white;
+            font-weight: bold;
+            border: 3px solid var(--yellow-neon);
+            box-shadow: 0 0 15px var(--yellow-neon-glow);
         }
         
-        .author-info {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .author-name {
+        .review-name {
             font-size: 18px;
             font-weight: 600;
-            color: var(--orange-dark);
+            color: var(--text-primary);
             margin-bottom: 5px;
         }
         
         .review-date {
-            font-size: 14px;
-            color: var(--gray-medium);
+            font-size: 13px;
+            color: var(--text-secondary);
         }
         
         .review-rating {
-            display: flex;
-            align-items: center;
             font-size: 24px;
             color: var(--yellow-neon);
-            text-shadow: 0 0 5px var(--yellow-neon-glow);
-        }
-        
-        .review-body {
-            flex: 1;
-            padding: 0 10px;
-            overflow-y: auto;
+            text-shadow: 0 0 10px var(--yellow-neon-glow);
         }
         
         .review-text {
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--gray-dark);
-            text-align: justify;
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-primary);
             margin-bottom: 15px;
         }
         
-        .review-photos {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            overflow-x: auto;
-            padding: 5px 0;
-        }
-        
-        .review-photo {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 2px solid var(--gray-light);
-            transition: all 0.3s ease;
-        }
-        
-        .review-photo:hover {
-            transform: scale(1.05);
-            border-color: var(--yellow-neon);
-            box-shadow: 0 0 10px var(--yellow-neon-glow);
-        }
-        
-        .review-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed var(--gray-light);
-        }
-        
         .review-source {
-            font-size: 13px;
-            color: var(--gray-medium);
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
-        }
-        
-        .dgis-icon {
+            gap: 8px;
+            font-size: 12px;
             color: #00a3ff;
-            font-weight: bold;
-            font-size: 14px;
+            background: rgba(0, 163, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 15px;
         }
         
-        .review-comments-container {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed var(--gray-light);
+        .reviews-empty {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
         
-        .review-comments-container.active {
-            max-height: 300px;
+        .reviews-empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
         }
         
-        .comment {
-            background: var(--gray-light);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .comment-author {
-            font-weight: 600;
-            color: var(--orange-main);
-            margin-bottom: 5px;
-            display: block;
-        }
-        
-        .review-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: var(--white);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .reviews-empty h3 {
             font-size: 24px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-            opacity: 0.7;
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
         
-        .review-nav:hover {
-            opacity: 1;
-            background: var(--orange-main);
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        .review-nav.prev {
-            left: 20px;
-        }
-        
-        .review-nav.next {
-            right: 20px;
-        }
-        
-        .review-more {
-            background: var(--orange-main);
-            color: var(--white);
-            border: 2px solid var(--yellow-neon);
-            border-radius: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-neon);
-        }
-        
-        .review-more:hover {
-            background: var(--orange-dark);
-            transform: scale(1.05);
-            box-shadow: 0 0 15px var(--yellow-neon-glow), 0 0 25px var(--yellow-neon-glow);
-        }
-        
-        .review-more.expanded {
-            background: var(--orange-dark);
+        .reviews-empty p {
+            color: var(--text-secondary);
         }
         
         @media (max-width: 768px) {
-            .reviews-container {
-                height: 450px;
+            .reviews-header {
+                padding: 30px 20px;
             }
             
-            .review-nav {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
+            .rating-big {
+                font-size: 60px;
             }
             
-            .author-avatar {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .reviews-container {
-                height: 400px;
+            .rating-stars {
+                font-size: 30px;
             }
             
-            .review-nav {
-                width: 35px;
-                height: 35px;
-                font-size: 18px;
+            .review-card {
+                padding: 20px;
             }
             
-            .author-avatar {
+            .review-avatar {
                 width: 45px;
                 height: 45px;
                 font-size: 18px;
             }
             
-            .review-rating {
-                font-size: 20px;
+            .review-name {
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .review-top {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .rating-big {
+                font-size: 48px;
+            }
+            
+            .leave-review-btn {
+                padding: 12px 25px;
+                font-size: 16px;
             }
         }
     </style>
@@ -280,7 +245,6 @@
 <body>
     <div class="neon-curve top-left"></div>
     <div class="neon-curve bottom-right"></div>
-    <div class="neon-curve center-wave"></div>
 
     <header class="main-header">
         <div class="menu-left">
@@ -291,6 +255,10 @@
         </div>
         <div class="logo">СЦТО "ПРАВКА ДИСКОВ"</div>
         <div class="menu-right">
+            <button class="theme-toggle" id="themeToggle" title="Сменить тему">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </button>
             <button class="profile-btn" id="profileBtn">
                 <div class="profile-icon">👤</div>
             </button>
@@ -300,12 +268,28 @@
     <main class="main-content">
         <h1 class="page-title neon-text">Отзывы клиентов</h1>
         
-        <div class="reviews-container">
-            <button class="review-nav prev">‹</button>
-            <div class="review-main" id="review-main">
-                <div class="skeleton-review"></div>
+        <div class="reviews-page">
+            <div class="reviews-header">
+                <div class="dgis-badge">
+                    <span>📍</span>
+                    <span>2ГИС</span>
+                </div>
+                <h2>Оценка компании</h2>
+                <div class="rating-big" id="avgRating">4.9</div>
+                <div class="rating-stars" id="avgStars">★★★★★</div>
+                <div class="rating-count" id="ratingCount">на основе отзывов наших клиентов</div>
+                <a href="https://2gis.ru/ulanude/firm/5207815350139447" target="_blank" class="leave-review-btn">
+                    <span>📝</span>
+                    Оставить отзыв на 2ГИС
+                </a>
             </div>
-            <button class="review-nav next">›</button>
+            
+            <div class="reviews-grid" id="reviewsGrid">
+                <div class="reviews-empty">
+                    <div class="reviews-empty-icon">⭐</div>
+                    <h3>Загрузка отзывов...</h3>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -318,144 +302,88 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    <script src="js/main.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const reviewMain = document.getElementById('review-main');
-            const prevBtn = document.querySelector('.review-nav.prev');
-            const nextBtn = document.querySelector('.review-nav.next');
-            let currentIndex = 0;
-            
-            const reviewsData = [
-                {
-                    author: 'Александр',
-                    date: '12 февраля 2026',
-                    rating: 5,
-                    text: 'Отличная работа! Привёз колесо после сильного удара в яму, думал уже не спасти. Мастера сделали всё качественно, диск как новый. Рекомендую!',
-                    photos: ['images/placeholder.jpg'],
-                    comments: [
-                        { author: 'СЦТО Правка Дисков', text: 'Спасибо за отзыв! Рады были помочь!' }
-                    ]
-                },
-                {
-                    author: 'Дмитрий',
-                    date: '5 февраля 2026',
-                    rating: 5,
-                    text: 'Обратился в эту мастерскую по рекомендации друга. Не пожалел! Правка диска заняла меньше часа, цена адекватная. Теперь только сюда!',
-                    photos: [],
-                    comments: [
-                        { author: 'СЦТО Правка Дисков', text: 'Благодарим за доверие! Ждём снова!' }
-                    ]
-                },
-                {
-                    author: 'Мария',
-                    date: '28 января 2026',
-                    rating: 4,
-                    text: 'Хороший сервис. Отремонтировали два диска после зимней эксплуатации. Единственное, пришлось подождать дольше обещанного времени, но результат того стоил.',
-                    photos: ['images/placeholder.jpg', 'images/placeholder.jpg'],
-                    comments: [
-                        { author: 'СЦТО Правка Дисков', text: 'Приносим извинения за задержку. Спасибо за понимание!' }
-                    ]
-                },
-                {
-                    author: 'Иван',
-                    date: '20 января 2026',
-                    rating: 5,
-                    text: 'Профессионалы своего дела! Правили литой диск после попадания в яму. Сделали аккуратно, без следов ремонта. Спасибо за качественную работу!',
-                    photos: [],
-                    comments: [
-                        { author: 'СЦТО Правка Дисков', text: 'Рады стараться для наших клиентов!' }
-                    ]
-                },
-                {
-                    author: 'Елена',
-                    date: '15 января 2026',
-                    rating: 5,
-                    text: 'Очень довольна сервисом. Мастера вежливые, всё объяснили, показали. Диск восстановили полностью. Цены вполне адекватные за такое качество.',
-                    photos: ['images/placeholder.jpg'],
-                    comments: [
-                        { author: 'СЦТО Правка Дисков', text: 'Спасибо за тёплые слова! Приходите ещё!' }
-                    ]
-                }
-            ];
+        const SUPABASE_URL = 'https://noskliwvsiejokzmczfp.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_VO6LwV9CJe-45tDjFgXGug_TzYoQ-6v';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            function renderReview(index) {
-                const review = reviewsData[index];
-                let photosHtml = '';
+        async function loadReviews() {
+            const grid = document.getElementById('reviewsGrid');
+            
+            try {
+                const { data: reviews, error } = await supabase
+                    .from('reviews')
+                    .select('*')
+                    .eq('active', true)
+                    .order('created_at', { ascending: false });
                 
-                if (review.photos && review.photos.length > 0) {
-                    photosHtml = `
-                        <div class="review-photos">
-                            ${review.photos.map(photo => `<img src="${photo}" alt="Фото" class="review-photo">`).join('')}
+                if (error) throw error;
+                
+                if (!reviews || reviews.length === 0) {
+                    grid.innerHTML = `
+                        <div class="reviews-empty">
+                            <div class="reviews-empty-icon">💬</div>
+                            <h3>Отзывов пока нет</h3>
+                            <p>Будьте первым, кто оставит отзыв!</p>
                         </div>
                     `;
+                    return;
                 }
                 
-                let commentsHtml = '';
-                if (review.comments && review.comments.length > 0) {
-                    commentsHtml = review.comments.map(comment => `
-                        <div class="comment">
-                            <span class="comment-author">${comment.author}</span>
-                            ${comment.text}
-                        </div>
-                    `).join('');
-                }
+                // Рассчитываем средний рейтинг
+                const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+                document.getElementById('avgRating').textContent = avgRating.toFixed(1);
+                document.getElementById('avgStars').textContent = '★'.repeat(Math.round(avgRating)) + '☆'.repeat(5 - Math.round(avgRating));
+                document.getElementById('ratingCount').textContent = `на основе ${reviews.length} ${getReviewsWord(reviews.length)}`;
                 
-                reviewMain.innerHTML = `
-                    <div class="review-header">
-                        <div class="review-author">
-                            <div class="author-avatar neon-border">👤</div>
-                            <div class="author-info">
-                                <div class="author-name">${review.author}</div>
-                                <div class="review-date">${review.date}</div>
+                grid.innerHTML = reviews.map(r => {
+                    const initials = r.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                    
+                    return `
+                        <div class="review-card">
+                            <div class="review-top">
+                                <div class="review-author-info">
+                                    <div class="review-avatar">${initials}</div>
+                                    <div>
+                                        <div class="review-name">${r.name}</div>
+                                        <div class="review-date">${formatDate(r.review_date || r.created_at)}</div>
+                                    </div>
+                                </div>
+                                <div class="review-rating">${stars}</div>
                             </div>
+                            <p class="review-text">${r.text}</p>
+                            <span class="review-source">📍 Источник: 2ГИС</span>
                         </div>
-                        <div class="review-rating">
-                            ${'★'.repeat(review.rating)}
-                        </div>
-                    </div>
-                    <div class="review-body">
-                        <p class="review-text">${review.text}</p>
-                        ${photosHtml}
-                    </div>
-                    <div class="review-footer">
-                        <div class="review-source">
-                            <span class="dgis-icon">2ГИС</span>
-                            <span>• Отзыв с 2ГИС</span>
-                        </div>
-                        <button class="review-more" id="toggleComments">Подробнее</button>
-                    </div>
-                    <div class="review-comments-container" id="commentsContainer">
-                        ${commentsHtml}
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Ошибка загрузки отзывов:', error);
+                grid.innerHTML = `
+                    <div class="reviews-empty">
+                        <div class="reviews-empty-icon">⚠️</div>
+                        <h3>Ошибка загрузки</h3>
+                        <p>Попробуйте обновить страницу</p>
                     </div>
                 `;
-                
-                document.getElementById('toggleComments').addEventListener('click', function() {
-                    const container = document.getElementById('commentsContainer');
-                    const isExpanded = container.classList.toggle('active');
-                    this.textContent = isExpanded ? 'Свернуть' : 'Подробнее';
-                    this.classList.toggle('expanded', isExpanded);
-                });
             }
-
-            function loadReviews() {
-                setTimeout(() => {
-                    renderReview(currentIndex);
-                }, 500);
-            }
-
-            prevBtn.addEventListener('click', function() {
-                currentIndex = (currentIndex - 1 + reviewsData.length) % reviewsData.length;
-                renderReview(currentIndex);
-            });
-
-            nextBtn.addEventListener('click', function() {
-                currentIndex = (currentIndex + 1) % reviewsData.length;
-                renderReview(currentIndex);
-            });
-
-            loadReviews();
-        });
+        }
+        
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+        
+        function getReviewsWord(n) {
+            if (n === 1) return 'отзыва';
+            if (n >= 2 && n <= 4) return 'отзывов';
+            return 'отзывов';
+        }
+        
+        loadReviews();
     </script>
-    <script src="js/main.js"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const userName = document.getElementById('user-name');
     const userEmail = document.getElementById('user-email');
     const userPhone = document.getElementById('user-phone');
+    const userAvatarIcon = document.getElementById('user-avatar-icon');
     const logoutBtn = document.getElementById('logout-btn');
     const openChatBtn = document.getElementById('open-chat-btn');
     const openReviewBtn = document.getElementById('open-review-btn');
@@ -16,6 +17,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeChatModal = document.getElementById('closeChatModal');
     const closeReviewModal = document.getElementById('closeReviewModal');
     const reviewForm = document.getElementById('review-form');
+
+    let captchaNum1, captchaNum2, captchaAnswer;
+
+    function generateCaptcha(elementId) {
+        captchaNum1 = Math.floor(Math.random() * 10) + 1;
+        captchaNum2 = Math.floor(Math.random() * 10) + 1;
+        const operator = Math.random() > 0.5 ? '+' : '-';
+        const question = `${captchaNum1} ${operator} ${captchaNum2} = ?`;
+        
+        document.getElementById(elementId).textContent = question;
+        
+        if (operator === '+') {
+            captchaAnswer = captchaNum1 + captchaNum2;
+        } else {
+            captchaAnswer = captchaNum1 - captchaNum2;
+        }
+    }
+
+    function validateCaptcha(inputId) {
+        const userAnswer = parseInt(document.getElementById(inputId).value);
+        return userAnswer === captchaAnswer;
+    }
+
+    generateCaptcha('captcha-question');
+    generateCaptcha('captcha-question-reg');
 
     authTabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -33,6 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
+            if (!validateCaptcha('captcha-answer')) {
+                alert('Неверный ответ на проверку! Попробуйте ещё раз.');
+                generateCaptcha('captcha-question');
+                document.getElementById('captcha-answer').value = '';
+                return;
+            }
+            
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
@@ -43,6 +76,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (registerForm) {
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            if (!validateCaptcha('captcha-answer-reg')) {
+                alert('Неверный ответ на проверку! Попробуйте ещё раз.');
+                generateCaptcha('captcha-question-reg');
+                document.getElementById('captcha-answer-reg').value = '';
+                return;
+            }
             
             const name = document.getElementById('reg-name').value;
             const phone = document.getElementById('reg-phone').value;
@@ -55,7 +95,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            if (password.length < 6) {
+                alert('Пароль должен быть минимум 6 символов!');
+                return;
+            }
+            
+            const agreeTerms = document.getElementById('agree-terms').checked;
+            if (!agreeTerms) {
+                alert('Необходимо принять условия использования!');
+                return;
+            }
+            
             simulateRegister(name, phone, email, password);
+        });
+    }
+
+    const regPassword = document.getElementById('reg-password');
+    if (regPassword) {
+        regPassword.addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.querySelector('.strength-bar');
+            const strengthText = document.querySelector('.strength-text');
+            
+            if (password.length === 0) {
+                strengthBar.style.width = '0';
+                strengthText.textContent = '';
+            } else if (password.length < 6) {
+                strengthBar.style.width = '33%';
+                strengthBar.style.background = '#ff4444';
+                strengthText.textContent = 'Слабый';
+                strengthText.style.color = '#ff4444';
+            } else if (password.length < 10) {
+                strengthBar.style.width = '66%';
+                strengthBar.style.background = '#ffaa00';
+                strengthText.textContent = 'Средний';
+                strengthText.style.color = '#ffaa00';
+            } else {
+                strengthBar.style.width = '100%';
+                strengthBar.style.background = '#00cc00';
+                strengthText.textContent = 'Надёжный';
+                strengthText.style.color = '#00cc00';
+            }
         });
     }
 
@@ -103,11 +183,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function simulateLogin(email, password) {
         if (email && password) {
-            localStorage.setItem('user', JSON.stringify({
+            const userData = {
                 name: 'Иван Иванов',
                 email: email,
-                phone: '+7 (999) 123-45-67'
-            }));
+                phone: '+7 (999) 123-45-67',
+                avatar: '👤'
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('isLoggedIn', 'true');
             
             showUserDashboard();
         } else {
@@ -117,11 +200,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function simulateRegister(name, phone, email, password) {
         if (name && phone && email && password) {
-            localStorage.setItem('user', JSON.stringify({
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+            const userData = {
                 name: name,
                 email: email,
-                phone: phone
-            }));
+                phone: phone,
+                avatar: initials.length > 0 ? initials[0] : '👤'
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('isLoggedIn', 'true');
             
             showUserDashboard();
         } else {
@@ -131,12 +218,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function simulateLogout() {
         localStorage.removeItem('user');
+        localStorage.removeItem('isLoggedIn');
         authForm.style.display = 'block';
         userDashboard.style.display = 'none';
+        generateCaptcha('captcha-question');
+        generateCaptcha('captcha-question-reg');
     }
 
     function simulateSubmitReview(rating, text) {
-        alert(`Отзыв отправлен!\nОценка: ${rating} звёзд\nТекст: ${text}`);
+        alert(`Спасибо за ваш отзыв!\nОценка: ${rating} звёзд\nВаш отзыв будет проверен и добавлен на сайт.`);
         reviewModal.style.display = 'none';
         reviewForm.reset();
     }
@@ -145,9 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const user = JSON.parse(localStorage.getItem('user'));
         
         if (user) {
-            userName.textContent = user.name;
+            userName.textContent = `Добро пожаловать, ${user.name}!`;
             userEmail.textContent = user.email;
             userPhone.textContent = user.phone;
+            
+            if (user.avatar) {
+                userAvatarIcon.textContent = user.avatar;
+            }
             
             authForm.style.display = 'none';
             userDashboard.style.display = 'block';
@@ -159,26 +253,44 @@ document.addEventListener('DOMContentLoaded', function() {
         chatMessages.innerHTML = '';
         
         const messages = [
-            { text: 'Здравствуйте! Чем могу помочь?', sender: 'support', time: '10:30' },
-            { text: 'Добрый день! Хотел узнать о правке диска R16.', sender: 'user', time: '10:31' },
-            { text: 'Конечно! Правка диска R16 стоит от 1500 рублей. Привезите на осмотр, и мы дадим точную оценку.', sender: 'support', time: '10:32' }
+            { text: 'Здравствуйте! Чем могу помочь?', sender: 'support', time: getCurrentTime() }
         ];
         
         messages.forEach(msg => {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${msg.sender}`;
-            messageDiv.innerHTML = `
-                <div class="message-content">${msg.text}</div>
-                <div class="message-time">${msg.time}</div>
-            `;
-            chatMessages.appendChild(messageDiv);
+            addMessageToChat(chatMessages, msg.text, msg.sender, msg.time);
         });
         
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    function addMessageToChat(container, text, sender, time) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${sender}`;
+        messageDiv.innerHTML = `
+            <div class="message-content">${escapeHtml(text)}</div>
+            <div class="message-time">${time}</div>
+        `;
+        container.appendChild(messageDiv);
+    }
+
+    function getCurrentTime() {
+        const now = new Date();
+        return now.getHours().toString().padStart(2, '0') + ':' + 
+               now.getMinutes().toString().padStart(2, '0');
+    }
+
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     const savedUser = localStorage.getItem('user');
-    if (savedUser) {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (savedUser && isLoggedIn === 'true') {
         showUserDashboard();
     }
 
@@ -191,3 +303,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (input) {
+        if (input.type === 'password') {
+            input.type = 'text';
+            button.innerHTML = '<span class="eye">🙈</span>';
+        } else {
+            input.type = 'password';
+            button.innerHTML = '<span class="eye">👁️</span>';
+        }
+    }
+}

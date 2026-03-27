@@ -233,11 +233,6 @@
     .neon-curve.bottom-right {
         display: none;
     }
-
-    .neon-curve.center-wave {
-        height: 100px;
-        top: 35%;
-    }
 }
 
 @media (max-width: 375px) {
