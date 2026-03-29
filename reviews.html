@@ -229,6 +229,35 @@
             border-radius: 12px;
         }
         
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .review-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: white;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(255, 152, 0, 0.3);
+        }
+        
+        .review-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+        }
+        
         .reviews-empty {
             text-align: center;
             padding: 60px 20px;
@@ -459,6 +488,7 @@
                 grid.innerHTML = reviews.map(r => {
                     const initials = r.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                    const linkBtn = r.review_link ? `<a href="${r.review_link}" target="_blank" class="review-link-btn">🔗 Перейти к отзыву</a>` : '';
                     
                     return `
                         <div class="review-card">
@@ -473,7 +503,10 @@
                                 <div class="review-rating">${stars}</div>
                             </div>
                             <p class="review-text">${r.text}</p>
-                            <span class="review-source">📍 Источник: 2ГИС</span>
+                            <div class="review-footer">
+                                <span class="review-source">📍 Источник: 2ГИС</span>
+                                ${linkBtn}
+                            </div>
                         </div>
                     `;
                 }).join('');
