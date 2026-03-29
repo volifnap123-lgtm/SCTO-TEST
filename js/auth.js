@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeReviewModal = document.getElementById('closeReviewModal');
     const reviewForm = document.getElementById('review-form');
 
+    const supabase = window.supabaseClient;
     let captchaNum1, captchaNum2, captchaAnswer;
 
     function generateCaptcha(elementId) {
@@ -181,25 +182,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function simulateLogin(email, password) {
-        if (email && password) {
+    async function simulateLogin(email, password) {
+        if (!email || !password) {
+            alert('Пожалуйста, заполните все поля');
+            return;
+        }
+        
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+        
+        if (error) {
+            alert('Ошибка входа: ' + error.message);
+            return;
+        }
+        
+        if (data.user) {
             const userData = {
-                name: 'Иван Иванов',
-                email: email,
-                phone: '+7 (999) 123-45-67',
+                name: data.user.user_metadata?.full_name || data.user.email,
+                email: data.user.email,
+                phone: data.user.user_metadata?.phone || '',
                 avatar: '👤'
             };
             localStorage.setItem('user', JSON.stringify(userData));
             localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('sb_user_id', data.user.id);
             
             showUserDashboard();
-        } else {
-            alert('Пожалуйста, заполните все поля');
         }
     }
 
-    function simulateRegister(name, phone, email, password) {
-        if (name && phone && email && password) {
+    async function simulateRegister(name, phone, email, password) {
+        if (!name || !phone || !email || !password) {
+            alert('Пожалуйста, заполните все поля');
+            return;
+        }
+        
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    full_name: name,
+                    phone: phone
+                }
+            }
+        });
+        
+        if (error) {
+            alert('Ошибка регистрации: ' + error.message);
+            return;
+        }
+        
+        if (data.user) {
             const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
             const userData = {
                 name: name,
@@ -209,16 +245,18 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             localStorage.setItem('user', JSON.stringify(userData));
             localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('sb_user_id', data.user.id);
             
             showUserDashboard();
-        } else {
-            alert('Пожалуйста, заполните все поля');
+            alert('Регистрация прошла успешно!');
         }
     }
 
-    function simulateLogout() {
+    async function simulateLogout() {
+        await supabase.auth.signOut();
         localStorage.removeItem('user');
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('sb_user_id');
         authForm.style.display = 'block';
         userDashboard.style.display = 'none';
         generateCaptcha('captcha-question');

@@ -10,32 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const LOCAL_IMAGES = [
         'images/images1.jpg',
-        'images/images2.jpg',
-        'images/images3.jpg',
-        'images/images4.jpg',
-        'images/images5.jpg',
-        'images/work1.jpg',
-        'images/work2.jpg',
-        'images/work3.jpg',
-        'images/gallery1.jpg',
-        'images/gallery2.jpg',
-        'images/gallery3.jpg',
-        'images/photo1.jpg',
-        'images/photo2.jpg',
-        'images/photo3.jpg',
-        'images/img1.jpg',
-        'images/img2.jpg',
-        'images/img3.jpg',
-        'images/img4.jpg',
-        'images/img5.jpg',
-        'images/pic1.jpg',
-        'images/pic2.jpg',
-        'images/pic3.jpg',
-        'images/dish1.jpg',
-        'images/dish2.jpg',
-        'images/disk1.jpg',
-        'images/disk2.jpg',
-        'images/disk3.jpg'
+        'images/placeholder.jpg'
     ];
 
     async function checkImageExists(src) {
