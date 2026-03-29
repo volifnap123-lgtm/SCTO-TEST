@@ -75,6 +75,46 @@
             margin-bottom: 20px;
         }
         
+        .rating-breakdown {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        
+        .rating-row span:first-child {
+            width: 15px;
+            color: var(--text-secondary);
+        }
+        
+        .rating-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .rating-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--orange-main), var(--yellow-neon));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .rating-count-small {
+            width: 20px;
+            text-align: right;
+            color: var(--text-secondary);
+        }
+        
         .leave-review-btn {
             display: flex;
             align-items: center;
@@ -103,6 +143,10 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            background: linear-gradient(180deg, var(--card-bg) 0%, var(--card-bg-light) 100%);
+            padding: 20px;
+            border-radius: 20px;
+            min-height: 300px;
         }
         
         .review-card {
@@ -307,6 +351,13 @@
                     <div class="rating-big" id="avgRating">4.9</div>
                     <div class="rating-stars" id="avgStars">★★★★★</div>
                     <div class="rating-count" id="ratingCount">на основе отзывов</div>
+                    <div class="rating-breakdown" id="ratingBreakdown">
+                        <div class="rating-row" data-stars="5"><span>5</span><div class="rating-bar"><div class="rating-bar-fill" id="bar5"></div></div><span class="rating-count-small" id="count5">0</span></div>
+                        <div class="rating-row" data-stars="4"><span>4</span><div class="rating-bar"><div class="rating-bar-fill" id="bar4"></div></div><span class="rating-count-small" id="count4">0</span></div>
+                        <div class="rating-row" data-stars="3"><span>3</span><div class="rating-bar"><div class="rating-bar-fill" id="bar3"></div></div><span class="rating-count-small" id="count3">0</span></div>
+                        <div class="rating-row" data-stars="2"><span>2</span><div class="rating-bar"><div class="rating-bar-fill" id="bar2"></div></div><span class="rating-count-small" id="count2">0</span></div>
+                        <div class="rating-row" data-stars="1"><span>1</span><div class="rating-bar"><div class="rating-bar-fill" id="bar1"></div></div><span class="rating-count-small" id="count1">0</span></div>
+                    </div>
                     <a href="https://2gis.ru/ulanude/firm/5207815350139447" target="_blank" class="leave-review-btn">
                         <span>📝</span>
                         Оставить отзыв
@@ -367,6 +418,17 @@
                 document.getElementById('avgRating').textContent = avgRating.toFixed(1);
                 document.getElementById('avgStars').textContent = '★'.repeat(Math.round(avgRating)) + '☆'.repeat(5 - Math.round(avgRating));
                 document.getElementById('ratingCount').textContent = `на основе ${reviews.length} ${getReviewsWord(reviews.length)}`;
+                
+                // Разбивка по звёздам
+                const ratingCounts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0};
+                reviews.forEach(r => { ratingCounts[r.rating] = (ratingCounts[r.rating] || 0) + 1; });
+                const maxCount = Math.max(...Object.values(ratingCounts));
+                for (let i = 5; i >= 1; i--) {
+                    const count = ratingCounts[i];
+                    const percent = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                    document.getElementById('bar' + i).style.width = percent + '%';
+                    document.getElementById('count' + i).textContent = count;
+                }
                 
                 grid.innerHTML = reviews.map(r => {
                     const initials = r.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);

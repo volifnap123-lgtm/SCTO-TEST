@@ -53,6 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             this.classList.add('active');
             document.getElementById(targetTab + '-tab').classList.add('active');
+            
+            const authTabsContainer = document.getElementById('authTabs');
+            if (targetTab === 'register') {
+                authTabsContainer.classList.add('tab-register');
+            } else {
+                authTabsContainer.classList.remove('tab-register');
+            }
         });
     });
 
