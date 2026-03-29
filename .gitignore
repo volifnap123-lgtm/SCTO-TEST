@@ -1,0 +1,7 @@
+node_modules/
+frontend/
+*.log
+.DS_Store
+Thumbs.db
+.env
+nul
