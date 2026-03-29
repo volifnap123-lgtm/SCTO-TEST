@@ -18,86 +18,97 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         .reviews-page {
-            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+        }
+        
+        .reviews-sidebar {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
         }
         
         .reviews-header {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 40px;
+            padding: 30px;
             text-align: center;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            border: 3px solid var(--yellow-neon);
-            margin-bottom: 30px;
+            border: 2px solid var(--yellow-neon);
         }
         
         .dgis-badge {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: linear-gradient(135deg, #00a3ff, #0077cc);
             color: white;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-size: 16px;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .rating-big {
-            font-size: 80px;
+            font-size: 60px;
             font-weight: bold;
             color: var(--orange-main);
-            text-shadow: 0 0 30px var(--yellow-neon-glow);
-            margin: 10px 0;
+            text-shadow: 0 0 20px var(--yellow-neon-glow);
+            margin: 5px 0;
         }
         
         .rating-stars {
-            font-size: 40px;
+            font-size: 32px;
             color: var(--yellow-neon);
-            text-shadow: 0 0 15px var(--yellow-neon-glow);
-            margin: 15px 0;
+            text-shadow: 0 0 10px var(--yellow-neon-glow);
+            margin: 10px 0;
         }
         
         .rating-count {
-            font-size: 16px;
+            font-size: 14px;
             color: var(--text-secondary);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .leave-review-btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 15px 40px;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 25px;
             background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
             color: white;
             border: 2px solid var(--yellow-neon);
-            border-radius: 30px;
-            font-size: 18px;
+            border-radius: 25px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+            width: 100%;
         }
         
         .leave-review-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 30px rgba(255, 152, 0, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 152, 0, 0.5);
         }
         
-        .reviews-grid {
-            display: grid;
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
         
         .review-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 16px;
+            padding: 20px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             border: 2px solid transparent;
             transition: all 0.3s ease;
@@ -106,71 +117,71 @@
         .review-card:hover {
             border-color: var(--yellow-neon);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
         
         .review-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .review-author-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .review-avatar {
-            width: 55px;
-            height: 55px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 18px;
             color: white;
             font-weight: bold;
-            border: 3px solid var(--yellow-neon);
-            box-shadow: 0 0 15px var(--yellow-neon-glow);
+            border: 2px solid var(--yellow-neon);
+            box-shadow: 0 0 10px var(--yellow-neon-glow);
         }
         
         .review-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         .review-date {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
         
         .review-rating {
-            font-size: 24px;
+            font-size: 20px;
             color: var(--yellow-neon);
-            text-shadow: 0 0 10px var(--yellow-neon-glow);
+            text-shadow: 0 0 8px var(--yellow-neon-glow);
         }
         
         .review-text {
-            font-size: 15px;
-            line-height: 1.7;
+            font-size: 14px;
+            line-height: 1.6;
             color: var(--text-primary);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .review-source {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
+            gap: 6px;
+            font-size: 11px;
             color: #00a3ff;
             background: rgba(0, 163, 255, 0.1);
-            padding: 6px 12px;
-            border-radius: 15px;
+            padding: 5px 10px;
+            border-radius: 12px;
         }
         
         .reviews-empty {
@@ -182,62 +193,73 @@
         }
         
         .reviews-empty-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 60px;
+            margin-bottom: 15px;
             opacity: 0.5;
         }
         
         .reviews-empty h3 {
-            font-size: 24px;
+            font-size: 20px;
             color: var(--text-primary);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .reviews-empty p {
             color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 992px) {
+            .reviews-page {
+                grid-template-columns: 1fr;
+            }
+            
+            .reviews-sidebar {
+                position: static;
+            }
         }
         
         @media (max-width: 768px) {
             .reviews-header {
-                padding: 30px 20px;
+                padding: 25px 20px;
             }
             
             .rating-big {
-                font-size: 60px;
+                font-size: 50px;
             }
             
             .rating-stars {
-                font-size: 30px;
+                font-size: 26px;
             }
             
             .review-card {
-                padding: 20px;
+                padding: 18px;
             }
             
             .review-avatar {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
             }
             
             .review-name {
-                font-size: 16px;
+                font-size: 15px;
             }
         }
         
         @media (max-width: 480px) {
             .review-top {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
             }
             
             .rating-big {
-                font-size: 48px;
+                font-size: 42px;
             }
             
             .leave-review-btn {
-                padding: 12px 25px;
-                font-size: 16px;
+                padding: 10px 20px;
+                font-size: 14px;
             }
         }
     </style>
@@ -245,6 +267,13 @@
 <body>
     <div class="neon-curve top-left"></div>
     <div class="neon-curve bottom-right"></div>
+    
+    <div class="bg-decoration tire-1">🛞</div>
+    <div class="bg-decoration tire-2">🛞</div>
+    <div class="bg-decoration wrench-1">🔧</div>
+    <div class="bg-decoration wrench-2">🔧</div>
+    <div class="bg-decoration gear-1">⚙️</div>
+    <div class="bg-decoration gear-2">⚙️</div>
 
     <header class="main-header">
         <div class="menu-left">
@@ -269,22 +298,23 @@
         <h1 class="page-title neon-text">Отзывы клиентов</h1>
         
         <div class="reviews-page">
-            <div class="reviews-header">
-                <div class="dgis-badge">
-                    <span>📍</span>
-                    <span>2ГИС</span>
+            <aside class="reviews-sidebar">
+                <div class="reviews-header">
+                    <div class="dgis-badge">
+                        <span>📍</span>
+                        <span>2ГИС</span>
+                    </div>
+                    <div class="rating-big" id="avgRating">4.9</div>
+                    <div class="rating-stars" id="avgStars">★★★★★</div>
+                    <div class="rating-count" id="ratingCount">на основе отзывов</div>
+                    <a href="https://2gis.ru/ulanude/firm/5207815350139447" target="_blank" class="leave-review-btn">
+                        <span>📝</span>
+                        Оставить отзыв
+                    </a>
                 </div>
-                <h2>Оценка компании</h2>
-                <div class="rating-big" id="avgRating">4.9</div>
-                <div class="rating-stars" id="avgStars">★★★★★</div>
-                <div class="rating-count" id="ratingCount">на основе отзывов наших клиентов</div>
-                <a href="https://2gis.ru/ulanude/firm/5207815350139447" target="_blank" class="leave-review-btn">
-                    <span>📝</span>
-                    Оставить отзыв на 2ГИС
-                </a>
-            </div>
+            </aside>
             
-            <div class="reviews-grid" id="reviewsGrid">
+            <div class="reviews-list" id="reviewsGrid">
                 <div class="reviews-empty">
                     <div class="reviews-empty-icon">⭐</div>
                     <h3>Загрузка отзывов...</h3>
@@ -306,7 +336,7 @@
     <script src="js/main.js"></script>
     <script>
         const SUPABASE_URL = 'https://noskliwvsiejokzmczfp.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_VO6LwV9CJe-45tDjFgXGug_TzYoQ-6v';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loadReviews() {
