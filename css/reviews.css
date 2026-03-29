@@ -1,6 +1,6 @@
 /* Глобальные стили для страницы отзывов */
 body {
-    background: linear-gradient(135deg, #ffffff 0%, #ffcc80 100%);
+    background: #f5f5f5;
     background-attachment: fixed;
     min-height: 100vh;
     margin: 0;
