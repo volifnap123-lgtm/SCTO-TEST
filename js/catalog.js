@@ -2,76 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const catalogGrid = document.getElementById('catalog-grid');
     const supabase = window.supabaseClient;
 
-    function renderFallbackCatalog() {
-        const fallbackProducts = [
-            {
-                id: 1,
-                name: 'Правка литых дисков',
-                price: 'от 1500 ₽',
-                description: 'Профессиональная правка литых дисков на современном оборудовании. Восстанавливаем геометрию диска до заводских параметров.',
-                image_url: 'images/placeholder.jpg'
-            },
-            {
-                id: 2,
-                name: 'Правка стальных дисков',
-                price: 'от 800 ₽',
-                description: 'Рихтовка стальных дисков любой сложности. Работаем с дисками от 13 до 17 дюймов.',
-                image_url: 'images/placeholder.jpg'
-            },
-            {
-                id: 3,
-                name: 'Балансировка',
-                price: 'от 400 ₽',
-                description: 'Высокоточная балансировка колёс на профессиональном стенде. Точность до 1 грамма.',
-                image_url: 'images/placeholder.jpg'
-            },
-            {
-                id: 4,
-                name: 'Аргоновая сварка дисков',
-                price: 'от 2500 ₽',
-                description: 'Сварка алюминиевых и магниевых дисков аргоном. Устраняем трещины и сколы.',
-                image_url: 'images/placeholder.jpg'
-            },
-            {
-                id: 5,
-                name: 'Покраска дисков',
-                price: 'от 3000 ₽',
-                description: 'Порошковая покраска дисков в любой цвет. Гарантия качества и долговечности покрытия.',
-                image_url: 'images/placeholder.jpg'
-            },
-            {
-                id: 6,
-                name: 'Устранение биения',
-                price: 'от 1000 ₽',
-                description: 'Диагностика и устранение биения дисков. Возвращаем комфорт и безопасность вождения.',
-                image_url: 'images/placeholder.jpg'
-            }
-        ];
-
-        catalogGrid.innerHTML = '';
-        
-        fallbackProducts.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'catalog-card neon-card';
-            card.innerHTML = `
-                <div class="card-image">
-                    <img src="${product.image_url}" alt="${product.name}" onerror="this.src='images/placeholder.jpg'">
-                </div>
-                <div class="card-content">
-                    <h3>${product.name}</h3>
-                    <div class="card-price">${product.price}</div>
-                    <button class="card-btn show-description" data-id="${product.id}">Описание</button>
-                </div>
-                <div class="card-description-overlay" data-id="${product.id}">
-                    <p>${product.description}</p>
-                </div>
-            `;
-            catalogGrid.appendChild(card);
-        });
-
-        setupDescriptionToggles();
-    }
-
     function setupDescriptionToggles() {
         document.querySelectorAll('.show-description').forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -101,13 +31,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 .eq('active', true)
                 .order('created_at', { ascending: false });
 
-            if (error || !products || products.length === 0) {
-                console.log('БД пуста или ошибка, показываем услуги');
-                renderFallbackCatalog();
+            if (error) {
+                catalogGrid.innerHTML = `
+                    <div class="error-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                        <h3>Ошибка загрузки каталога</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
                 return;
             }
 
             catalogGrid.innerHTML = '';
+
+            if (!products || products.length === 0) {
+                catalogGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📦</div>
+                        <h3>Услуги скоро появятся</h3>
+                        <p>Администратор добавит услуги в ближайшее время</p>
+                    </div>
+                `;
+                return;
+            }
 
             products.forEach(product => {
                 const card = document.createElement('div');
@@ -130,8 +76,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             setupDescriptionToggles();
         } catch (error) {
-            console.log('Ошибка загрузки каталога:', error);
-            renderFallbackCatalog();
+            catalogGrid.innerHTML = `
+                <div class="error-state" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                    <h3>Ошибка загрузки каталога</h3>
+                    <p>Попробуйте обновить страницу</p>
+                </div>
+            `;
         }
     }
 
