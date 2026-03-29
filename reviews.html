@@ -143,10 +143,11 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            background: linear-gradient(180deg, var(--card-bg) 0%, var(--card-bg-light) 100%);
-            padding: 20px;
+            background: linear-gradient(180deg, var(--card-bg) 0%, #f8f4f0 50%, var(--card-bg) 100%);
+            padding: 25px;
             border-radius: 20px;
             min-height: 300px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.05);
         }
         
         .review-card {
@@ -306,6 +307,18 @@
                 font-size: 14px;
             }
         }
+        
+        .page-title {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -339,7 +352,7 @@
     </header>
 
     <main class="main-content">
-        <h1 class="page-title neon-text">Отзывы клиентов</h1>
+        <h1 class="page-title">Отзывы клиентов</h1>
         
         <div class="reviews-page">
             <aside class="reviews-sidebar">
