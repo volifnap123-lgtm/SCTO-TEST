@@ -309,15 +309,27 @@
         }
         
         .page-title {
-            font-size: 36px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             text-align: center;
-            margin-bottom: 30px;
-            text-shadow: none;
+            font-size: 36px;
+            margin-bottom: 40px;
+            font-weight: 700;
+            color: var(--orange-main);
+            text-shadow: 0 0 10px var(--yellow-neon-glow), 0 0 20px var(--yellow-neon-glow);
+            position: relative;
+            z-index: 2;
+            padding-top: 20px;
+            animation: title-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes title-glow {
+            0%, 100% {
+                text-shadow: 0 0 10px var(--yellow-neon-glow), 0 0 20px var(--yellow-neon-glow);
+                opacity: 1;
+            }
+            50% {
+                text-shadow: 0 0 15px var(--yellow-neon-glow), 0 0 30px var(--yellow-neon-glow);
+                opacity: 0.9;
+            }
         }
     </style>
 </head>
