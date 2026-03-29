@@ -1,141 +1,104 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const mainImg = document.getElementById('main-img');
-    const caption = document.getElementById('caption');
-    const thumbsContainer = document.getElementById('gallery-thumbs');
-    const prevBtn = document.querySelector('.prev');
-    const nextBtn = document.querySelector('.next');
-    const galleryContainer = document.querySelector('.gallery-container');
+    const galleryContainer = document.getElementById('gallery-container');
+    const supabase = window.supabaseClient;
     let currentIndex = 0;
     let galleryItems = [];
 
-    const LOCAL_IMAGES = [
-        'images/images1.jpg',
-        'images/placeholder.jpg'
-    ];
-
-    async function checkImageExists(src) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = src;
-        });
-    }
-
-    async function loadLocalImages() {
-        const existingImages = [];
-        for (const imgSrc of LOCAL_IMAGES) {
-            if (await checkImageExists(imgSrc)) {
-                existingImages.push({
-                    url: imgSrc,
-                    caption: 'Наша работа'
-                });
-            }
-        }
-        return existingImages;
-    }
-
-    async function loadGallery() {
-        thumbsContainer.innerHTML = '<div class="gallery-loading"><div class="neon-loader"></div><p>Загрузка фотографий...</p></div>';
-
-        // Try to load from Supabase first
-        try {
-            const { data: photos, error } = await window.supabaseClient
-                .from('gallery')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            if (!error && photos && photos.length > 0) {
-                galleryItems = photos;
-                renderGallery(0);
-                return;
-            }
-        } catch (error) {
-            console.log('Ошибка загрузки из БД:', error);
-        }
-
-        // Fallback to local images
-        const localImages = await loadLocalImages();
-        
-        if (localImages.length > 0) {
-            galleryItems = localImages;
-            renderGallery(0);
-        } else {
-            showEmptyState();
-        }
-    }
-
     function showEmptyState() {
-        if (galleryContainer) {
-            galleryContainer.innerHTML = `
-                <div class="gallery-empty">
-                    <div class="empty-icon">📷</div>
-                    <h3>Фотографии скоро появятся</h3>
-                    <p>В скором времени разработчики добавят фотографии наших работ</p>
-                </div>
-            `;
-        }
-        thumbsContainer.style.display = 'none';
-        if (prevBtn) prevBtn.style.display = 'none';
-        if (nextBtn) nextBtn.style.display = 'none';
+        galleryContainer.innerHTML = `
+            <div class="gallery-empty">
+                <div class="empty-icon">📷</div>
+                <h3>Фотографии скоро появятся</h3>
+                <p>В скором времени мы добавим фотографии наших работ</p>
+            </div>
+        `;
     }
 
     function renderGallery(index) {
-        if (index < 0 || index >= galleryItems.length) return;
+        if (!galleryItems || galleryItems.length === 0) {
+            showEmptyState();
+            return;
+        }
+
+        if (index < 0) index = galleryItems.length - 1;
+        if (index >= galleryItems.length) index = 0;
         
         currentIndex = index;
         const item = galleryItems[currentIndex];
         
-        if (!item || !item.url) return;
-        
-        mainImg.src = item.url;
-        mainImg.onerror = function() {
-            this.src = 'images/placeholder.jpg';
-        };
-        caption.textContent = item.caption || 'Фотография работы';
-        
-        thumbsContainer.innerHTML = galleryItems.map((photo, i) => `
-            <img 
-                src="${photo.url}" 
-                alt="Миниатюра ${i + 1}" 
-                class="thumb ${i === currentIndex ? 'active' : ''}" 
-                data-index="${i}"
-                onerror="this.src='images/placeholder.jpg'"
-            >
-        `).join('');
-        
-        document.querySelectorAll('.thumb').forEach(thumb => {
-            thumb.addEventListener('click', function() {
-                const idx = parseInt(this.getAttribute('data-index'));
-                renderGallery(idx);
-            });
-        });
+        if (!item || !item.url) {
+            showEmptyState();
+            return;
+        }
+
+        const mainItem = galleryItems[currentIndex];
+        const otherItems = galleryItems.filter((_, i) => i !== currentIndex);
+
+        galleryContainer.innerHTML = `
+            <button class="gallery-nav prev" onclick="prevPhoto()">‹</button>
+            <div class="gallery-main">
+                <img src="${mainItem.url}" alt="Работа СЦТО" class="gallery-main-img" id="main-img" onerror="this.src='images/placeholder.jpg'">
+                <div class="gallery-caption" id="caption">${mainItem.caption || 'Фотография работы'}</div>
+            </div>
+            <button class="gallery-nav next" onclick="nextPhoto()">›</button>
+            <div class="gallery-thumbs" id="gallery-thumbs">
+                ${galleryItems.map((photo, i) => `
+                    <img src="${photo.url}" alt="Миниатюра ${i + 1}" class="thumb ${i === currentIndex ? 'active' : ''}" data-index="${i}" onerror="this.src='images/placeholder.jpg'" onclick="goToPhoto(${i})">
+                `).join('')}
+            </div>
+        `;
     }
 
-    if (prevBtn) {
-        prevBtn.addEventListener('click', function() {
-            if (galleryItems.length === 0) return;
-            const newIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-            renderGallery(newIndex);
-        });
-    }
+    window.nextPhoto = function() {
+        if (galleryItems.length === 0) return;
+        currentIndex = (currentIndex + 1) % galleryItems.length;
+        renderGallery(currentIndex);
+    };
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', function() {
-            if (galleryItems.length === 0) return;
-            const newIndex = (currentIndex + 1) % galleryItems.length;
-            renderGallery(newIndex);
-        });
+    window.prevPhoto = function() {
+        if (galleryItems.length === 0) return;
+        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+        renderGallery(currentIndex);
+    };
+
+    window.goToPhoto = function(index) {
+        renderGallery(index);
+    };
+
+    async function loadGallery() {
+        galleryContainer.innerHTML = '<div class="gallery-loading"><div class="neon-loader"></div><p>Загрузка фотографий...</p></div>';
+
+        try {
+            const { data: photos, error } = await supabase
+                .from('gallery')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Ошибка загрузки галереи:', error);
+                showEmptyState();
+                return;
+            }
+
+            if (!photos || photos.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            galleryItems = photos;
+            renderGallery(0);
+        } catch (error) {
+            console.error('Ошибка:', error);
+            showEmptyState();
+        }
     }
 
     document.addEventListener('keydown', function(e) {
         if (galleryItems.length === 0) return;
         if (e.key === 'ArrowLeft') {
-            const newIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-            renderGallery(newIndex);
+            prevPhoto();
         } else if (e.key === 'ArrowRight') {
-            const newIndex = (currentIndex + 1) % galleryItems.length;
-            renderGallery(newIndex);
+            nextPhoto();
         }
     });
 
