@@ -167,6 +167,10 @@
     margin-top: 8px;
 }
 
+.form-group + .form-group {
+    margin-top: 0;
+}
+
 .strength-bar {
     flex: 1;
     height: 6px;
