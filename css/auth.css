@@ -146,7 +146,7 @@
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 8px;
 }
 
 .form-group {
