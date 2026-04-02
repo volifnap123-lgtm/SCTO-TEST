@@ -77,42 +77,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function loadAuthScripts() {
+        if (document.querySelector('script[src*="auth.js"]')) return;
+        
         console.log('Загрузка скриптов авторизации...');
         
         if (typeof window.supabase !== 'undefined') {
-            console.log('Supabase CDN уже загружен');
             loadAuthJS();
             return;
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=6';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=7';
         cdnScript.onload = function() {
-            console.log('Supabase CDN загружен');
             loadAuthJS();
-        };
-        cdnScript.onerror = function() {
-            console.error('Ошибка загрузки Supabase CDN');
         };
         document.head.appendChild(cdnScript);
     }
     
     function loadAuthJS() {
-        const existingAuth = document.querySelector('script[src*="auth.js"]');
-        if (existingAuth) {
-            existingAuth.remove();
-        }
+        if (document.querySelector('script[src*="auth.js"]')) return;
         
         const authScript = document.createElement('script');
-        authScript.src = 'js/auth.js?v=6';
+        authScript.src = 'js/auth.js?v=7';
         authScript.onload = function() {
-            console.log('auth.js загружен, вызываю initAuth');
             if (typeof initAuth === 'function') {
                 initAuth();
             }
-        };
-        authScript.onerror = function() {
-            console.error('Ошибка загрузки auth.js');
         };
         document.head.appendChild(authScript);
     }
