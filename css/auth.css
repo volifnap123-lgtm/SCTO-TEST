@@ -45,7 +45,9 @@
 
 .auth-tab.active {
     background: var(--orange-main);
-    color: white;
+    color: #1a1a2e;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 .auth-tab {
