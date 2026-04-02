@@ -59,6 +59,19 @@
     z-index: 1;
 }
 
+.auth-tab.active {
+    color: var(--orange-main);
+}
+
+.auth-tab .tab-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.auth-tab.active .tab-icon {
+    transform: scale(1.1);
+}
+
 .auth-tab .tab-icon {
     font-size: 20px;
     transition: transform 0.3s ease;
