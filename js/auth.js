@@ -93,18 +93,18 @@ function initAuth() {
             console.log('⚠️ Заполните все поля');
             return;
         }
-        console.log('Попытка входа:', email);
+        console.log('Вход:', email);
         
         try {
             const { data, error } = await supabase.auth.signInWithPassword({ email, password });
             
             if (error) {
-                console.error('❌ Ошибка входа:', error.message);
+                console.error('❌ Неверный логин или пароль');
                 return;
             }
             
             if (data.user) {
-                console.log('✅ Вход успешен');
+                console.log('✅ Вход выполнен');
                 const userData = {
                     name: data.user.user_metadata?.full_name || data.user.email,
                     email: data.user.email,
@@ -117,12 +117,12 @@ function initAuth() {
                 showUserDashboard();
             }
         } catch (err) {
-            console.error('❌ Критическая ошибка:', err.message);
+            console.error('❌ Ошибка:', err.message);
         }
     }
 
     async function doRegister(name, phone, email, password) {
-        console.log('📝 Попытка регистрации:', email);
+        console.log('Регистрация:', email);
         
         try {
             const { data, error } = await supabase.auth.signUp({
@@ -132,11 +132,15 @@ function initAuth() {
             });
             
             if (error) {
-                console.error('❌ Ошибка регистрации:', error.message);
+                if (error.message.includes('already') || error.message.includes('exists')) {
+                    console.error('❌ Этот email уже зарегистрирован');
+                } else {
+                    console.error('❌ Ошибка регистрации');
+                }
                 return;
             }
             
-            console.log('✅ Регистрация успешна! Теперь войдите в аккаунт.');
+            console.log('✅ Регистрация прошла успешно! Теперь войдите в аккаунт.');
             
             if (document.getElementById('loginTabBtn')) {
                 document.getElementById('loginTabBtn').click();
@@ -145,7 +149,7 @@ function initAuth() {
                 document.getElementById('login-email').value = email;
             }
         } catch (err) {
-            console.error('❌ Критическая ошибка:', err.message);
+            console.error('❌ Ошибка:', err.message);
         }
     }
 
