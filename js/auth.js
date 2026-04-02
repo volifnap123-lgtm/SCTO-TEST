@@ -18,7 +18,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeReviewModal = document.getElementById('closeReviewModal');
     const reviewForm = document.getElementById('review-form');
 
-    const supabase = window.supabaseClient;
+    let supabase = window.supabaseClient;
+    
+    if (!supabase && typeof window.supabase !== 'undefined') {
+        supabase = window.supabase.createClient(
+            'https://noskliwvsiejokzmczfp.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE'
+        );
+        window.supabaseClient = supabase;
+    }
+    
     let captchaNum1, captchaNum2, captchaAnswer;
 
     function generateCaptcha(elementId) {
