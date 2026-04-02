@@ -417,7 +417,7 @@ body {
     border: 2px solid var(--border-color);
     color: var(--text-primary);
     overflow-y: auto;
-    margin: auto;
+    margin: 60px auto;
 }
 
 .close-btn {
