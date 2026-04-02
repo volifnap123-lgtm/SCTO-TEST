@@ -276,11 +276,22 @@ body {
 
 .map-title {
     text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px var(--yellow-neon-glow);
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--orange-main), var(--orange-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 25px;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+[data-theme="dark"] .map-title {
+    background: linear-gradient(135deg, var(--orange-main), var(--yellow-neon));
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 .neon-border {
