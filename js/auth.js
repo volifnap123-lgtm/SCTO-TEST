@@ -31,11 +31,6 @@ function initAuth() {
             this.classList.add('active');
             const targetContent = document.getElementById(targetTab + '-tab');
             if (targetContent) targetContent.classList.add('active');
-            
-            const authTabsContainer = document.getElementById('authTabs');
-            if (authTabsContainer) {
-                authTabsContainer.classList.toggle('tab-register', targetTab === 'register');
-            }
         });
     });
 
@@ -121,7 +116,7 @@ function initAuth() {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         
         if (error) {
-            alert('❌ Ошибка входа: ' + error.message);
+            alert('❌ Введён неправильный логин или пароль');
             return;
         }
         
@@ -152,16 +147,16 @@ function initAuth() {
         }
         
         if (data.user) {
-            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
-            const userData = {
-                name, email, phone,
-                avatar: initials[0] || '👤'
-            };
-            localStorage.setItem('user', JSON.stringify(userData));
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('sb_user_id', data.user.id);
-            showUserDashboard();
-            alert('✅ Регистрация успешна!');
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('sb_user_id');
+            
+            if (authForm) authForm.style.display = 'none';
+            if (userDashboard) userDashboard.style.display = 'none';
+            
+            alert('✅ Вы зарегистрировались!\n\nПросьба занового зайти в профиль и войти в аккаунт.\n\nСпасибо что вы с нами! 🎉');
+            
+            window.location.reload();
         }
     }
 
