@@ -69,7 +69,7 @@ function initAuth() {
             
             const authTabsContainer = document.getElementById('authTabs');
             if (authTabsContainer) {
-                authTabsContainer.classList.toggle('tab-register', targetTab === 'login');
+                authTabsContainer.classList.toggle('tab-register', targetTab === 'register');
             }
         });
     });
