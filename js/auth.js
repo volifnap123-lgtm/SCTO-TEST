@@ -16,11 +16,9 @@ function initSupabase() {
 
 function initAuth() {
     console.log('🔐 initAuth вызван');
-    alert('auth.js загружен!');
     
     if (!initSupabase()) {
         console.error('❌ Supabase не загружен! Пробую повторить...');
-        alert('Supabase не загружен!');
         setTimeout(initAuth, 500);
         return;
     }
