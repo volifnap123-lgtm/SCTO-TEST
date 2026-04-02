@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+function initAuth() {
     const authTabs = document.querySelectorAll('.auth-tab');
     const tabContents = document.querySelectorAll('.tab-content');
     const loginForm = document.getElementById('login-form');
@@ -36,17 +36,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const operator = Math.random() > 0.5 ? '+' : '-';
         const question = `${captchaNum1} ${operator} ${captchaNum2} = ?`;
         
-        document.getElementById(elementId).textContent = question;
+        const el = document.getElementById(elementId);
+        if (el) el.textContent = question;
         
-        if (operator === '+') {
-            captchaAnswer = captchaNum1 + captchaNum2;
-        } else {
-            captchaAnswer = captchaNum1 - captchaNum2;
-        }
+        captchaAnswer = operator === '+' ? captchaNum1 + captchaNum2 : captchaNum1 - captchaNum2;
     }
 
     function validateCaptcha(inputId) {
-        const userAnswer = parseInt(document.getElementById(inputId).value);
+        const el = document.getElementById(inputId);
+        if (!el) return false;
+        const userAnswer = parseInt(el.value);
         return userAnswer === captchaAnswer;
     }
 
@@ -61,13 +60,16 @@ document.addEventListener('DOMContentLoaded', function() {
             tabContents.forEach(c => c.classList.remove('active'));
             
             this.classList.add('active');
-            document.getElementById(targetTab + '-tab').classList.add('active');
+            const targetContent = document.getElementById(targetTab + '-tab');
+            if (targetContent) targetContent.classList.add('active');
             
             const authTabsContainer = document.getElementById('authTabs');
-            if (targetTab === 'register') {
-                authTabsContainer.classList.add('tab-register');
-            } else {
-                authTabsContainer.classList.remove('tab-register');
+            if (authTabsContainer) {
+                if (targetTab === 'register') {
+                    authTabsContainer.classList.add('tab-register');
+                } else {
+                    authTabsContainer.classList.remove('tab-register');
+                }
             }
         });
     });
@@ -79,7 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!validateCaptcha('captcha-answer')) {
                 alert('Неверный ответ на проверку! Попробуйте ещё раз.');
                 generateCaptcha('captcha-question');
-                document.getElementById('captcha-answer').value = '';
+                const el = document.getElementById('captcha-answer');
+                if (el) el.value = '';
                 return;
             }
             
@@ -97,7 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!validateCaptcha('captcha-answer-reg')) {
                 alert('Неверный ответ на проверку! Попробуйте ещё раз.');
                 generateCaptcha('captcha-question-reg');
-                document.getElementById('captcha-answer-reg').value = '';
+                const el = document.getElementById('captcha-answer-reg');
+                if (el) el.value = '';
                 return;
             }
             
@@ -117,8 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            const agreeTerms = document.getElementById('agree-terms').checked;
-            if (!agreeTerms) {
+            const agreeTerms = document.getElementById('agree-terms');
+            if (agreeTerms && !agreeTerms.checked) {
                 alert('Необходимо принять условия использования!');
                 return;
             }
@@ -135,41 +139,33 @@ document.addEventListener('DOMContentLoaded', function() {
             const strengthText = document.querySelector('.strength-text');
             
             if (password.length === 0) {
-                strengthBar.style.width = '0';
-                strengthText.textContent = '';
+                if (strengthBar) strengthBar.style.width = '0';
+                if (strengthText) strengthText.textContent = '';
             } else if (password.length < 6) {
-                strengthBar.style.width = '33%';
-                strengthBar.style.background = '#ff4444';
-                strengthText.textContent = 'Слабый';
-                strengthText.style.color = '#ff4444';
+                if (strengthBar) { strengthBar.style.width = '33%'; strengthBar.style.background = '#ff4444'; }
+                if (strengthText) { strengthText.textContent = 'Слабый'; strengthText.style.color = '#ff4444'; }
             } else if (password.length < 10) {
-                strengthBar.style.width = '66%';
-                strengthBar.style.background = '#ffaa00';
-                strengthText.textContent = 'Средний';
-                strengthText.style.color = '#ffaa00';
+                if (strengthBar) { strengthBar.style.width = '66%'; strengthBar.style.background = '#ffaa00'; }
+                if (strengthText) { strengthText.textContent = 'Средний'; strengthText.style.color = '#ffaa00'; }
             } else {
-                strengthBar.style.width = '100%';
-                strengthBar.style.background = '#00cc00';
-                strengthText.textContent = 'Надёжный';
-                strengthText.style.color = '#00cc00';
+                if (strengthBar) { strengthBar.style.width = '100%'; strengthBar.style.background = '#00cc00'; }
+                if (strengthText) { strengthText.textContent = 'Надёжный'; strengthText.style.color = '#00cc00'; }
             }
         });
     }
 
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
-            simulateLogout();
-        });
+        logoutBtn.addEventListener('click', simulateLogout);
     }
 
-    if (openChatBtn) {
+    if (openChatBtn && chatModal) {
         openChatBtn.addEventListener('click', function() {
             chatModal.style.display = 'block';
             loadChatMessages();
         });
     }
 
-    if (openReviewBtn) {
+    if (openReviewBtn && reviewModal) {
         openReviewBtn.addEventListener('click', function() {
             reviewModal.style.display = 'block';
         });
@@ -177,23 +173,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (closeChatModal) {
         closeChatModal.addEventListener('click', function() {
-            chatModal.style.display = 'none';
+            if (chatModal) chatModal.style.display = 'none';
         });
     }
 
     if (closeReviewModal) {
         closeReviewModal.addEventListener('click', function() {
-            reviewModal.style.display = 'none';
+            if (reviewModal) reviewModal.style.display = 'none';
         });
     }
 
     if (reviewForm) {
         reviewForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const rating = document.querySelector('input[name="rating"]:checked').value;
+            const ratingInput = document.querySelector('input[name="rating"]:checked');
+            const rating = ratingInput ? ratingInput.value : '5';
             const text = document.getElementById('review-text').value;
-            
             simulateSubmitReview(rating, text);
         });
     }
@@ -204,10 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         
         if (error) {
             alert('Ошибка входа: ' + error.message);
@@ -224,7 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('user', JSON.stringify(userData));
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('sb_user_id', data.user.id);
-            
             showUserDashboard();
         }
     }
@@ -236,14 +227,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-                data: {
-                    full_name: name,
-                    phone: phone
-                }
-            }
+            email,
+            password,
+            options: { data: { full_name: name, phone } }
         });
         
         if (error) {
@@ -254,92 +240,70 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data.user) {
             const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
             const userData = {
-                name: name,
-                email: email,
-                phone: phone,
+                name, email, phone,
                 avatar: initials.length > 0 ? initials[0] : '👤'
             };
             localStorage.setItem('user', JSON.stringify(userData));
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('sb_user_id', data.user.id);
-            
             showUserDashboard();
             alert('Регистрация прошла успешно!');
         }
     }
 
     async function simulateLogout() {
-        await supabase.auth.signOut();
+        if (supabase) await supabase.auth.signOut();
         localStorage.removeItem('user');
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('sb_user_id');
-        authForm.style.display = 'block';
-        userDashboard.style.display = 'none';
+        if (authForm) authForm.style.display = 'block';
+        if (userDashboard) userDashboard.style.display = 'none';
         generateCaptcha('captcha-question');
         generateCaptcha('captcha-question-reg');
     }
 
     function simulateSubmitReview(rating, text) {
         alert(`Спасибо за ваш отзыв!\nОценка: ${rating} звёзд\nВаш отзыв будет проверен и добавлен на сайт.`);
-        reviewModal.style.display = 'none';
-        reviewForm.reset();
+        if (reviewModal) reviewModal.style.display = 'none';
+        if (reviewForm) reviewForm.reset();
     }
 
     function showUserDashboard() {
-        const user = JSON.parse(localStorage.getItem('user'));
-        
-        if (user) {
+        const savedUser = localStorage.getItem('user');
+        if (savedUser && userName) {
+            const user = JSON.parse(savedUser);
             userName.textContent = `Добро пожаловать, ${user.name}!`;
-            userEmail.textContent = user.email;
-            userPhone.textContent = user.phone;
-            
-            if (user.avatar) {
-                userAvatarIcon.textContent = user.avatar;
-            }
-            
-            authForm.style.display = 'none';
-            userDashboard.style.display = 'block';
+            if (userEmail) userEmail.textContent = user.email;
+            if (userPhone) userPhone.textContent = user.phone;
+            if (user.avatar && userAvatarIcon) userAvatarIcon.textContent = user.avatar;
+            if (authForm) authForm.style.display = 'none';
+            if (userDashboard) userDashboard.style.display = 'block';
         }
     }
 
     function loadChatMessages() {
         const chatMessages = document.getElementById('chat-messages');
+        if (!chatMessages) return;
         chatMessages.innerHTML = '';
-        
-        const messages = [
-            { text: 'Здравствуйте! Чем могу помочь?', sender: 'support', time: getCurrentTime() }
-        ];
-        
-        messages.forEach(msg => {
-            addMessageToChat(chatMessages, msg.text, msg.sender, msg.time);
-        });
-        
+        const msg = { text: 'Здравствуйте! Чем могу помочь?', sender: 'support', time: getCurrentTime() };
+        addMessageToChat(chatMessages, msg.text, msg.sender, msg.time);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
     function addMessageToChat(container, text, sender, time) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${sender}`;
-        messageDiv.innerHTML = `
-            <div class="message-content">${escapeHtml(text)}</div>
-            <div class="message-time">${time}</div>
-        `;
+        messageDiv.innerHTML = `<div class="message-content">${escapeHtml(text)}</div><div class="message-time">${time}</div>`;
         container.appendChild(messageDiv);
     }
 
     function getCurrentTime() {
         const now = new Date();
-        return now.getHours().toString().padStart(2, '0') + ':' + 
-               now.getMinutes().toString().padStart(2, '0');
+        return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
     }
 
     function escapeHtml(unsafe) {
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     const savedUser = localStorage.getItem('user');
@@ -349,24 +313,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.addEventListener('click', function(event) {
-        if (event.target === chatModal) {
-            chatModal.style.display = 'none';
-        }
-        if (event.target === reviewModal) {
-            reviewModal.style.display = 'none';
-        }
+        if (chatModal && event.target === chatModal) chatModal.style.display = 'none';
+        if (reviewModal && event.target === reviewModal) reviewModal.style.display = 'none';
     });
-});
+
+    window.simulateLogout = simulateLogout;
+}
 
 function togglePassword(inputId, button) {
     const input = document.getElementById(inputId);
     if (input) {
         if (input.type === 'password') {
             input.type = 'text';
-            button.innerHTML = '<span class="eye">🙈</span>';
+            if (button) button.innerHTML = '<span class="eye">🙈</span>';
         } else {
             input.type = 'password';
-            button.innerHTML = '<span class="eye">👁️</span>';
+            if (button) button.innerHTML = '<span class="eye">👁️</span>';
         }
     }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuth);
+} else {
+    initAuth();
 }

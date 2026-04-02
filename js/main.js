@@ -70,6 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     const script = document.createElement('script');
                     script.src = 'js/auth.js';
+                    script.onload = function() {
+                        if (typeof initAuth === 'function') {
+                            initAuth();
+                        }
+                    };
                     document.body.appendChild(script);
                 }
             })
