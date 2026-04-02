@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (profileBtn) {
         profileBtn.addEventListener('click', function() {
-            window.location.href = 'profile.html';
+            profileModal.style.display = 'block';
+            loadProfileContent();
         });
     }
 
@@ -78,15 +79,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadAuthScripts() {
         console.log('Загрузка скриптов авторизации...');
         
-        const existingCDN = document.querySelector('script[src*="supabase"]');
-        if (existingCDN) {
+        if (typeof window.supabase !== 'undefined') {
             console.log('Supabase CDN уже загружен');
             loadAuthJS();
             return;
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=5';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=6';
         cdnScript.onload = function() {
             console.log('Supabase CDN загружен');
             loadAuthJS();
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const authScript = document.createElement('script');
-        authScript.src = 'js/auth.js?v=5';
+        authScript.src = 'js/auth.js?v=6';
         authScript.onload = function() {
             console.log('auth.js загружен, вызываю initAuth');
             if (typeof initAuth === 'function') {
