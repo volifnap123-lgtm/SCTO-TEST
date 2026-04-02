@@ -69,15 +69,15 @@ function initAuth() {
             const passwordConfirm = document.getElementById('reg-password-confirm').value;
             
             if (!name || !phone || !email || !password) {
-                alert('⚠️ Заполните все поля!');
+                console.log('⚠️ Заполните все поля!');
                 return;
             }
             if (password !== passwordConfirm) {
-                alert('⚠️ Пароли не совпадают!');
+                console.log('⚠️ Пароли не совпадают!');
                 return;
             }
             if (password.length < 6) {
-                alert('⚠️ Пароль минимум 6 символов!');
+                console.log('⚠️ Пароль минимум 6 символов!');
                 return;
             }
             await doRegister(name, phone, email, password);
@@ -90,7 +90,7 @@ function initAuth() {
 
     async function doLogin(email, password) {
         if (!email || !password) {
-            alert('⚠️ Заполните все поля');
+            console.log('⚠️ Заполните все поля');
             return;
         }
         console.log('Попытка входа:', email);
@@ -99,13 +99,12 @@ function initAuth() {
             const { data, error } = await supabase.auth.signInWithPassword({ email, password });
             
             if (error) {
-                console.error('Ошибка входа:', error);
-                alert('❌ ' + error.message);
+                console.error('❌ Ошибка входа:', error.message);
                 return;
             }
             
             if (data.user) {
-                console.log('✅ Вход успешен:', data.user);
+                console.log('✅ Вход успешен');
                 const userData = {
                     name: data.user.user_metadata?.full_name || data.user.email,
                     email: data.user.email,
@@ -116,16 +115,14 @@ function initAuth() {
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('sb_user_id', data.user.id);
                 showUserDashboard();
-                alert('✅ Успешный вход!');
             }
         } catch (err) {
-            console.error('Критическая ошибка:', err);
-            alert('❌ Ошибка: ' + err.message);
+            console.error('❌ Критическая ошибка:', err.message);
         }
     }
 
     async function doRegister(name, phone, email, password) {
-        console.log('Попытка регистрации:', email);
+        console.log('📝 Попытка регистрации:', email);
         
         try {
             const { data, error } = await supabase.auth.signUp({
@@ -135,13 +132,11 @@ function initAuth() {
             });
             
             if (error) {
-                console.error('Ошибка регистрации:', error);
-                alert('❌ ' + error.message);
+                console.error('❌ Ошибка регистрации:', error.message);
                 return;
             }
             
-            console.log('✅ Регистрация успешна:', data);
-            alert('✅ Регистрация прошла успешно!\nТеперь можете войти в аккаунт.');
+            console.log('✅ Регистрация успешна! Теперь войдите в аккаунт.');
             
             if (document.getElementById('loginTabBtn')) {
                 document.getElementById('loginTabBtn').click();
@@ -150,8 +145,7 @@ function initAuth() {
                 document.getElementById('login-email').value = email;
             }
         } catch (err) {
-            console.error('Критическая ошибка:', err);
-            alert('❌ Ошибка: ' + err.message);
+            console.error('❌ Критическая ошибка:', err.message);
         }
     }
 
@@ -162,7 +156,7 @@ function initAuth() {
         localStorage.removeItem('sb_user_id');
         if (authForm) authForm.style.display = 'block';
         if (userDashboard) userDashboard.style.display = 'none';
-        alert('👋 Вы вышли из аккаунта');
+        console.log('👋 Вы вышли из аккаунта');
     }
 
     function showUserDashboard() {
