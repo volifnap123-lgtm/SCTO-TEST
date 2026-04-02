@@ -44,10 +44,14 @@
 }
 
 .auth-tab.active {
-    background: var(--orange-main);
-    color: #000000;
+    background: var(--orange-main) !important;
+    color: #000000 !important;
     font-weight: 700;
-    text-shadow: none;
+}
+
+.auth-tab.active .tab-icon,
+.auth-tab.active span {
+    color: #000000 !important;
 }
 
 .auth-tab {
@@ -148,7 +152,8 @@
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
+    margin-bottom: 0;
 }
 
 .form-group label {
