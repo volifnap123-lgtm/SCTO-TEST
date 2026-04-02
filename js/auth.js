@@ -20,42 +20,9 @@ function initAuth() {
         );
         window.supabaseClient = supabase;
     }
-    
-    let loginCaptcha = { answer: 0 };
-    let registerCaptcha = { answer: 0 };
-    let loginAttempts = 3;
-    let registerAttempts = 3;
-    let isGloballyBlocked = false;
-
-    function generateCaptcha(type) {
-        const num1 = Math.floor(Math.random() * 10) + 1;
-        const num2 = Math.floor(Math.random() * 10) + 1;
-        const operator = Math.random() > 0.5 ? '+' : '-';
-        const question = `${num1} ${operator} ${num2} = ?`;
-        const answer = operator === '+' ? num1 + num2 : num1 - num2;
-        
-        const captchaEl = document.getElementById(type === 'login' ? 'captcha-question' : 'captcha-question-reg');
-        if (captchaEl) captchaEl.textContent = question;
-        
-        if (type === 'login') {
-            loginCaptcha.answer = answer;
-        } else {
-            registerCaptcha.answer = answer;
-        }
-        
-        console.log(`Captcha ${type}: ${num1} ${operator} ${num2} = ${answer}`);
-    }
-
-    generateCaptcha('login');
-    generateCaptcha('register');
 
     authTabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            if (isGloballyBlocked) {
-                alert('⛔ Временно заблокировано! Слишком много попыток.\nПопробуйте через 30 секунд.');
-                return;
-            }
-            
             const targetTab = this.getAttribute('data-tab');
             
             authTabs.forEach(t => t.classList.remove('active'));
@@ -67,11 +34,7 @@ function initAuth() {
             
             const authTabsContainer = document.getElementById('authTabs');
             if (authTabsContainer) {
-                if (targetTab === 'login') {
-                    authTabsContainer.classList.add('tab-register');
-                } else {
-                    authTabsContainer.classList.remove('tab-register');
-                }
+                authTabsContainer.classList.toggle('tab-register', targetTab === 'register');
             }
         });
     });
@@ -80,40 +43,6 @@ function initAuth() {
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (isGloballyBlocked) {
-                alert('⛔ Временно заблокировано!\nПопробуйте через 30 секунд.');
-                return;
-            }
-            
-            const captchaInput = document.getElementById('captcha-answer');
-            if (!captchaInput) return;
-            
-            const userAnswer = parseInt(captchaInput.value);
-            if (isNaN(userAnswer) || userAnswer !== loginCaptcha.answer) {
-                loginAttempts--;
-                if (loginAttempts <= 0) {
-                    isGloballyBlocked = true;
-                    authTabs.forEach(t => t.style.pointerEvents = 'none');
-                    alert('⛔ Заблокировано на 30 секунд!\nСлишком много неверных попыток.');
-                    
-                    setTimeout(() => {
-                        isGloballyBlocked = false;
-                        loginAttempts = 3;
-                        registerAttempts = 3;
-                        authTabs.forEach(t => t.style.pointerEvents = 'auto');
-                        generateCaptcha('login');
-                        generateCaptcha('register');
-                        alert('🔓 Блокировка снята!');
-                    }, 30000);
-                } else {
-                    alert(`❌ Неверная капча! Осталось попыток: ${loginAttempts}`);
-                    generateCaptcha('login');
-                    captchaInput.value = '';
-                }
-                return;
-            }
-            
-            loginAttempts = 3;
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
@@ -124,41 +53,6 @@ function initAuth() {
     if (registerForm) {
         registerForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            if (isGloballyBlocked) {
-                alert('⛔ Временно заблокировано!\nПопробуйте через 30 секунд.');
-                return;
-            }
-            
-            const captchaInput = document.getElementById('captcha-answer-reg');
-            if (!captchaInput) return;
-            
-            const userAnswer = parseInt(captchaInput.value);
-            if (isNaN(userAnswer) || userAnswer !== registerCaptcha.answer) {
-                registerAttempts--;
-                if (registerAttempts <= 0) {
-                    isGloballyBlocked = true;
-                    authTabs.forEach(t => t.style.pointerEvents = 'none');
-                    alert('⛔ Заблокировано на 30 секунд!\nСлишком много неверных попыток.');
-                    
-                    setTimeout(() => {
-                        isGloballyBlocked = false;
-                        loginAttempts = 3;
-                        registerAttempts = 3;
-                        authTabs.forEach(t => t.style.pointerEvents = 'auto');
-                        generateCaptcha('login');
-                        generateCaptcha('register');
-                        alert('🔓 Блокировка снята!');
-                    }, 30000);
-                } else {
-                    alert(`❌ Неверная капча! Осталось попыток: ${registerAttempts}`);
-                    generateCaptcha('register');
-                    captchaInput.value = '';
-                }
-                return;
-            }
-            
-            registerAttempts = 3;
             
             const name = document.getElementById('reg-name').value;
             const phone = document.getElementById('reg-phone').value;
@@ -278,8 +172,6 @@ function initAuth() {
         localStorage.removeItem('sb_user_id');
         if (authForm) authForm.style.display = 'block';
         if (userDashboard) userDashboard.style.display = 'none';
-        generateCaptcha('login');
-        generateCaptcha('register');
     }
 
     function showUserDashboard() {
