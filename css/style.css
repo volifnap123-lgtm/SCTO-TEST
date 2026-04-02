@@ -263,15 +263,24 @@ body {
 }
 
 .map-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     background: var(--white);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     position: relative;
-    height: 500px;
+    height: 600px;
     width: 100%;
+}
+
+.map-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--yellow-neon-glow);
 }
 
 .neon-border {
