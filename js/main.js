@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация клиента уже выполнена в supabase.js
-    
     const navBtns = document.querySelectorAll('.nav-btn');
     const profileBtn = document.getElementById('profileBtn');
     const profileModal = document.getElementById('profileModal');
@@ -8,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const profileContent = document.getElementById('profileContent');
     const themeToggle = document.getElementById('themeToggle');
 
-    // Тема
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -38,8 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (profileBtn) {
         profileBtn.addEventListener('click', function() {
-            profileModal.style.display = 'block';
-            loadProfileContent();
+            window.location.href = 'profile.html';
         });
     }
 
@@ -56,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function loadProfileContent() {
+        if (document.getElementById('auth-form')) return;
+        
         profileContent.innerHTML = '<div class="loading">Загрузка...</div>';
         
         fetch('profile.html')
@@ -68,20 +66,55 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (profileContainer) {
                     profileContent.innerHTML = profileContainer.innerHTML;
                     
-                    const script = document.createElement('script');
-                    script.src = 'js/auth.js';
-                    script.onload = function() {
-                        if (typeof initAuth === 'function') {
-                            initAuth();
-                        }
-                    };
-                    document.body.appendChild(script);
+                    loadAuthScripts();
                 }
             })
             .catch(error => {
                 console.error('Ошибка загрузки профиля:', error);
                 profileContent.innerHTML = '<p>Ошибка загрузки профиля. Пожалуйста, откройте страницу профиля напрямую.</p>';
             });
+    }
+    
+    function loadAuthScripts() {
+        console.log('Загрузка скриптов авторизации...');
+        
+        const existingCDN = document.querySelector('script[src*="supabase"]');
+        if (existingCDN) {
+            console.log('Supabase CDN уже загружен');
+            loadAuthJS();
+            return;
+        }
+        
+        const cdnScript = document.createElement('script');
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=5';
+        cdnScript.onload = function() {
+            console.log('Supabase CDN загружен');
+            loadAuthJS();
+        };
+        cdnScript.onerror = function() {
+            console.error('Ошибка загрузки Supabase CDN');
+        };
+        document.head.appendChild(cdnScript);
+    }
+    
+    function loadAuthJS() {
+        const existingAuth = document.querySelector('script[src*="auth.js"]');
+        if (existingAuth) {
+            existingAuth.remove();
+        }
+        
+        const authScript = document.createElement('script');
+        authScript.src = 'js/auth.js?v=5';
+        authScript.onload = function() {
+            console.log('auth.js загружен, вызываю initAuth');
+            if (typeof initAuth === 'function') {
+                initAuth();
+            }
+        };
+        authScript.onerror = function() {
+            console.error('Ошибка загрузки auth.js');
+        };
+        document.head.appendChild(authScript);
     }
 
     const currentPage = window.location.pathname.split('/').pop();
