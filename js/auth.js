@@ -2,6 +2,7 @@ const SUPABASE_URL = 'https://noskliwvsiejokzmczfp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE';
 
 let supabase = null;
+let authInitialized = false;
 
 function initSupabase() {
     if (supabase) return true;
@@ -15,11 +16,15 @@ function initSupabase() {
 }
 
 function initAuth() {
-    console.log('🔐 initAuth вызван');
+    if (authInitialized) {
+        console.log('Auth уже инициализирован');
+        return;
+    }
+    authInitialized = true;
     
     if (!initSupabase()) {
-        console.error('❌ Supabase не загружен! Пробую повторить...');
-        setTimeout(initAuth, 500);
+        authInitialized = false;
+        console.error('❌ Supabase не загружен!');
         return;
     }
     
