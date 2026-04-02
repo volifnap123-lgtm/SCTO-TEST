@@ -21,12 +21,11 @@ function initAuth() {
         window.supabaseClient = supabase;
     }
     
-    let captchaLogin = { num1: 0, num2: 0, answer: 0 };
-    let captchaRegister = { num1: 0, num2: 0, answer: 0 };
+    let loginCaptcha = { answer: 0 };
+    let registerCaptcha = { answer: 0 };
     let loginAttempts = 3;
     let registerAttempts = 3;
-    let loginBlocked = false;
-    let registerBlocked = false;
+    let isGloballyBlocked = false;
 
     function generateCaptcha(type) {
         const num1 = Math.floor(Math.random() * 10) + 1;
@@ -39,18 +38,12 @@ function initAuth() {
         if (captchaEl) captchaEl.textContent = question;
         
         if (type === 'login') {
-            captchaLogin = { num1, num2, answer };
+            loginCaptcha.answer = answer;
         } else {
-            captchaRegister = { num1, num2, answer };
+            registerCaptcha.answer = answer;
         }
-    }
-
-    function validateCaptcha(type) {
-        const inputEl = document.getElementById(type === 'login' ? 'captcha-answer' : 'captcha-answer-reg');
-        if (!inputEl) return false;
-        const userAnswer = parseInt(inputEl.value);
-        const captcha = type === 'login' ? captchaLogin : captchaRegister;
-        return userAnswer === captcha.answer;
+        
+        console.log(`Captcha ${type}: ${num1} ${operator} ${num2} = ${answer}`);
     }
 
     generateCaptcha('login');
@@ -58,6 +51,11 @@ function initAuth() {
 
     authTabs.forEach(tab => {
         tab.addEventListener('click', function() {
+            if (isGloballyBlocked) {
+                alert('⛔ Временно заблокировано! Слишком много попыток.\nПопробуйте через 30 секунд.');
+                return;
+            }
+            
             const targetTab = this.getAttribute('data-tab');
             
             authTabs.forEach(t => t.classList.remove('active'));
@@ -69,7 +67,11 @@ function initAuth() {
             
             const authTabsContainer = document.getElementById('authTabs');
             if (authTabsContainer) {
-                authTabsContainer.classList.toggle('tab-register', targetTab === 'register');
+                if (targetTab === 'login') {
+                    authTabsContainer.classList.add('tab-register');
+                } else {
+                    authTabsContainer.classList.remove('tab-register');
+                }
             }
         });
     });
@@ -78,34 +80,43 @@ function initAuth() {
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (loginBlocked) {
-                alert('⛔ Временно заблокировано! Неверная капча (3/3)\nПопробуйте позже.');
+            if (isGloballyBlocked) {
+                alert('⛔ Временно заблокировано!\nПопробуйте через 30 секунд.');
                 return;
             }
             
-            if (!validateCaptcha('login')) {
+            const captchaInput = document.getElementById('captcha-answer');
+            if (!captchaInput) return;
+            
+            const userAnswer = parseInt(captchaInput.value);
+            if (isNaN(userAnswer) || userAnswer !== loginCaptcha.answer) {
                 loginAttempts--;
                 if (loginAttempts <= 0) {
-                    loginBlocked = true;
-                    alert('⛔ Временно заблокировано! Неверная капча (3/3)\nПопробуйте позже.');
+                    isGloballyBlocked = true;
+                    authTabs.forEach(t => t.style.pointerEvents = 'none');
+                    alert('⛔ Заблокировано на 30 секунд!\nСлишком много неверных попыток.');
+                    
                     setTimeout(() => {
-                        loginBlocked = false;
+                        isGloballyBlocked = false;
                         loginAttempts = 3;
-                        alert('🔓 Блокировка снята. Попробуйте снова.');
+                        registerAttempts = 3;
+                        authTabs.forEach(t => t.style.pointerEvents = 'auto');
+                        generateCaptcha('login');
+                        generateCaptcha('register');
+                        alert('🔓 Блокировка снята!');
                     }, 30000);
                 } else {
                     alert(`❌ Неверная капча! Осталось попыток: ${loginAttempts}`);
                     generateCaptcha('login');
-                    const el = document.getElementById('captcha-answer');
-                    if (el) el.value = '';
+                    captchaInput.value = '';
                 }
                 return;
             }
             
+            loginAttempts = 3;
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
-            loginAttempts = 3;
             await simulateLogin(email, password);
         });
     }
@@ -114,29 +125,40 @@ function initAuth() {
         registerForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (registerBlocked) {
-                alert('⛔ Временно заблокировано! Неверная капча (3/3)\nПопробуйте позже.');
+            if (isGloballyBlocked) {
+                alert('⛔ Временно заблокировано!\nПопробуйте через 30 секунд.');
                 return;
             }
             
-            if (!validateCaptcha('register')) {
+            const captchaInput = document.getElementById('captcha-answer-reg');
+            if (!captchaInput) return;
+            
+            const userAnswer = parseInt(captchaInput.value);
+            if (isNaN(userAnswer) || userAnswer !== registerCaptcha.answer) {
                 registerAttempts--;
                 if (registerAttempts <= 0) {
-                    registerBlocked = true;
-                    alert('⛔ Временно заблокировано! Неверная капча (3/3)\nПопробуйте позже.');
+                    isGloballyBlocked = true;
+                    authTabs.forEach(t => t.style.pointerEvents = 'none');
+                    alert('⛔ Заблокировано на 30 секунд!\nСлишком много неверных попыток.');
+                    
                     setTimeout(() => {
-                        registerBlocked = false;
+                        isGloballyBlocked = false;
+                        loginAttempts = 3;
                         registerAttempts = 3;
-                        alert('🔓 Блокировка снята. Попробуйте снова.');
+                        authTabs.forEach(t => t.style.pointerEvents = 'auto');
+                        generateCaptcha('login');
+                        generateCaptcha('register');
+                        alert('🔓 Блокировка снята!');
                     }, 30000);
                 } else {
                     alert(`❌ Неверная капча! Осталось попыток: ${registerAttempts}`);
                     generateCaptcha('register');
-                    const el = document.getElementById('captcha-answer-reg');
-                    if (el) el.value = '';
+                    captchaInput.value = '';
                 }
                 return;
             }
+            
+            registerAttempts = 3;
             
             const name = document.getElementById('reg-name').value;
             const phone = document.getElementById('reg-phone').value;
@@ -146,7 +168,7 @@ function initAuth() {
             const agreeTerms = document.getElementById('agree-terms');
             
             if (!name || !phone || !email || !password) {
-                alert('⚠️ Пожалуйста, заполните все поля!');
+                alert('⚠️ Заполните все поля!');
                 return;
             }
             
@@ -156,16 +178,15 @@ function initAuth() {
             }
             
             if (password.length < 6) {
-                alert('⚠️ Пароль должен быть минимум 6 символов!');
+                alert('⚠️ Пароль минимум 6 символов!');
                 return;
             }
             
             if (!agreeTerms || !agreeTerms.checked) {
-                alert('⚠️ Необходимо принять условия использования!');
+                alert('⚠️ Примите условия использования!');
                 return;
             }
             
-            registerAttempts = 3;
             await simulateRegister(name, phone, email, password);
         });
     }
@@ -199,7 +220,7 @@ function initAuth() {
 
     async function simulateLogin(email, password) {
         if (!email || !password) {
-            alert('⚠️ Пожалуйста, заполните все поля');
+            alert('⚠️ Заполните все поля');
             return;
         }
         
@@ -246,7 +267,7 @@ function initAuth() {
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('sb_user_id', data.user.id);
             showUserDashboard();
-            alert('✅ Регистрация прошла успешно!');
+            alert('✅ Регистрация успешна!');
         }
     }
 
