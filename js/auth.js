@@ -234,11 +234,9 @@ async function deleteProfile() {
         const { error } = await supabase
             .from('support_messages')
             .insert({
-                user_id: localStorage.getItem('sb_user_id'),
-                user_email: user.email,
-                user_name: user.name,
-                message: 'ЗАПРОС НА УДАЛЕНИЕ АККАУНТА',
-                created_at: new Date().toISOString()
+                name: user.name || 'Пользователь',
+                message: 'ЗАПРОС НА УДАЛЕНИЕ АККАУНТА\nEmail: ' + user.email,
+                read: false
             });
         
         if (error) {
