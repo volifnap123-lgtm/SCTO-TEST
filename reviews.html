@@ -438,19 +438,14 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=1"></script>
-    <script src="js/main.js?v=1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=2"></script>
+    <script src="js/main.js?v=2"></script>
     <script>
-        const SUPABASE_URL = 'https://noskliwvsiejokzmczfp.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        window.supabaseClient = supabase;
-
         async function loadReviews() {
             const grid = document.getElementById('reviewsGrid');
             
             try {
-                const { data: reviews, error } = await supabase
+                const { data: reviews, error } = await window.supabaseClient
                     .from('reviews')
                     .select('*')
                     .eq('active', true)
