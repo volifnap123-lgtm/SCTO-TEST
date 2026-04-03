@@ -31,6 +31,15 @@ function showNotification(message, type = 'info', callback = null) {
     setTimeout(() => notification.classList.add('show'), 10);
 }
 
+function formatPhone(phone) {
+    if (!phone) return '';
+    phone = phone.trim();
+    if (phone && !phone.startsWith('+')) {
+        phone = '+' + phone;
+    }
+    return phone;
+}
+
 function initSupabase() {
     if (supabase) return true;
     
@@ -61,6 +70,9 @@ function initAuth() {
     const userPhone = document.getElementById('user-phone');
     const userAvatarIcon = document.getElementById('user-avatar-icon');
     const logoutBtn = document.getElementById('logout-btn');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const openChatBtn = document.getElementById('open-chat-btn');
+    const openReviewBtn = document.getElementById('open-review-btn');
 
     authTabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -86,10 +98,12 @@ function initAuth() {
         registerForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('reg-name').value;
-            const phone = document.getElementById('reg-phone').value;
+            let phone = document.getElementById('reg-phone').value;
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
             const passwordConfirm = document.getElementById('reg-password-confirm').value;
+            
+            phone = formatPhone(phone);
             
             if (!name || !phone || !email || !password) {
                 showNotification('Заполните все поля', 'warning');
@@ -109,6 +123,39 @@ function initAuth() {
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', doLogout);
+    }
+
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const email = prompt('Введите ваш email:');
+            if (!email) return;
+            
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/profile.html'
+            });
+            
+            if (error) {
+                showNotification('Ошибка: ' + error.message, 'error');
+            } else {
+                showNotification('На указанный email отправлена ссылка для восстановления пароля', 'success');
+            }
+        });
+    }
+
+    if (openChatBtn) {
+        openChatBtn.addEventListener('click', function() {
+            const chatModal = document.getElementById('chatModal');
+            if (chatModal) {
+                chatModal.style.display = 'block';
+            }
+        });
+    }
+
+    if (openReviewBtn) {
+        openReviewBtn.addEventListener('click', function() {
+            window.open('https://2gis.ru/ulanude/firm/5207815350139447/reviews', '_blank');
+        });
     }
 
     async function doLogin(email, password) {
@@ -143,7 +190,7 @@ function initAuth() {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
-            options: { data: { full_name: name, phone } }
+            options: { data: { full_name: name, phone: phone } }
         });
         
         if (error) {

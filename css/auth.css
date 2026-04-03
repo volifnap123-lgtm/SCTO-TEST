@@ -1,5 +1,6 @@
 .profile-container {
     max-width: 100%;
+    min-width: 400px;
     background: var(--card-bg);
     border-radius: 20px;
     overflow: hidden;
