@@ -4,6 +4,8 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let supabase = null;
 let authInitialized = false;
 
+console.log('[AUTH] auth.js ЗАГРУЖЕН!');
+
 function showNotification(message, type = 'info', callback = null) {
     const existing = document.querySelector('.auth-notification');
     if (existing) existing.remove();
@@ -62,6 +64,19 @@ function initAuth() {
     document.addEventListener('click', function(e) {
         const target = e.target;
         
+        console.log('[AUTH CLICK DEBUG] Клик по:', target.tagName, target.className, target.id);
+        
+        if (target.closest('#open-chat-btn')) {
+            console.log('[AUTH CLICK DEBUG] Кликнули на #open-chat-btn или его родителя!');
+            if (typeof openSupportModal === 'function') {
+                console.log('[AUTH CLICK DEBUG] Вызываю openSupportModal');
+                openSupportModal();
+            } else {
+                console.log('[AUTH CLICK DEBUG] openSupportModal НЕ определена!');
+            }
+            return;
+        }
+        
         if (target.closest('.auth-tab')) {
             const tab = target.closest('.auth-tab');
             const targetTab = tab.getAttribute('data-tab');
@@ -70,11 +85,6 @@ function initAuth() {
             tab.classList.add('active');
             const targetContent = document.getElementById(targetTab + '-tab');
             if (targetContent) targetContent.classList.add('active');
-        }
-        
-        if (target.closest('#open-chat-btn')) {
-            const chatModal = document.getElementById('chatModal');
-            if (chatModal) chatModal.style.display = 'block';
         }
         
         if (target.closest('#open-review-btn')) {

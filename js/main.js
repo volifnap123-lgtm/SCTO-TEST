@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=10';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=11';
         cdnScript.onload = function() {
             loadAuthJS();
         };
@@ -98,13 +98,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.querySelector('script[src*="auth.js"]')) return;
         
         const authScript = document.createElement('script');
-        authScript.src = 'js/auth.js?v=10';
+        authScript.src = 'js/auth.js?v=11';
         authScript.onload = function() {
             if (typeof initAuth === 'function') {
                 initAuth();
             }
+            loadChatJS();
         };
         document.head.appendChild(authScript);
+    }
+    
+    function loadChatJS() {
+        if (document.querySelector('script[src*="chat.js"]')) return;
+        
+        const chatScript = document.createElement('script');
+        chatScript.src = 'js/chat.js?v=11';
+        chatScript.onload = function() {
+            console.log('[MAIN] chat.js загружен');
+            if (typeof initChat === 'function') {
+                initChat();
+            }
+        };
+        chatScript.onerror = function() {
+            console.error('[MAIN] Ошибка загрузки chat.js');
+        };
+        document.head.appendChild(chatScript);
     }
 
     const currentPage = window.location.pathname.split('/').pop();
