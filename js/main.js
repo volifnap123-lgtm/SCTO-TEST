@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=12';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=13';
         cdnScript.onload = function() {
             loadAuthJS();
         };
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.querySelector('script[src*="auth.js"]')) return;
         
         const authScript = document.createElement('script');
-        authScript.src = 'js/auth.js?v=12';
+        authScript.src = 'js/auth.js?v=13';
         authScript.onload = function() {
             if (typeof initAuth === 'function') {
                 initAuth();
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.querySelector('script[src*="chat.js"]')) return;
         
         const chatScript = document.createElement('script');
-        chatScript.src = 'js/chat.js?v=13';
+        chatScript.src = 'js/chat.js?v=14';
         chatScript.onload = function() {
             console.log('[MAIN] chat.js загружен');
             if (typeof initChat === 'function') {
