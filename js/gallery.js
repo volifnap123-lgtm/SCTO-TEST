@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const supabase = window.supabaseClient;
     let currentIndex = 0;
     let galleryItems = [];
+    const VISIBLE_THUMBS = 5;
 
     function showEmptyState() {
         galleryContainer.innerHTML = `
@@ -12,6 +13,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p>В скором времени мы добавим фотографии наших работ</p>
             </div>
         `;
+    }
+
+    function getVisibleRange() {
+        const half = Math.floor(VISIBLE_THUMBS / 2);
+        let start = currentIndex - half;
+        let end = currentIndex + half;
+        
+        if (start < 0) {
+            end += Math.abs(start);
+            start = 0;
+        }
+        if (end >= galleryItems.length) {
+            start -= (end - galleryItems.length + 1);
+            end = galleryItems.length - 1;
+            if (start < 0) start = 0;
+        }
+        
+        return { start, end };
     }
 
     function renderGallery(index) {
@@ -31,20 +50,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const mainItem = galleryItems[currentIndex];
-        const otherItems = galleryItems.filter((_, i) => i !== currentIndex);
+        const { start, end } = getVisibleRange();
+        let thumbsHtml = '';
+        
+        for (let i = start; i <= end; i++) {
+            const isActive = i === currentIndex;
+            const photo = galleryItems[i];
+            thumbsHtml += `
+                <img src="${photo.url}" alt="Миниатюра ${i + 1}" class="thumb ${isActive ? 'active' : ''}" data-index="${i}" onerror="this.src='images/placeholder.jpg'" onclick="goToPhoto(${i})">
+            `;
+        }
 
         galleryContainer.innerHTML = `
             <button class="gallery-nav prev" onclick="prevPhoto()">‹</button>
             <div class="gallery-main">
-                <img src="${mainItem.url}" alt="Работа СЦТО" class="gallery-main-img" id="main-img" onerror="this.src='images/placeholder.jpg'">
-                <div class="gallery-caption" id="caption">${mainItem.caption || 'Фотография работы'}</div>
+                <img src="${item.url}" alt="Работа СЦТО" class="gallery-main-img" id="main-img" onerror="this.src='images/placeholder.jpg'">
+                <div class="gallery-caption" id="caption">${item.caption || 'Фотография работы'}</div>
             </div>
             <button class="gallery-nav next" onclick="nextPhoto()">›</button>
             <div class="gallery-thumbs" id="gallery-thumbs">
-                ${galleryItems.map((photo, i) => `
-                    <img src="${photo.url}" alt="Миниатюра ${i + 1}" class="thumb ${i === currentIndex ? 'active' : ''}" data-index="${i}" onerror="this.src='images/placeholder.jpg'" onclick="goToPhoto(${i})">
-                `).join('')}
+                ${thumbsHtml}
             </div>
         `;
     }
@@ -53,35 +78,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (galleryItems.length === 0) return;
         currentIndex = (currentIndex + 1) % galleryItems.length;
         renderGallery(currentIndex);
-        setTimeout(scrollActiveThumb, 50);
     };
 
     window.prevPhoto = function() {
         if (galleryItems.length === 0) return;
         currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
         renderGallery(currentIndex);
-        setTimeout(scrollActiveThumb, 50);
     };
 
     window.goToPhoto = function(index) {
         renderGallery(index);
-        setTimeout(scrollActiveThumb, 50);
     };
-
-    function scrollActiveThumb() {
-        const thumbsContainer = document.getElementById('gallery-thumbs');
-        const activeThumb = thumbsContainer?.querySelector('.thumb.active');
-        if (activeThumb && thumbsContainer) {
-            const containerWidth = thumbsContainer.offsetWidth;
-            const thumbWidth = activeThumb.offsetWidth;
-            const thumbLeft = activeThumb.offsetLeft;
-            const newScrollLeft = thumbLeft - (containerWidth / 2) + (thumbWidth / 2);
-            thumbsContainer.scrollTo({
-                left: newScrollLeft,
-                behavior: 'smooth'
-            });
-        }
-    }
 
     async function loadGallery() {
         galleryContainer.innerHTML = '<div class="gallery-loading"><div class="neon-loader"></div><p>Загрузка фотографий...</p></div>';

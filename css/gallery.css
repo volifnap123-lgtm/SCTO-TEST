@@ -114,11 +114,12 @@ body {
     gap: 15px;
     justify-content: center;
     padding: 15px 10px;
-    max-width: 1000px;
+    max-width: 100%;
     margin: 0 auto;
     overflow-x: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--orange-main) var(--gray-light);
+    scroll-snap-type: x mandatory;
 }
 
 .gallery-thumbs::-webkit-scrollbar {
@@ -146,6 +147,7 @@ body {
     border: 3px solid transparent;
     opacity: 0.7;
     flex-shrink: 0;
+    scroll-snap-align: center;
 }
 
 .thumb.active {
