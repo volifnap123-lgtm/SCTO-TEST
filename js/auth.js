@@ -232,11 +232,11 @@ async function deleteProfile() {
         const user = JSON.parse(savedUser);
         
         const { error } = await supabase
-            .from('support_messages')
+            .from('delete_requests')
             .insert({
-                name: user.name || 'Пользователь',
-                message: 'ЗАПРОС НА УДАЛЕНИЕ АККАУНТА\nEmail: ' + user.email,
-                read: false
+                user_email: user.email,
+                user_name: user.name,
+                user_id: localStorage.getItem('sb_user_id')
             });
         
         if (error) {
