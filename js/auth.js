@@ -224,8 +224,28 @@ async function saveProfile() {
 }
 
 async function deleteProfile() {
-    const confirmed = confirm('Вы уверены?\nНажмите ОК для выхода из аккаунта.\n(Удаление аккаунта доступно в панели управления)');
+    const confirmed = confirm('Вы уверены?\nЗапрос на удаление аккаунта будет отправлен администратору.');
     if (!confirmed) return;
+    
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+        const user = JSON.parse(savedUser);
+        
+        const { error } = await supabase
+            .from('support_messages')
+            .insert({
+                user_id: localStorage.getItem('sb_user_id'),
+                user_email: user.email,
+                user_name: user.name,
+                message: 'ЗАПРОС НА УДАЛЕНИЕ АККАУНТА',
+                created_at: new Date().toISOString()
+            });
+        
+        if (error) {
+            showNotification('Ошибка отправки запроса', 'error');
+            return;
+        }
+    }
     
     localStorage.removeItem('user');
     localStorage.removeItem('isLoggedIn');
@@ -240,7 +260,7 @@ async function deleteProfile() {
         await supabase.auth.signOut();
     } catch (e) {}
     
-    showNotification('Вы вышли из аккаунта', 'success');
+    showNotification('Запрос на удаление отправлен!', 'success');
 }
 
 async function doLogin(email, password) {

@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=9';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=10';
         cdnScript.onload = function() {
             loadAuthJS();
         };
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.querySelector('script[src*="auth.js"]')) return;
         
         const authScript = document.createElement('script');
-        authScript.src = 'js/auth.js?v=9';
+        authScript.src = 'js/auth.js?v=10';
         authScript.onload = function() {
             if (typeof initAuth === 'function') {
                 initAuth();
