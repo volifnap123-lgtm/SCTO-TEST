@@ -170,12 +170,19 @@ async function handleForgotPassword() {
 
 function openEditProfileModal() {
     const savedUser = localStorage.getItem('user');
-    if (savedUser) {
+    const editName = document.getElementById('edit-name');
+    const editPhone = document.getElementById('edit-phone');
+    const editEmail = document.getElementById('edit-email');
+    const editModal = document.getElementById('editProfileModal');
+    
+    if (savedUser && editName && editPhone && editEmail && editModal) {
         const user = JSON.parse(savedUser);
-        document.getElementById('edit-name').value = user.name || '';
-        document.getElementById('edit-phone').value = user.phone || '';
-        document.getElementById('edit-email').value = user.email || '';
-        document.getElementById('editProfileModal').style.display = 'block';
+        editName.value = user.name || '';
+        editPhone.value = user.phone || '';
+        editEmail.value = user.email || '';
+        editModal.style.display = 'block';
+    } else {
+        showNotification('Форма редактирования недоступна. Обновите страницу.', 'warning');
     }
 }
 
@@ -217,31 +224,18 @@ async function saveProfile() {
 }
 
 async function deleteProfile() {
-    const confirmed = confirm('Вы уверены что хотите удалить профиль? Это действие необратимо.');
+    const confirmed = confirm('Вы уверены что хотите удалить профиль?\nЭто действие необратимо.\n\nДля удаления перейдите в раздел "Пользователи" в панели управления.');
     if (!confirmed) return;
     
-    const userId = localStorage.getItem('sb_user_id');
-    if (!userId) {
-        showNotification('Ошибка: пользователь не найден', 'error');
-        return;
-    }
-    
-    const { error } = await supabase.auth.admin.deleteUser(userId);
-    
-    if (error) {
-        showNotification('Ошибка: ' + error.message, 'error');
-    } else {
-        await supabase.auth.signOut();
-        localStorage.removeItem('user');
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('sb_user_id');
-        const authForm = document.getElementById('auth-form');
-        const userDashboard = document.getElementById('user-dashboard');
-        if (authForm) authForm.style.display = 'block';
-        if (userDashboard) userDashboard.style.display = 'none';
-        document.getElementById('editProfileModal').style.display = 'none';
-        showNotification('Профиль удалён', 'info');
-    }
+    await supabase.auth.signOut();
+    localStorage.removeItem('user');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('sb_user_id');
+    const authForm = document.getElementById('auth-form');
+    const userDashboard = document.getElementById('user-dashboard');
+    if (authForm) authForm.style.display = 'block';
+    if (userDashboard) userDashboard.style.display = 'none';
+    showNotification('Профиль удалён. Для полного удаления обратитесь в поддержку.', 'info');
 }
 
 async function doLogin(email, password) {
