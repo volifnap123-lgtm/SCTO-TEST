@@ -160,6 +160,7 @@ body {
     overflow-wrap: break-word;
     white-space: normal;
     width: 100%;
+    color: #ffffff;
 }
 
 .card-description-overlay.active {

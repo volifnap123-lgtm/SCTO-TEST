@@ -71,8 +71,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function scrollActiveThumb() {
         const thumbsContainer = document.getElementById('gallery-thumbs');
         const activeThumb = thumbsContainer?.querySelector('.thumb.active');
-        if (activeThumb) {
-            activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        if (activeThumb && thumbsContainer) {
+            const containerRect = thumbsContainer.getBoundingClientRect();
+            const thumbRect = activeThumb.getBoundingClientRect();
+            const scrollLeft = thumbsContainer.scrollLeft;
+            const thumbCenter = thumbRect.left + thumbRect.width / 2 - containerRect.left;
+            const containerCenter = containerRect.width / 2;
+            thumbsContainer.scrollTo({
+                left: scrollLeft + thumbCenter - containerCenter,
+                behavior: 'smooth'
+            });
         }
     }
 
