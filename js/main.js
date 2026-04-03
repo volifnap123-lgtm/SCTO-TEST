@@ -68,6 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     profileContent.innerHTML = profileContainer.innerHTML;
                     
                     loadAuthScripts();
+                    
+                    setTimeout(function() {
+                        if (typeof showUserDashboard === 'function') {
+                            showUserDashboard();
+                        }
+                    }, 100);
                 }
             })
             .catch(error => {
@@ -82,23 +88,35 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Загрузка скриптов авторизации...');
         
         if (typeof window.supabase !== 'undefined') {
+            initSupabaseClient();
             loadAuthJS();
             return;
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=13';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=14';
         cdnScript.onload = function() {
+            initSupabaseClient();
             loadAuthJS();
         };
         document.head.appendChild(cdnScript);
+    }
+    
+    function initSupabaseClient() {
+        if (!window.supabaseClient) {
+            window.supabaseClient = window.supabase.createClient(
+                'https://noskliwvsiejokzmczfp.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE'
+            );
+            console.log('Supabase клиент инициализирован');
+        }
     }
     
     function loadAuthJS() {
         if (document.querySelector('script[src*="auth.js"]')) return;
         
         const authScript = document.createElement('script');
-        authScript.src = 'js/auth.js?v=13';
+        authScript.src = 'js/auth.js?v=14';
         authScript.onload = function() {
             if (typeof initAuth === 'function') {
                 initAuth();
@@ -112,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.querySelector('script[src*="chat.js"]')) return;
         
         const chatScript = document.createElement('script');
-        chatScript.src = 'js/chat.js?v=14';
+        chatScript.src = 'js/chat.js?v=15';
         chatScript.onload = function() {
             console.log('[MAIN] chat.js загружен');
             if (typeof initChat === 'function') {
