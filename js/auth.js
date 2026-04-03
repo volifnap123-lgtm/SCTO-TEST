@@ -4,27 +4,49 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let supabase = null;
 let authInitialized = false;
 
+function showNotification(message, type = 'info', callback = null) {
+    const existing = document.querySelector('.auth-notification');
+    if (existing) existing.remove();
+    
+    const notification = document.createElement('div');
+    notification.className = `auth-notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+            <span class="notification-text">${message}</span>
+        </div>
+        <button class="notification-btn">OK</button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    notification.querySelector('.notification-btn').addEventListener('click', function() {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+            if (callback) callback();
+        }, 300);
+    });
+    
+    setTimeout(() => notification.classList.add('show'), 10);
+}
+
 function initSupabase() {
     if (supabase) return true;
     
     if (typeof window.supabase !== 'undefined' && typeof window.supabase.createClient === 'function') {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log('✅ Supabase инициализирован');
         return true;
     }
     return false;
 }
 
 function initAuth() {
-    if (authInitialized) {
-        console.log('Auth уже инициализирован');
-        return;
-    }
+    if (authInitialized) return;
     authInitialized = true;
     
     if (!initSupabase()) {
         authInitialized = false;
-        console.error('❌ Supabase не загружен!');
         return;
     }
     
@@ -39,10 +61,6 @@ function initAuth() {
     const userPhone = document.getElementById('user-phone');
     const userAvatarIcon = document.getElementById('user-avatar-icon');
     const logoutBtn = document.getElementById('logout-btn');
-
-    console.log('supabase:', supabase);
-    console.log('loginForm:', loginForm);
-    console.log('registerForm:', registerForm);
 
     authTabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -74,15 +92,15 @@ function initAuth() {
             const passwordConfirm = document.getElementById('reg-password-confirm').value;
             
             if (!name || !phone || !email || !password) {
-                console.log('⚠️ Заполните все поля!');
+                showNotification('Заполните все поля', 'warning');
                 return;
             }
             if (password !== passwordConfirm) {
-                console.log('⚠️ Пароли не совпадают!');
+                showNotification('Пароли не совпадают', 'error');
                 return;
             }
             if (password.length < 6) {
-                console.log('⚠️ Пароль минимум 6 символов!');
+                showNotification('Пароль минимум 6 символов', 'warning');
                 return;
             }
             await doRegister(name, phone, email, password);
@@ -95,66 +113,65 @@ function initAuth() {
 
     async function doLogin(email, password) {
         if (!email || !password) {
-            console.log('⚠️ Заполните все поля');
+            showNotification('Заполните все поля', 'warning');
             return;
         }
-        console.log('Вход:', email);
         
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            
-            if (error) {
-                console.error('❌ Неверный логин или пароль');
-                return;
-            }
-            
-            if (data.user) {
-                console.log('✅ Вход выполнен');
-                const userData = {
-                    name: data.user.user_metadata?.full_name || data.user.email,
-                    email: data.user.email,
-                    phone: data.user.user_metadata?.phone || '',
-                    avatar: '👤'
-                };
-                localStorage.setItem('user', JSON.stringify(userData));
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('sb_user_id', data.user.id);
-                showUserDashboard();
-            }
-        } catch (err) {
-            console.error('❌ Ошибка:', err.message);
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        
+        if (error) {
+            showNotification('Неверный логин или пароль', 'error');
+            return;
+        }
+        
+        if (data.user) {
+            const userData = {
+                name: data.user.user_metadata?.full_name || data.user.email,
+                email: data.user.email,
+                phone: data.user.user_metadata?.phone || '',
+                avatar: '👤'
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('sb_user_id', data.user.id);
+            showUserDashboard();
+            showNotification('Вход выполнен успешно!', 'success');
         }
     }
 
     async function doRegister(name, phone, email, password) {
-        console.log('Регистрация:', email);
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { full_name: name, phone } }
+        });
         
-        try {
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: { data: { full_name: name, phone } }
+        if (error) {
+            if (error.message.includes('already') || error.message.includes('exists')) {
+                showNotification('Этот email уже зарегистрирован', 'error');
+            } else {
+                showNotification('Ошибка регистрации: ' + error.message, 'error');
+            }
+            return;
+        }
+        
+        if (data.user && data.session === null) {
+            showNotification('На вашу почту отправлено письмо для подтверждения. После подтверждения войдите в аккаунт.', 'success', function() {
+                switchToLogin(email);
             });
-            
-            if (error) {
-                if (error.message.includes('already') || error.message.includes('exists')) {
-                    console.error('❌ Этот email уже зарегистрирован');
-                } else {
-                    console.error('❌ Ошибка регистрации');
-                }
-                return;
-            }
-            
-            console.log('✅ Регистрация прошла успешно! Теперь войдите в аккаунт.');
-            
-            if (document.getElementById('loginTabBtn')) {
-                document.getElementById('loginTabBtn').click();
-            }
-            if (document.getElementById('login-email')) {
-                document.getElementById('login-email').value = email;
-            }
-        } catch (err) {
-            console.error('❌ Ошибка:', err.message);
+        } else if (data.user) {
+            showNotification('Регистрация прошла успешно!', 'success', function() {
+                switchToLogin(email);
+            });
+        }
+    }
+
+    function switchToLogin(email) {
+        if (document.getElementById('loginTabBtn')) {
+            document.getElementById('loginTabBtn').click();
+        }
+        if (document.getElementById('login-email')) {
+            document.getElementById('login-email').value = email;
         }
     }
 
@@ -165,7 +182,7 @@ function initAuth() {
         localStorage.removeItem('sb_user_id');
         if (authForm) authForm.style.display = 'block';
         if (userDashboard) userDashboard.style.display = 'none';
-        console.log('👋 Вы вышли из аккаунта');
+        showNotification('Вы вышли из аккаунта', 'info');
     }
 
     function showUserDashboard() {
