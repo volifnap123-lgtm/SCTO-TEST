@@ -53,17 +53,28 @@ document.addEventListener('DOMContentLoaded', function() {
         if (galleryItems.length === 0) return;
         currentIndex = (currentIndex + 1) % galleryItems.length;
         renderGallery(currentIndex);
+        setTimeout(scrollActiveThumb, 50);
     };
 
     window.prevPhoto = function() {
         if (galleryItems.length === 0) return;
         currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
         renderGallery(currentIndex);
+        setTimeout(scrollActiveThumb, 50);
     };
 
     window.goToPhoto = function(index) {
         renderGallery(index);
+        setTimeout(scrollActiveThumb, 50);
     };
+
+    function scrollActiveThumb() {
+        const thumbsContainer = document.getElementById('gallery-thumbs');
+        const activeThumb = thumbsContainer?.querySelector('.thumb.active');
+        if (activeThumb) {
+            activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    }
 
     async function loadGallery() {
         galleryContainer.innerHTML = '<div class="gallery-loading"><div class="neon-loader"></div><p>Загрузка фотографий...</p></div>';
