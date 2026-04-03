@@ -77,6 +77,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadAuthScripts();
                     
                     setTimeout(function() {
+                        if (typeof initAuth === 'function') {
+                            initAuth();
+                        }
                         if (typeof showUserDashboard === 'function') {
                             showUserDashboard();
                         }

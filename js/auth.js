@@ -53,7 +53,7 @@ function initSupabase() {
 }
 
 function initAuth() {
-    if (authInitialized) return;
+    if (authInitialized && document.querySelector('.auth-tab')) return;
     authInitialized = true;
     
     if (!initSupabase()) {
