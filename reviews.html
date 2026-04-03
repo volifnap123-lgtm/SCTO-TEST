@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/neon.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/auth.css">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <style>
         .reviews-page {
@@ -536,5 +537,14 @@
         
         loadReviews();
     </script>
+    
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeProfileModal">&times;</span>
+            <div id="profileContent">
+                <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
