@@ -517,6 +517,16 @@ textarea.neon-input {
     border-color: var(--orange-dark);
 }
 
+#delete-profile-btn {
+    border-color: #ff4444;
+}
+
+#delete-profile-btn:hover {
+    background: #ff4444;
+    border-color: #ff4444;
+    color: white;
+}
+
 .chat-modal {
     max-width: 500px;
     max-height: 80vh;

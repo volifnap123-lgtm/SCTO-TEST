@@ -73,6 +73,8 @@ function initAuth() {
     const forgotPasswordLink = document.getElementById('forgot-password-link');
     const openChatBtn = document.getElementById('open-chat-btn');
     const openReviewBtn = document.getElementById('open-review-btn');
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+    const deleteProfileBtn = document.getElementById('delete-profile-btn');
 
     authTabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -156,6 +158,103 @@ function initAuth() {
         openReviewBtn.addEventListener('click', function() {
             window.open('https://2gis.ru/ulanude/firm/5207815350139447/reviews', '_blank');
         });
+    }
+
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', openEditProfileModal);
+    }
+
+    if (deleteProfileBtn) {
+        deleteProfileBtn.addEventListener('click', deleteProfile);
+    }
+
+    const editProfileForm = document.getElementById('edit-profile-form');
+    if (editProfileForm) {
+        editProfileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await saveProfile();
+        });
+    }
+
+    const closeEditProfileModal = document.getElementById('closeEditProfileModal');
+    if (closeEditProfileModal) {
+        closeEditProfileModal.addEventListener('click', function() {
+            document.getElementById('editProfileModal').style.display = 'none';
+        });
+    }
+
+    async function openEditProfileModal() {
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+            const user = JSON.parse(savedUser);
+            document.getElementById('edit-name').value = user.name || '';
+            document.getElementById('edit-phone').value = user.phone || '';
+            document.getElementById('edit-email').value = user.email || '';
+            document.getElementById('editProfileModal').style.display = 'block';
+        }
+    }
+
+    async function saveProfile() {
+        const name = document.getElementById('edit-name').value;
+        const phone = formatPhone(document.getElementById('edit-phone').value);
+        const email = document.getElementById('edit-email').value;
+        
+        if (!name || !phone || !email) {
+            showNotification('Заполните все поля', 'warning');
+            return;
+        }
+        
+        const userId = localStorage.getItem('sb_user_id');
+        if (!userId) {
+            showNotification('Ошибка: пользователь не найден', 'error');
+            return;
+        }
+        
+        const { error } = await supabase.auth.updateUser({
+            email: email,
+            data: { full_name: name, phone: phone }
+        });
+        
+        if (error) {
+            showNotification('Ошибка: ' + error.message, 'error');
+        } else {
+            const userData = {
+                name: name,
+                email: email,
+                phone: phone,
+                avatar: '👤'
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+            showUserDashboard();
+            document.getElementById('editProfileModal').style.display = 'none';
+            showNotification('Профиль обновлён!', 'success');
+        }
+    }
+
+    async function deleteProfile() {
+        const confirmed = confirm('Вы уверены что хотите удалить профиль? Это действие необратимо.');
+        if (!confirmed) return;
+        
+        const userId = localStorage.getItem('sb_user_id');
+        if (!userId) {
+            showNotification('Ошибка: пользователь не найден', 'error');
+            return;
+        }
+        
+        const { error } = await supabase.auth.admin.deleteUser(userId);
+        
+        if (error) {
+            showNotification('Ошибка: ' + error.message, 'error');
+        } else {
+            await supabase.auth.signOut();
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('sb_user_id');
+            if (authForm) authForm.style.display = 'block';
+            if (userDashboard) userDashboard.style.display = 'none';
+            document.getElementById('editProfileModal').style.display = 'none';
+            showNotification('Профиль удалён', 'info');
+        }
     }
 
     async function doLogin(email, password) {
