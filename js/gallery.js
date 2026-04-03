@@ -72,13 +72,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const thumbsContainer = document.getElementById('gallery-thumbs');
         const activeThumb = thumbsContainer?.querySelector('.thumb.active');
         if (activeThumb && thumbsContainer) {
-            const containerRect = thumbsContainer.getBoundingClientRect();
-            const thumbRect = activeThumb.getBoundingClientRect();
-            const scrollLeft = thumbsContainer.scrollLeft;
-            const thumbCenter = thumbRect.left + thumbRect.width / 2 - containerRect.left;
-            const containerCenter = containerRect.width / 2;
+            const thumbLeft = activeThumb.offsetLeft;
+            const thumbWidth = activeThumb.offsetWidth;
+            const containerWidth = thumbsContainer.offsetWidth;
+            const targetScroll = thumbLeft - (containerWidth / 2) + (thumbWidth / 2);
             thumbsContainer.scrollTo({
-                left: scrollLeft + thumbCenter - containerCenter,
+                left: Math.max(0, targetScroll),
                 behavior: 'smooth'
             });
         }
