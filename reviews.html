@@ -438,8 +438,8 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=2"></script>
-    <script src="js/main.js?v=2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=3"></script>
+    <script src="js/main.js?v=3"></script>
     <script>
         async function loadReviews() {
             const grid = document.getElementById('reviewsGrid');
@@ -530,7 +530,14 @@
             return 'отзывов';
         }
         
-        loadReviews();
+        function waitForSupabase() {
+            if (window.supabaseClient) {
+                loadReviews();
+            } else {
+                setTimeout(waitForSupabase, 100);
+            }
+        }
+        waitForSupabase();
     </script>
     
     <div class="modal" id="profileModal">
