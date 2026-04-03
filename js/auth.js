@@ -224,18 +224,23 @@ async function saveProfile() {
 }
 
 async function deleteProfile() {
-    const confirmed = confirm('Вы уверены что хотите удалить профиль?\nЭто действие необратимо.\n\nДля удаления перейдите в раздел "Пользователи" в панели управления.');
+    const confirmed = confirm('Вы уверены?\nНажмите ОК для выхода из аккаунта.\n(Удаление аккаунта доступно в панели управления)');
     if (!confirmed) return;
     
-    await supabase.auth.signOut();
     localStorage.removeItem('user');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('sb_user_id');
+    
     const authForm = document.getElementById('auth-form');
     const userDashboard = document.getElementById('user-dashboard');
     if (authForm) authForm.style.display = 'block';
     if (userDashboard) userDashboard.style.display = 'none';
-    showNotification('Профиль удалён. Для полного удаления обратитесь в поддержку.', 'info');
+    
+    try {
+        await supabase.auth.signOut();
+    } catch (e) {}
+    
+    showNotification('Вы вышли из аккаунта', 'success');
 }
 
 async function doLogin(email, password) {
