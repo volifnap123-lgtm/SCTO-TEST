@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.querySelector('script[src*="chat.js"]')) return;
         
         const chatScript = document.createElement('script');
-        chatScript.src = 'js/chat.js?v=12';
+        chatScript.src = 'js/chat.js?v=13';
         chatScript.onload = function() {
             console.log('[MAIN] chat.js загружен');
             if (typeof initChat === 'function') {
