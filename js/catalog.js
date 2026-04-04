@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const catalogGrid = document.getElementById('catalog-grid');
-    const supabase = window.supabaseClient;
 
     function setupDescriptionToggles() {
         document.querySelectorAll('.show-description').forEach(btn => {
@@ -25,7 +24,11 @@ document.addEventListener('DOMContentLoaded', function() {
         catalogGrid.innerHTML = '<div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>';
 
         try {
-            const { data: products, error } = await supabase
+            if (!window.supabaseClient) {
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+            
+            const { data: products, error } = await window.supabaseClient
                 .from('products')
                 .select('*')
                 .eq('active', true)

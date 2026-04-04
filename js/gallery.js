@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const galleryContainer = document.getElementById('gallery-container');
-    const supabase = window.supabaseClient;
     let currentIndex = 0;
     let galleryItems = [];
     const VISIBLE_THUMBS = 5;
@@ -94,7 +93,11 @@ document.addEventListener('DOMContentLoaded', function() {
         galleryContainer.innerHTML = '<div class="gallery-loading"><div class="neon-loader"></div><p>Загрузка фотографий...</p></div>';
 
         try {
-            const { data: photos, error } = await supabase
+            if (!window.supabaseClient) {
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+            
+            const { data: photos, error } = await window.supabaseClient
                 .from('gallery')
                 .select('*')
                 .order('created_at', { ascending: false });
