@@ -96,10 +96,16 @@ async function doLogin(email, password) {
     }
     
     if (data.user) {
+        const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('full_name, phone')
+            .eq('id', data.user.id)
+            .single();
+        
         const userData = {
-            name: data.user.user_metadata?.full_name || data.user.email,
+            name: profile?.full_name || data.user.email,
             email: data.user.email,
-            phone: data.user.user_metadata?.phone || '',
+            phone: profile?.phone || '',
             avatar: '👤'
         };
         localStorage.setItem('user', JSON.stringify(userData));
@@ -116,8 +122,7 @@ async function doRegister(name, phone, email, password) {
         password,
         options: { 
             data: { 
-                full_name: name, 
-                phone: phone 
+                full_name: name
             },
             emailRedirectTo: window.location.origin + '/profile.html'
         }
@@ -130,6 +135,14 @@ async function doRegister(name, phone, email, password) {
             showNotification('Ошибка регистрации: ' + error.message, 'error');
         }
         return;
+    }
+    
+    if (data.user) {
+        await supabase.from('user_profiles').upsert({
+            id: data.user.id,
+            full_name: name,
+            phone: phone
+        });
     }
     
     if (data.user && data.session === null) {
