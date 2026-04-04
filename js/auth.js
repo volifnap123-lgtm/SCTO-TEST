@@ -242,12 +242,33 @@ function initAuth() {
         return;
     }
     
-    const savedUser = localStorage.getItem('user');
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    supabase.auth.getSession().then(({ data: { session } }) => {
+        const savedUser = localStorage.getItem('user');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        
+        console.log('[AUTH] session:', session ? 'есть' : 'нет', 'user:', savedUser ? 'есть' : 'нет', 'isLoggedIn:', isLoggedIn);
+        
+        if ((session || (savedUser && isLoggedIn === 'true')) && savedUser) {
+            console.log('[AUTH] Показываю дашборд');
+            showUserDashboard();
+        }
+    });
     
-    if (savedUser && isLoggedIn === 'true') {
-        showUserDashboard();
-    }
+    supabase.auth.onAuthStateChange((event, session) => {
+        console.log('[AUTH] Auth state changed:', event, session ? 'с сессией' : 'без сессии');
+        
+        if (event === 'SIGNED_IN' && session) {
+            const savedUser = localStorage.getItem('user');
+            if (savedUser) {
+                showUserDashboard();
+            }
+        } else if (event === 'SIGNED_OUT') {
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('sb_user_id');
+            showAuthForm();
+        }
+    });
     
     document.addEventListener('click', function(e) {
         const target = e.target;
