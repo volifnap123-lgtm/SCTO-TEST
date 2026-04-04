@@ -276,11 +276,15 @@ async function checkAuthState() {
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session) {
-        showUserDashboard();
+        if (!document.querySelector('.user-dashboard[style*="block"]')) {
+            showUserDashboard();
+        }
     } else if (savedUser && isLoggedIn === 'true') {
         const { data: { session: newSession } } = await supabase.auth.refreshSession();
         if (newSession) {
-            showUserDashboard();
+            if (!document.querySelector('.user-dashboard[style*="block"]')) {
+                showUserDashboard();
+            }
         } else {
             localStorage.removeItem('user');
             localStorage.removeItem('isLoggedIn');
@@ -293,6 +297,9 @@ async function checkAuthState() {
 }
 
 function setupEventListeners() {
+    if (window.eventListenersSetup) return;
+    window.eventListenersSetup = true;
+    
     document.addEventListener('click', function(e) {
         const target = e.target;
         
@@ -368,7 +375,7 @@ function setupEventListeners() {
             return;
         }
         
-        if (target.closest('#change-password-form')) {
+        if (target.closest('#change-password-form .neon-button')) {
             e.preventDefault();
             changePassword();
             return;
