@@ -259,7 +259,7 @@ function initAuth() {
             return;
         }
         
-        if (target.closest('#login-form') && !target.closest('input, textarea')) {
+        if (target.closest('#login-form .auth-btn')) {
             e.preventDefault();
             const email = document.getElementById('login-email')?.value;
             const password = document.getElementById('login-password')?.value;
@@ -267,7 +267,7 @@ function initAuth() {
             return;
         }
         
-        if (target.closest('#register-form') && !target.closest('input, textarea, button')) {
+        if (target.closest('#register-form .auth-btn')) {
             e.preventDefault();
             const name = document.getElementById('reg-name')?.value;
             let phone = document.getElementById('reg-phone')?.value;
@@ -293,7 +293,7 @@ function initAuth() {
             return;
         }
         
-        if (target.closest('#edit-profile-form')) {
+        if (target.closest('#edit-profile-form .neon-button')) {
             e.preventDefault();
             saveProfile();
             return;
