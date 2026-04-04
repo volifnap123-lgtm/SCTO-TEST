@@ -2,7 +2,6 @@ const SUPABASE_URL = 'https://noskliwvsiejokzmczfp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE';
 
 let supabase = null;
-let authInitialized = false;
 
 function showNotification(message, type = 'info', callback = null) {
     const existing = document.querySelector('.auth-notification');
@@ -232,44 +231,30 @@ async function deleteProfile() {
     showNotification('Запрос на удаление отправлен!', 'success');
 }
 
-function initAuth() {
-    if (authInitialized) return;
-    authInitialized = true;
+async function checkAuthState() {
+    const savedUser = localStorage.getItem('user');
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
     
-    if (!initSupabase()) {
-        authInitialized = false;
-        setTimeout(initAuth, 100);
-        return;
-    }
+    const { data: { session } } = await supabase.auth.getSession();
     
-    supabase.auth.getSession().then(({ data: { session } }) => {
-        const savedUser = localStorage.getItem('user');
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-        
-        console.log('[AUTH] session:', session ? 'есть' : 'нет', 'user:', savedUser ? 'есть' : 'нет', 'isLoggedIn:', isLoggedIn);
-        
-        if ((session || (savedUser && isLoggedIn === 'true')) && savedUser) {
-            console.log('[AUTH] Показываю дашборд');
+    if (session) {
+        showUserDashboard();
+    } else if (savedUser && isLoggedIn === 'true') {
+        const { data: { session: newSession } } = await supabase.auth.refreshSession();
+        if (newSession) {
             showUserDashboard();
-        }
-    });
-    
-    supabase.auth.onAuthStateChange((event, session) => {
-        console.log('[AUTH] Auth state changed:', event, session ? 'с сессией' : 'без сессии');
-        
-        if (event === 'SIGNED_IN' && session) {
-            const savedUser = localStorage.getItem('user');
-            if (savedUser) {
-                showUserDashboard();
-            }
-        } else if (event === 'SIGNED_OUT') {
+        } else {
             localStorage.removeItem('user');
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('sb_user_id');
             showAuthForm();
         }
-    });
-    
+    } else {
+        showAuthForm();
+    }
+}
+
+function setupEventListeners() {
     document.addEventListener('click', function(e) {
         const target = e.target;
         
@@ -373,6 +358,28 @@ function initAuth() {
             return;
         }
     });
+}
+
+async function initAuth() {
+    if (!initSupabase()) {
+        setTimeout(initAuth, 100);
+        return;
+    }
+    
+    setupEventListeners();
+    
+    supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+            checkAuthState();
+        } else if (event === 'SIGNED_OUT') {
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('sb_user_id');
+            showAuthForm();
+        }
+    });
+    
+    await checkAuthState();
 }
 
 if (document.readyState === 'loading') {
