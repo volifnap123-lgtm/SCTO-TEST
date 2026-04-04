@@ -72,13 +72,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function loadAuthScripts() {
-        if (document.querySelector('script[src*="auth.js"]')) {
-            if (typeof initAuth === 'function') initAuth();
+        if (typeof window.authReady === 'function') {
+            window.authReady();
             return;
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=20';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=25';
         cdnScript.onload = function() {
             if (!window.supabaseClient && window.supabase?.createClient) {
                 window.supabaseClient = window.supabase.createClient(
@@ -88,14 +88,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             const authScript = document.createElement('script');
-            authScript.src = 'js/auth.js?v=20';
+            authScript.src = 'js/auth.js?v=25';
             authScript.onload = function() {
-                if (typeof initAuth === 'function') initAuth();
+                if (typeof window.initAuth === 'function') {
+                    window.initAuth();
+                    window.authReady = function() {
+                        window.initAuth();
+                    };
+                }
             };
             document.head.appendChild(authScript);
             
             const chatScript = document.createElement('script');
-            chatScript.src = 'js/chat.js?v=20';
+            chatScript.src = 'js/chat.js?v=25';
             document.head.appendChild(chatScript);
         };
         document.head.appendChild(cdnScript);
@@ -104,19 +109,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPage = window.location.pathname.split('/').pop();
     if (currentPage === 'index.html' || currentPage === '') {
         document.querySelector('.nav-btn[data-page="index"]')?.classList.add('active');
-        loadAuthScripts();
     } else if (currentPage === 'catalog.html') {
         document.querySelector('.nav-btn[data-page="catalog"]')?.classList.add('active');
-        loadAuthScripts();
     } else if (currentPage === 'gallery.html') {
         document.querySelector('.nav-btn[data-page="gallery"]')?.classList.add('active');
-        loadAuthScripts();
     } else if (currentPage === 'reviews.html') {
         document.querySelector('.nav-btn[data-page="reviews"]')?.classList.add('active');
-        loadAuthScripts();
     } else if (currentPage === 'profile.html') {
         document.querySelector('.profile-btn')?.classList.add('active');
     }
+    
+    loadAuthScripts();
 
     console.log('СЦТО "Правка Дисков" - Сайт загружен');
 });
