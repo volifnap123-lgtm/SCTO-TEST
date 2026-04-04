@@ -404,7 +404,7 @@ function setupEventListeners() {
             if (!email) return;
             
             supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + '/profile.html'
+                redirectTo: window.location.origin + '/reset-password.html'
             }).then(({ error }) => {
                 if (error) {
                     showNotification('Ошибка: ' + error.message, 'error');
