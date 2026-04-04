@@ -2,9 +2,6 @@ const SUPABASE_URL = 'https://noskliwvsiejokzmczfp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE';
 
 let supabase = null;
-let authInitialized = false;
-
-console.log('[AUTH] auth.js ЗАГРУЖЕН!');
 
 function showNotification(message, type = 'info', callback = null) {
     const existing = document.querySelector('.auth-notification');
@@ -52,247 +49,37 @@ function initSupabase() {
     return false;
 }
 
-function initAuth() {
-    if (authInitialized) return;
-    authInitialized = true;
-    
-    if (!initSupabase()) {
-        authInitialized = false;
-        return;
-    }
-    
-    document.addEventListener('click', function(e) {
-        const target = e.target;
-        
-        if (target.closest('.auth-tab')) {
-            console.log('[AUTH CLICK DEBUG] Кликнули на #open-chat-btn или его родителя!');
-            if (typeof openSupportModal === 'function') {
-                console.log('[AUTH CLICK DEBUG] Вызываю openSupportModal');
-                openSupportModal();
-            } else {
-                console.log('[AUTH CLICK DEBUG] openSupportModal НЕ определена!');
-            }
-            return;
-        }
-        
-        if (target.closest('.auth-tab')) {
-            const tab = target.closest('.auth-tab');
-            const targetTab = tab.getAttribute('data-tab');
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            tab.classList.add('active');
-            const targetContent = document.getElementById(targetTab + '-tab');
-            if (targetContent) targetContent.classList.add('active');
-        }
-        
-        if (target.closest('#open-review-btn')) {
-            window.open('https://2gis.ru/ulanude/firm/5207815350139447/reviews', '_blank');
-        }
-        
-        if (target.closest('#edit-profile-btn')) {
-            openEditProfileModal();
-        }
-        
-        if (target.closest('#delete-profile-btn')) {
-            deleteProfile();
-        }
-        
-        if (target.closest('#logout-btn')) {
-            doLogout();
-        }
-        
-        if (target.closest('#forgot-password-link')) {
-            e.preventDefault();
-            handleForgotPassword();
-        }
-        
-        if (target.closest('#closeEditProfileModal')) {
-            document.getElementById('editProfileModal').style.display = 'none';
-        }
-        
-        if (target.closest('#closeChatModal')) {
-            document.getElementById('chatModal').style.display = 'none';
-        }
-    });
-    
-    document.addEventListener('submit', function(e) {
-        if (e.target.id === 'login-form') {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            doLogin(email, password);
-        }
-        
-        if (e.target.id === 'register-form') {
-            e.preventDefault();
-            const name = document.getElementById('reg-name').value;
-            let phone = document.getElementById('reg-phone').value;
-            const email = document.getElementById('reg-email').value;
-            const password = document.getElementById('reg-password').value;
-            const passwordConfirm = document.getElementById('reg-password-confirm').value;
-            
-            phone = formatPhone(phone);
-            
-            if (!name || !phone || !email || !password) {
-                showNotification('Заполните все поля', 'warning');
-                return;
-            }
-            if (password !== passwordConfirm) {
-                showNotification('Пароли не совпадают', 'error');
-                return;
-            }
-            if (password.length < 6) {
-                showNotification('Пароль минимум 6 символов', 'warning');
-                return;
-            }
-            doRegister(name, phone, email, password);
-        }
-        
-        if (e.target.id === 'edit-profile-form') {
-            e.preventDefault();
-            saveProfile();
-        }
-    });
-
+function showUserDashboard() {
     const savedUser = localStorage.getItem('user');
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    console.log('[AUTH] initAuth выполнен, isLoggedIn:', isLoggedIn, 'savedUser:', savedUser ? 'есть' : 'нет');
-    if (savedUser && isLoggedIn === 'true') {
-        showUserDashboard();
-    }
-}
-
-async function handleForgotPassword() {
-    const email = prompt('Введите ваш email:');
-    if (!email) return;
+    const userName = document.getElementById('user-name');
+    const userEmail = document.getElementById('user-email');
+    const userPhone = document.getElementById('user-phone');
+    const authForm = document.getElementById('auth-form');
+    const userDashboard = document.getElementById('user-dashboard');
     
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/profile.html'
-    });
-    
-    if (error) {
-        showNotification('Ошибка: ' + error.message, 'error');
-    } else {
-        showNotification('На указанный email отправлена ссылка для восстановления пароля', 'success');
-    }
-}
-
-function openEditProfileModal() {
-    const savedUser = localStorage.getItem('user');
-    const editName = document.getElementById('edit-name');
-    const editPhone = document.getElementById('edit-phone');
-    const editEmail = document.getElementById('edit-email');
-    const editModal = document.getElementById('editProfileModal');
-    
-    if (savedUser && editName && editPhone && editEmail && editModal) {
+    if (savedUser && userName) {
         const user = JSON.parse(savedUser);
-        editName.value = user.name || '';
-        editPhone.value = user.phone || '';
-        editEmail.value = user.email || '';
-        editModal.style.display = 'block';
-    } else {
-        showNotification('Форма редактирования недоступна. Обновите страницу.', 'warning');
+        userName.textContent = `Добро пожаловать, ${user.name}!`;
+        if (userEmail) userEmail.textContent = user.email;
+        if (userPhone) userPhone.textContent = user.phone;
+        if (authForm) authForm.style.display = 'none';
+        if (userDashboard) userDashboard.style.display = 'block';
     }
 }
 
-async function saveProfile() {
-    const name = document.getElementById('edit-name').value;
-    
-    if (!name) {
-        showNotification('Введите имя', 'warning');
-        return;
-    }
-    
-    const savedUser = JSON.parse(localStorage.getItem('user') || '{}');
-    
-    const { error: metaError } = await supabase.auth.updateUser({
-        data: { full_name: name }
-    });
-    
-    if (metaError) {
-        showNotification('Ошибка обновления данных: ' + metaError.message, 'error');
-        return;
-    }
-    
-    const userData = {
-        name: name,
-        email: savedUser.email || '',
-        phone: savedUser.phone || '',
-        avatar: '👤'
-    };
-    localStorage.setItem('user', JSON.stringify(userData));
-    showUserDashboard();
-    document.getElementById('editProfileModal').style.display = 'none';
-    showNotification('Профиль обновлён!', 'success');
-}
-    
-    const userId = localStorage.getItem('sb_user_id');
-    if (!userId) {
-        showNotification('Ошибка: пользователь не найден', 'error');
-        return;
-    }
-    
-    const { error: metaError } = await supabase.auth.updateUser({
-        data: { full_name: name, phone: phone }
-    });
-    
-    if (metaError) {
-        showNotification('Ошибка обновления данных: ' + metaError.message, 'error');
-        return;
-    }
-    
-    const userData = {
-        name: name,
-        email: email,
-        phone: phone,
-        avatar: '👤'
-    };
-    localStorage.setItem('user', JSON.stringify(userData));
-    showUserDashboard();
-    document.getElementById('editProfileModal').style.display = 'none';
-    showNotification('Профиль обновлён!', 'success');
-        showUserDashboard();
-        document.getElementById('editProfileModal').style.display = 'none';
-        showNotification('Профиль обновлён!', 'success');
-    }
-}
-
-async function deleteProfile() {
-    const confirmed = confirm('Вы уверены?\nЗапрос на удаление аккаунта будет отправлен администратору.');
-    if (!confirmed) return;
-    
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-        const user = JSON.parse(savedUser);
-        
-        const { error } = await supabase
-            .from('delete_requests')
-            .insert({
-                user_email: user.email,
-                user_name: user.name,
-                user_id: localStorage.getItem('sb_user_id')
-            });
-        
-        if (error) {
-            showNotification('Ошибка отправки запроса', 'error');
-            return;
-        }
-    }
-    
-    localStorage.removeItem('user');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('sb_user_id');
-    
+function showAuthForm() {
     const authForm = document.getElementById('auth-form');
     const userDashboard = document.getElementById('user-dashboard');
     if (authForm) authForm.style.display = 'block';
     if (userDashboard) userDashboard.style.display = 'none';
-    
-    try {
-        await supabase.auth.signOut();
-    } catch (e) {}
-    
-    showNotification('Запрос на удаление отправлен!', 'success');
+}
+
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+        if (button) button.innerHTML = '<span class="eye">' + (input.type === 'text' ? '🙈' : '👁️') + '</span>';
+    }
 }
 
 async function doLogin(email, password) {
@@ -347,21 +134,11 @@ async function doRegister(name, phone, email, password) {
     
     if (data.user && data.session === null) {
         showNotification('На вашу почту отправлено письмо для подтверждения. После подтверждения войдите в аккаунт.', 'success', function() {
-            switchToLogin(email);
+            document.getElementById('loginTabBtn')?.click();
+            document.getElementById('login-email').value = email;
         });
     } else if (data.user) {
-        showNotification('Регистрация прошла успешно!', 'success', function() {
-            switchToLogin(email);
-        });
-    }
-}
-
-function switchToLogin(email) {
-    if (document.getElementById('loginTabBtn')) {
-        document.getElementById('loginTabBtn').click();
-    }
-    if (document.getElementById('login-email')) {
-        document.getElementById('login-email').value = email;
+        showNotification('Регистрация прошла успешно!', 'success');
     }
 }
 
@@ -370,39 +147,188 @@ async function doLogout() {
     localStorage.removeItem('user');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('sb_user_id');
-    const authForm = document.getElementById('auth-form');
-    const userDashboard = document.getElementById('user-dashboard');
-    if (authForm) authForm.style.display = 'block';
-    if (userDashboard) userDashboard.style.display = 'none';
+    showAuthForm();
     showNotification('Вы вышли из аккаунта', 'info');
 }
 
-function showUserDashboard() {
-    const savedUser = localStorage.getItem('user');
-    const userName = document.getElementById('user-name');
-    const userEmail = document.getElementById('user-email');
-    const userPhone = document.getElementById('user-phone');
-    const userAvatarIcon = document.getElementById('user-avatar-icon');
-    const authForm = document.getElementById('auth-form');
-    const userDashboard = document.getElementById('user-dashboard');
+async function saveProfile() {
+    const name = document.getElementById('edit-name')?.value;
     
-    if (savedUser && userName) {
+    if (!name) {
+        showNotification('Введите имя', 'warning');
+        return;
+    }
+    
+    const savedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    const { error: metaError } = await supabase.auth.updateUser({
+        data: { full_name: name }
+    });
+    
+    if (metaError) {
+        showNotification('Ошибка обновления: ' + metaError.message, 'error');
+        return;
+    }
+    
+    const userData = {
+        name: name,
+        email: savedUser.email || '',
+        phone: savedUser.phone || '',
+        avatar: '👤'
+    };
+    localStorage.setItem('user', JSON.stringify(userData));
+    showUserDashboard();
+    document.getElementById('editProfileModal').style.display = 'none';
+    showNotification('Профиль обновлён!', 'success');
+}
+
+function openEditProfileModal() {
+    const savedUser = localStorage.getItem('user');
+    const editName = document.getElementById('edit-name');
+    const editModal = document.getElementById('editProfileModal');
+    
+    if (savedUser && editName && editModal) {
         const user = JSON.parse(savedUser);
-        userName.textContent = `Добро пожаловать, ${user.name}!`;
-        if (userEmail) userEmail.textContent = user.email;
-        if (userPhone) userPhone.textContent = user.phone;
-        if (user.avatar && userAvatarIcon) userAvatarIcon.textContent = user.avatar;
-        if (authForm) authForm.style.display = 'none';
-        if (userDashboard) userDashboard.style.display = 'block';
+        editName.value = user.name || '';
+        editModal.style.display = 'block';
+    } else {
+        showNotification('Форма редактирования недоступна', 'warning');
     }
 }
 
-function togglePassword(inputId, button) {
-    const input = document.getElementById(inputId);
-    if (input) {
-        input.type = input.type === 'password' ? 'text' : 'password';
-        if (button) button.innerHTML = '<span class="eye">' + (input.type === 'text' ? '🙈' : '👁️') + '</span>';
+async function deleteProfile() {
+    const confirmed = confirm('Запрос на удаление аккаунта будет отправлен.');
+    if (!confirmed) return;
+    
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+        const user = JSON.parse(savedUser);
+        await supabase.from('delete_requests').insert({
+            user_email: user.email,
+            user_name: user.name,
+            user_id: localStorage.getItem('sb_user_id')
+        });
     }
+    
+    localStorage.removeItem('user');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('sb_user_id');
+    await supabase.auth.signOut();
+    showAuthForm();
+    showNotification('Запрос на удаление отправлен!', 'success');
+}
+
+function initAuth() {
+    if (!initSupabase()) {
+        setTimeout(initAuth, 100);
+        return;
+    }
+    
+    const savedUser = localStorage.getItem('user');
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    
+    if (savedUser && isLoggedIn === 'true') {
+        showUserDashboard();
+    }
+    
+    document.addEventListener('click', function(e) {
+        const target = e.target;
+        
+        if (target.closest('.auth-tab')) {
+            e.preventDefault();
+            const tab = target.closest('.auth-tab');
+            const targetTab = tab.getAttribute('data-tab');
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            const targetContent = document.getElementById(targetTab + '-tab');
+            if (targetContent) targetContent.classList.add('active');
+            return;
+        }
+        
+        if (target.closest('#login-form')) {
+            e.preventDefault();
+            const email = document.getElementById('login-email')?.value;
+            const password = document.getElementById('login-password')?.value;
+            doLogin(email, password);
+            return;
+        }
+        
+        if (target.closest('#register-form')) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name')?.value;
+            let phone = document.getElementById('reg-phone')?.value;
+            const email = document.getElementById('reg-email')?.value;
+            const password = document.getElementById('reg-password')?.value;
+            const passwordConfirm = document.getElementById('reg-password-confirm')?.value;
+            
+            phone = formatPhone(phone);
+            
+            if (!name || !phone || !email || !password) {
+                showNotification('Заполните все поля', 'warning');
+                return;
+            }
+            if (password !== passwordConfirm) {
+                showNotification('Пароли не совпадают', 'error');
+                return;
+            }
+            if (password.length < 6) {
+                showNotification('Пароль минимум 6 символов', 'warning');
+                return;
+            }
+            doRegister(name, phone, email, password);
+            return;
+        }
+        
+        if (target.closest('#edit-profile-form')) {
+            e.preventDefault();
+            saveProfile();
+            return;
+        }
+        
+        if (target.closest('#logout-btn')) {
+            doLogout();
+            return;
+        }
+        
+        if (target.closest('#edit-profile-btn')) {
+            openEditProfileModal();
+            return;
+        }
+        
+        if (target.closest('#delete-profile-btn')) {
+            deleteProfile();
+            return;
+        }
+        
+        if (target.closest('#open-chat-btn')) {
+            if (typeof openSupportModal === 'function') {
+                openSupportModal();
+            }
+            return;
+        }
+        
+        if (target.closest('#open-review-btn')) {
+            window.open('https://2gis.ru/ulanude/firm/5207815350139447/reviews', '_blank');
+            return;
+        }
+        
+        if (target.closest('#closeEditProfileModal')) {
+            document.getElementById('editProfileModal').style.display = 'none';
+            return;
+        }
+        
+        if (target.closest('#closeChatModal')) {
+            document.getElementById('chatModal').style.display = 'none';
+            return;
+        }
+        
+        if (target.closest('.password-toggle')) {
+            const inputId = target.closest('.password-toggle').previousElementSibling?.id;
+            if (inputId) togglePassword(inputId, target.closest('.password-toggle'));
+            return;
+        }
+    });
 }
 
 if (document.readyState === 'loading') {

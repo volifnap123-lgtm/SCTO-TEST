@@ -6,13 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const profileContent = document.getElementById('profileContent');
     const themeToggle = document.getElementById('themeToggle');
 
-    if (!window.supabaseClient && typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-        window.supabaseClient = window.supabase.createClient(
-            'https://noskliwvsiejokzmczfp.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE'
-        );
-    }
-
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -28,15 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
     navBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const page = this.getAttribute('data-page');
-            if (page === 'index') {
-                window.location.href = 'index.html';
-            } else if (page === 'catalog') {
-                window.location.href = 'catalog.html';
-            } else if (page === 'gallery') {
-                window.location.href = 'gallery.html';
-            } else if (page === 'reviews') {
-                window.location.href = 'reviews.html';
-            }
+            if (page === 'index') window.location.href = 'index.html';
+            else if (page === 'catalog') window.location.href = 'catalog.html';
+            else if (page === 'gallery') window.location.href = 'gallery.html';
+            else if (page === 'reviews') window.location.href = 'reviews.html';
         });
     });
 
@@ -53,11 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    window.addEventListener('click', function(event) {
-        if (event.target === profileModal) {
-            profileModal.style.display = 'none';
-        }
-    });
+    if (profileModal) {
+        profileModal.addEventListener('click', function(event) {
+            if (event.target === profileModal) {
+                profileModal.style.display = 'none';
+            }
+        });
+    }
 
     function loadProfileContent() {
         if (document.getElementById('auth-form')) return;
@@ -73,97 +63,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (profileContainer) {
                     profileContent.innerHTML = profileContainer.innerHTML;
-                    
                     loadAuthScripts();
-                    
-                    setTimeout(function() {
-                        if (typeof initAuth === 'function') {
-                            initAuth();
-                        }
-                        if (typeof showUserDashboard === 'function') {
-                            showUserDashboard();
-                        }
-                    }, 100);
                 }
             })
             .catch(error => {
-                console.error('Ошибка загрузки профиля:', error);
-                profileContent.innerHTML = '<p>Ошибка загрузки профиля. Пожалуйста, откройте страницу профиля напрямую.</p>';
+                profileContent.innerHTML = '<p>Ошибка загрузки профиля.</p>';
             });
     }
     
     function loadAuthScripts() {
-        if (document.querySelector('script[src*="auth.js"]')) return;
-        
-        console.log('Загрузка скриптов авторизации...');
-        
-        if (typeof window.supabase !== 'undefined') {
-            initSupabaseClient();
-            loadAuthJS();
+        if (document.querySelector('script[src*="auth.js"]')) {
+            if (typeof initAuth === 'function') initAuth();
             return;
         }
         
         const cdnScript = document.createElement('script');
-        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=14';
+        cdnScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=20';
         cdnScript.onload = function() {
-            initSupabaseClient();
-            loadAuthJS();
+            if (!window.supabaseClient && window.supabase?.createClient) {
+                window.supabaseClient = window.supabase.createClient(
+                    'https://noskliwvsiejokzmczfp.supabase.co',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE'
+                );
+            }
+            
+            const authScript = document.createElement('script');
+            authScript.src = 'js/auth.js?v=20';
+            authScript.onload = function() {
+                if (typeof initAuth === 'function') initAuth();
+            };
+            document.head.appendChild(authScript);
+            
+            const chatScript = document.createElement('script');
+            chatScript.src = 'js/chat.js?v=20';
+            document.head.appendChild(chatScript);
         };
         document.head.appendChild(cdnScript);
-    }
-    
-    function initSupabaseClient() {
-        if (!window.supabaseClient) {
-            window.supabaseClient = window.supabase.createClient(
-                'https://noskliwvsiejokzmczfp.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE'
-            );
-            console.log('Supabase клиент инициализирован');
-        }
-    }
-    
-    function loadAuthJS() {
-        if (document.querySelector('script[src*="auth.js"]')) return;
-        
-        const authScript = document.createElement('script');
-        authScript.src = 'js/auth.js?v=14';
-        authScript.onload = function() {
-            if (typeof initAuth === 'function') {
-                initAuth();
-            }
-            loadChatJS();
-        };
-        document.head.appendChild(authScript);
-    }
-    
-    function loadChatJS() {
-        if (document.querySelector('script[src*="chat.js"]')) return;
-        
-        const chatScript = document.createElement('script');
-        chatScript.src = 'js/chat.js?v=15';
-        chatScript.onload = function() {
-            console.log('[MAIN] chat.js загружен');
-            if (typeof initChat === 'function') {
-                initChat();
-            }
-        };
-        chatScript.onerror = function() {
-            console.error('[MAIN] Ошибка загрузки chat.js');
-        };
-        document.head.appendChild(chatScript);
     }
 
     const currentPage = window.location.pathname.split('/').pop();
     if (currentPage === 'index.html' || currentPage === '') {
-        document.querySelector('.nav-btn[data-page="index"]').classList.add('active');
+        document.querySelector('.nav-btn[data-page="index"]')?.classList.add('active');
+        loadAuthScripts();
     } else if (currentPage === 'catalog.html') {
-        document.querySelector('.nav-btn[data-page="catalog"]').classList.add('active');
+        document.querySelector('.nav-btn[data-page="catalog"]')?.classList.add('active');
+        loadAuthScripts();
     } else if (currentPage === 'gallery.html') {
-        document.querySelector('.nav-btn[data-page="gallery"]').classList.add('active');
+        document.querySelector('.nav-btn[data-page="gallery"]')?.classList.add('active');
+        loadAuthScripts();
     } else if (currentPage === 'reviews.html') {
-        document.querySelector('.nav-btn[data-page="reviews"]').classList.add('active');
+        document.querySelector('.nav-btn[data-page="reviews"]')?.classList.add('active');
+        loadAuthScripts();
     } else if (currentPage === 'profile.html') {
-        document.querySelector('.profile-btn').classList.add('active');
+        document.querySelector('.profile-btn')?.classList.add('active');
     }
 
     console.log('СЦТО "Правка Дисков" - Сайт загружен');
