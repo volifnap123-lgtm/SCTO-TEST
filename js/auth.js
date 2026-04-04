@@ -198,13 +198,34 @@ function openEditProfileModal() {
 
 async function saveProfile() {
     const name = document.getElementById('edit-name').value;
-    const phone = formatPhone(document.getElementById('edit-phone').value);
-    const email = document.getElementById('edit-email').value;
     
-    if (!name || !phone || !email) {
-        showNotification('Заполните все поля', 'warning');
+    if (!name) {
+        showNotification('Введите имя', 'warning');
         return;
     }
+    
+    const savedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    const { error: metaError } = await supabase.auth.updateUser({
+        data: { full_name: name }
+    });
+    
+    if (metaError) {
+        showNotification('Ошибка обновления данных: ' + metaError.message, 'error');
+        return;
+    }
+    
+    const userData = {
+        name: name,
+        email: savedUser.email || '',
+        phone: savedUser.phone || '',
+        avatar: '👤'
+    };
+    localStorage.setItem('user', JSON.stringify(userData));
+    showUserDashboard();
+    document.getElementById('editProfileModal').style.display = 'none';
+    showNotification('Профиль обновлён!', 'success');
+}
     
     const userId = localStorage.getItem('sb_user_id');
     if (!userId) {
@@ -304,6 +325,8 @@ async function doLogin(email, password) {
 }
 
 async function doRegister(name, phone, email, password) {
+    console.log('Регистрация:', { name, phone, email });
+    
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -315,6 +338,8 @@ async function doRegister(name, phone, email, password) {
             emailRedirectTo: window.location.origin + '/profile.html'
         }
     });
+    
+    console.log('Результат регистрации:', data, error);
     
     if (error) {
         if (error.message.includes('already') || error.message.includes('exists')) {
