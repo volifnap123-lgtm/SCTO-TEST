@@ -274,11 +274,16 @@ function initAuth() {
             const email = document.getElementById('reg-email')?.value;
             const password = document.getElementById('reg-password')?.value;
             const passwordConfirm = document.getElementById('reg-password-confirm')?.value;
+            const agreeTerms = document.getElementById('agree-terms')?.checked;
             
             phone = formatPhone(phone);
             
             if (!name || !phone || !email || !password) {
                 showNotification('Заполните все поля', 'warning');
+                return;
+            }
+            if (!agreeTerms) {
+                showNotification('Необходимо согласиться с условиями использования', 'warning');
                 return;
             }
             if (password !== passwordConfirm) {
