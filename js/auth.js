@@ -2,6 +2,7 @@ const SUPABASE_URL = 'https://noskliwvsiejokzmczfp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vc2tsaXd2c2llam9rem1jemZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMzU5MTgsImV4cCI6MjA4ODgxMTkxOH0.2NplRLLx1Annta9DL8Wus-OoObQwUbYR4X_vHouDEbE';
 
 let supabase = null;
+let authInitialized = false;
 
 function showNotification(message, type = 'info', callback = null) {
     const existing = document.querySelector('.auth-notification');
@@ -232,7 +233,11 @@ async function deleteProfile() {
 }
 
 function initAuth() {
+    if (authInitialized) return;
+    authInitialized = true;
+    
     if (!initSupabase()) {
+        authInitialized = false;
         setTimeout(initAuth, 100);
         return;
     }
