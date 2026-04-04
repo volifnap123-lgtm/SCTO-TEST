@@ -191,6 +191,12 @@
                         <span class="action-desc">Изменить данные</span>
                     </button>
                     
+                    <button class="action-card" id="change-password-btn">
+                        <span class="action-icon">🔑</span>
+                        <span class="action-title">Сменить пароль</span>
+                        <span class="action-desc">Новый пароль</span>
+                    </button>
+                    
                     <button class="action-card" id="open-chat-btn">
                         <span class="action-icon">💬</span>
                         <span class="action-title">Поддержка</span>
@@ -229,6 +235,39 @@
                         </div>
                         <button type="submit" class="neon-button full-width">
                             <span>💾</span> Сохранить изменения
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="modal" id="changePasswordModal">
+                <div class="modal-content">
+                    <span class="close-btn" id="closeChangePasswordModal">&times;</span>
+                    <h2>🔑 Смена пароля</h2>
+                    <form id="change-password-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="current-password">
+                                <span class="label-icon">🔐</span>
+                                Текущий пароль
+                            </label>
+                            <input type="password" id="current-password" class="neon-input" required placeholder="Введите текущий пароль">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">
+                                <span class="label-icon">🔒</span>
+                                Новый пароль
+                            </label>
+                            <input type="password" id="new-password" class="neon-input" required placeholder="Минимум 6 символов" minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">
+                                <span class="label-icon">🔒</span>
+                                Подтвердите пароль
+                            </label>
+                            <input type="password" id="confirm-password" class="neon-input" required placeholder="Повторите новый пароль">
+                        </div>
+                        <button type="submit" class="neon-button full-width">
+                            <span>💾</span> Изменить пароль
                         </button>
                     </form>
                 </div>

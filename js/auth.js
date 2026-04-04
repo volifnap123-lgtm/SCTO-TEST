@@ -155,6 +155,44 @@ async function doRegister(name, phone, email, password) {
     }
 }
 
+async function changePassword() {
+    const currentPassword = document.getElementById('current-password')?.value;
+    const newPassword = document.getElementById('new-password')?.value;
+    const confirmPassword = document.getElementById('confirm-password')?.value;
+    
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        showNotification('Заполните все поля', 'warning');
+        return;
+    }
+    
+    if (newPassword.length < 6) {
+        showNotification('Новый пароль минимум 6 символов', 'warning');
+        return;
+    }
+    
+    if (newPassword !== confirmPassword) {
+        showNotification('Новые пароли не совпадают', 'error');
+        return;
+    }
+    
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    
+    if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+            showNotification('Неверный текущий пароль', 'error');
+        } else {
+            showNotification('Ошибка: ' + error.message, 'error');
+        }
+        return;
+    }
+    
+    document.getElementById('changePasswordModal').style.display = 'none';
+    document.getElementById('current-password').value = '';
+    document.getElementById('new-password').value = '';
+    document.getElementById('confirm-password').value = '';
+    showNotification('Пароль успешно изменён!', 'success');
+}
+
 async function doLogout() {
     await supabase.auth.signOut();
     localStorage.removeItem('user');
@@ -325,6 +363,17 @@ function setupEventListeners() {
             return;
         }
         
+        if (target.closest('#change-password-btn')) {
+            document.getElementById('changePasswordModal').style.display = 'block';
+            return;
+        }
+        
+        if (target.closest('#change-password-form')) {
+            e.preventDefault();
+            changePassword();
+            return;
+        }
+        
         if (target.closest('#delete-profile-btn')) {
             deleteProfile();
             return;
@@ -349,6 +398,11 @@ function setupEventListeners() {
         
         if (target.closest('#closeChatModal')) {
             document.getElementById('chatModal').style.display = 'none';
+            return;
+        }
+        
+        if (target.closest('#closeChangePasswordModal')) {
+            document.getElementById('changePasswordModal').style.display = 'none';
             return;
         }
         
