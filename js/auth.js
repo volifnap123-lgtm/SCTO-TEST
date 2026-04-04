@@ -212,21 +212,25 @@ async function saveProfile() {
         return;
     }
     
-    const { error } = await supabase.auth.updateUser({
-        email: email,
+    const { error: metaError } = await supabase.auth.updateUser({
         data: { full_name: name, phone: phone }
     });
     
-    if (error) {
-        showNotification('Ошибка: ' + error.message, 'error');
-    } else {
-        const userData = {
-            name: name,
-            email: email,
-            phone: phone,
-            avatar: '👤'
-        };
-        localStorage.setItem('user', JSON.stringify(userData));
+    if (metaError) {
+        showNotification('Ошибка обновления данных: ' + metaError.message, 'error');
+        return;
+    }
+    
+    const userData = {
+        name: name,
+        email: email,
+        phone: phone,
+        avatar: '👤'
+    };
+    localStorage.setItem('user', JSON.stringify(userData));
+    showUserDashboard();
+    document.getElementById('editProfileModal').style.display = 'none';
+    showNotification('Профиль обновлён!', 'success');
         showUserDashboard();
         document.getElementById('editProfileModal').style.display = 'none';
         showNotification('Профиль обновлён!', 'success');
@@ -303,7 +307,13 @@ async function doRegister(name, phone, email, password) {
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: name, phone: phone } }
+        options: { 
+            data: { 
+                full_name: name, 
+                phone: phone 
+            },
+            emailRedirectTo: window.location.origin + '/profile.html'
+        }
     });
     
     if (error) {
