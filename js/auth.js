@@ -398,6 +398,23 @@ function setupEventListeners() {
             return;
         }
         
+        if (target.closest('#forgot-password-link')) {
+            e.preventDefault();
+            const email = prompt('Введите email для восстановления пароля:');
+            if (!email) return;
+            
+            supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/profile.html'
+            }).then(({ error }) => {
+                if (error) {
+                    showNotification('Ошибка: ' + error.message, 'error');
+                } else {
+                    showNotification('Ссылка для сброса пароля отправлена на email!', 'success');
+                }
+            });
+            return;
+        }
+        
         if (target.closest('#closeEditProfileModal')) {
             document.getElementById('editProfileModal').style.display = 'none';
             return;
