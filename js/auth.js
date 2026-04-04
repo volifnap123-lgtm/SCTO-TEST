@@ -53,7 +53,7 @@ function initSupabase() {
 }
 
 function initAuth() {
-    if (authInitialized && document.querySelector('.auth-tab')) return;
+    if (authInitialized) return;
     authInitialized = true;
     
     if (!initSupabase()) {
@@ -64,9 +64,7 @@ function initAuth() {
     document.addEventListener('click', function(e) {
         const target = e.target;
         
-        console.log('[AUTH CLICK DEBUG] Клик по:', target.tagName, target.className, target.id);
-        
-        if (target.closest('#open-chat-btn')) {
+        if (target.closest('.auth-tab')) {
             console.log('[AUTH CLICK DEBUG] Кликнули на #open-chat-btn или его родителя!');
             if (typeof openSupportModal === 'function') {
                 console.log('[AUTH CLICK DEBUG] Вызываю openSupportModal');
@@ -158,6 +156,7 @@ function initAuth() {
 
     const savedUser = localStorage.getItem('user');
     const isLoggedIn = localStorage.getItem('isLoggedIn');
+    console.log('[AUTH] initAuth выполнен, isLoggedIn:', isLoggedIn, 'savedUser:', savedUser ? 'есть' : 'нет');
     if (savedUser && isLoggedIn === 'true') {
         showUserDashboard();
     }
@@ -325,8 +324,6 @@ async function doLogin(email, password) {
 }
 
 async function doRegister(name, phone, email, password) {
-    console.log('Регистрация:', { name, phone, email });
-    
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -338,8 +335,6 @@ async function doRegister(name, phone, email, password) {
             emailRedirectTo: window.location.origin + '/profile.html'
         }
     });
-    
-    console.log('Результат регистрации:', data, error);
     
     if (error) {
         if (error.message.includes('already') || error.message.includes('exists')) {
