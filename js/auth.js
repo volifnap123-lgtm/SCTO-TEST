@@ -403,12 +403,6 @@ function setupEventListeners() {
             window.open('reset-password.html', '_blank');
             return;
         }
-            })
-            .catch(err => {
-                showNotification('Ошибка отправки', 'error');
-            });
-            return;
-        }
         
         if (target.closest('#closeEditProfileModal')) {
             document.getElementById('editProfileModal').style.display = 'none';
