@@ -400,17 +400,12 @@ function setupEventListeners() {
         
         if (target.closest('#forgot-password-link')) {
             e.preventDefault();
-            const email = prompt('Введите email для восстановления пароля:');
-            if (!email) return;
-            
-            supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + '/reset-password.html'
-            }).then(({ error }) => {
-                if (error) {
-                    showNotification('Ошибка: ' + error.message, 'error');
-                } else {
-                    showNotification('Ссылка для сброса пароля отправлена на email!', 'success');
-                }
+            window.open('reset-password.html', '_blank');
+            return;
+        }
+            })
+            .catch(err => {
+                showNotification('Ошибка отправки', 'error');
             });
             return;
         }
