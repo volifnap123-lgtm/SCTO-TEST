@@ -62,7 +62,7 @@ body {
 /* Фото - фреймы */
 .review-photos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    grid-template-columns: repeat(auto-fill, 40px);
     gap: 4px;
     margin-top: 12px;
     padding-top: 10px;
@@ -80,15 +80,20 @@ body {
 }
 
 .review-photo-frame img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
+    width: 40px !important;
+    height: 40px !important;
+    object-fit: cover !important;
     cursor: pointer;
-    display: block;
+    display: block !important;
 }
 
 .review-photo-frame img:hover {
     opacity: 0.8;
+}
+
+/* Старые стили фото - убираем */
+.review-photos, .review-photo {
+    display: none !important;
 }
 
 .review-photo-wrap {
