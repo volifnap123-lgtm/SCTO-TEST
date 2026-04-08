@@ -61,38 +61,38 @@ body {
 
 /* Фото - фреймы */
 .review-photos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 40px);
-    gap: 4px;
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px dashed #ccc;
-    max-width: 200px;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, 40px) !important;
+    gap: 4px !important;
+    margin-top: 12px !important;
+    padding-top: 10px !important;
+    border-top: 1px dashed #ccc !important;
+    max-width: 200px !important;
 }
 
 .review-photo-frame {
-    width: 40px;
-    height: 40px;
-    overflow: hidden;
-    border-radius: 4px;
-    border: 1px solid #999;
-    display: block;
+    width: 40px !important;
+    height: 40px !important;
+    overflow: hidden !important;
+    border-radius: 4px !important;
+    border: 1px solid #999 !important;
+    display: block !important;
 }
 
 .review-photo-frame img {
     width: 40px !important;
     height: 40px !important;
     object-fit: cover !important;
-    cursor: pointer;
+    cursor: pointer !important;
     display: block !important;
 }
 
 .review-photo-frame img:hover {
-    opacity: 0.8;
+    opacity: 0.8 !important;
 }
 
-/* Старые стили фото - убираем */
-.review-photos, .review-photo {
+/* Убираем старые стили */
+.review-photos, .review-photo, .review-photo-wrap {
     display: none !important;
 }
 
