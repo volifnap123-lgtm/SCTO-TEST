@@ -541,7 +541,9 @@
         }
         
         function formatDate(dateStr) {
+            if (!dateStr) return 'Без даты';
             const date = new Date(dateStr);
+            if (isNaN(date.getTime())) return dateStr;
             const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
             const day = date.getDate();
             const month = months[date.getMonth()];
