@@ -55,22 +55,29 @@ body {
     padding-top: 10px !important;
     border-top: 1px dashed var(--gray-light) !important;
     max-height: 60px !important;
+    overflow-y: auto !important;
+}
+
+.review-photo-wrap {
+    width: 40px !important;
+    height: 40px !important;
     overflow: hidden !important;
+    border-radius: 3px !important;
+    border: 1px solid #ddd !important;
+    flex-shrink: 0 !important;
+    display: inline-block !important;
 }
 
 .review-photo {
-    width: 40px !important;
-    height: 40px !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover !important;
-    border-radius: 3px !important;
     cursor: pointer;
     transition: transform 0.2s ease;
-    border: 1px solid #ddd !important;
-    flex-shrink: 0 !important;
 }
 
 .review-photo:hover {
-    transform: scale(1.1) !important;
+    transform: scale(1.2) !important;
 }
 
 /* Отзыв */
