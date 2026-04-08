@@ -175,29 +175,6 @@ body {
     text-align: justify;
 }
 
-.review-photos {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    overflow-x: auto;
-    padding: 5px 0;
-}
-
-.review-photo {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
-    object-fit: cover;
-    border: 2px solid var(--gray-light);
-    transition: all 0.3s ease;
-}
-
-.review-photo:hover {
-    transform: scale(1.05);
-    border-color: var(--yellow-neon);
-    box-shadow: 0 0 10px var(--yellow-neon-glow);
-}
-
 .review-footer {
     display: flex;
     justify-content: space-between;
@@ -368,17 +345,14 @@ body {
 }
 
 .review-photo {
-    width: 50px !important;
-    height: 50px !important;
+    width: 40px !important;
+    height: 40px !important;
     object-fit: cover !important;
-    border-radius: 6px !important;
+    border-radius: 4px !important;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid var(--gray-light) !important;
-    flex-shrink: 0;
-}
     transition: transform 0.3s ease;
-    border: 2px solid var(--gray-light);
+    border: 1px solid #999 !important;
+    flex-shrink: 0;
 }
 
 .review-photo:hover {
