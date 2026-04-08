@@ -496,6 +496,9 @@
                 }
                 
                 grid.innerHTML = reviews.map(r => {
+                    console.log('Processing review:', r.name, 'review_date:', r.review_date, 'created_at:', r.created_at);
+                    const formattedDate = formatDate(r.review_date || r.created_at);
+                    console.log('Formatted date:', formattedDate);
                     const initials = r.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                     const linkBtn = r.review_link ? `<a href="${r.review_link}" target="_blank" class="review-link-btn">🔗 Перейти к отзыву</a>` : '';
@@ -521,7 +524,7 @@
                                     <div class="review-avatar">${initials}</div>
                                     <div>
                                         <div class="review-name">${r.name}</div>
-                                        <div class="review-date">${formatDate(r.review_date || r.created_at)}</div>
+                                        <div class="review-date">${formattedDate}</div>
                                     </div>
                                 </div>
                                 <div class="review-rating">${stars}</div>
@@ -550,7 +553,6 @@
         }
         
         function formatDate(dateStr) {
-            alert('formatDate called: ' + dateStr);
             console.log('formatDate called with:', dateStr);
             if (!dateStr) return 'Без даты';
             const date = new Date(dateStr);
@@ -562,7 +564,6 @@
             const year = date.getFullYear();
             const result = `${day} ${month} ${year} г.`;
             console.log('Result:', result);
-            alert('Result: ' + result);
             return result;
         }
         
