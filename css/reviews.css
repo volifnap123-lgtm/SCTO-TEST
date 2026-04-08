@@ -42,6 +42,40 @@ body {
     display: flex;
     flex-direction: column;
     padding: 30px;
+    box-sizing: border-box;
+}
+
+/* Ограничение фото */
+.review-photos {
+    display: flex !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+    margin-top: auto !important;
+    padding-top: 10px !important;
+    border-top: 1px dashed var(--gray-light) !important;
+    max-height: 80px !important;
+    overflow: hidden !important;
+}
+
+.review-photo {
+    width: 50px !important;
+    height: 50px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid var(--gray-light) !important;
+    flex-shrink: 0 !important;
+}
+
+/* Отзыв */
+.review-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
     overflow-y: auto;
 }
 
@@ -314,11 +348,15 @@ body {
 }
 
 .review-photo {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 6px;
+    width: 50px !important;
+    height: 50px !important;
+    object-fit: cover !important;
+    border-radius: 6px !important;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid var(--gray-light) !important;
+    flex-shrink: 0;
+}
     transition: transform 0.3s ease;
     border: 2px solid var(--gray-light);
 }
