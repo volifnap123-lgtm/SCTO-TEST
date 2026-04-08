@@ -496,8 +496,8 @@
                         const photos = r.photos.split(',').filter(p => p.trim());
                         if (photos.length > 0) {
                             photosHtml = `
-                                <div class="review-photos-grid">
-                                    ${photos.map(photo => `<div class="review-photo-frame"><img src="${photo}" class="review-photo" onclick="document.getElementById('modalImage').src='${photo}'; document.getElementById('photoModal').style.display='flex'"></div>`).join('')}
+                                <div class="review-photos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,40px);gap:4px;margin-top:12px;padding-top:10px;border-top:1px dashed #ccc;max-width:200px;">
+                                    ${photos.map(photo => `<div class="review-photo-frame" style="width:40px;height:40px;overflow:hidden;border-radius:4px;border:1px solid #999;"><img src="${photo}" style="width:40px;height:40px;object-fit:cover;cursor:pointer;" onclick="document.getElementById('modalImage').src='${photo}'; document.getElementById('photoModal').style.display='flex'"></div>`).join('')}
                                 </div>
                             `;
                         }
