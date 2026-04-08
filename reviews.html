@@ -496,9 +496,7 @@
                 }
                 
                 grid.innerHTML = reviews.map(r => {
-                    console.log('Processing review:', r.name, 'review_date:', r.review_date, 'created_at:', r.created_at);
-                    const formattedDate = formatDate(r.review_date || r.created_at);
-                    console.log('Formatted date:', formattedDate);
+                    const formattedDate = formatDateREVIEWS(r.review_date || r.created_at);
                     const initials = r.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                     const linkBtn = r.review_link ? `<a href="${r.review_link}" target="_blank" class="review-link-btn">🔗 Перейти к отзыву</a>` : '';
@@ -552,19 +550,16 @@
             }
         }
         
-        function formatDate(dateStr) {
-            console.log('formatDate called with:', dateStr);
+        // УНИКАЛЬНАЯ функция для формата даты отзывов
+        function formatDateREVIEWS(dateStr) {
             if (!dateStr) return 'Без даты';
             const date = new Date(dateStr);
-            console.log('Parsed date:', date);
             if (isNaN(date.getTime())) return dateStr;
             const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
             const day = date.getDate();
             const month = months[date.getMonth()];
             const year = date.getFullYear();
-            const result = `${day} ${month} ${year} г.`;
-            console.log('Result:', result);
-            return result;
+            return `${day} ${month} ${year} г.`;
         }
         
         function getReviewsWord(n) {
