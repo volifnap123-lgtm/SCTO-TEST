@@ -296,22 +296,24 @@ body {
 
 .review-photos {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     margin: 15px 0;
 }
 
 .review-photo {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: transform 0.3s ease;
+    border: 2px solid var(--gray-light);
 }
 
 .review-photo:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
+    border-color: var(--primary);
 }
 
 .review-manager-response {
