@@ -42,45 +42,29 @@ function initChat() {
     if (chatInitialized) return;
     chatInitialized = true;
     
-    console.log('[DEBUG] initChat() вызван');
-    
     const openChatBtn = document.getElementById('open-chat-btn');
-    console.log('[DEBUG] open-chat-btn найден:', openChatBtn);
     
     if (openChatBtn) {
-        console.log('[DEBUG] Добавляю обработчик на кнопку');
         openChatBtn.addEventListener('click', function() {
-            console.log('[DEBUG] Кнопка Поддержка нажата!');
-            console.log('[DEBUG] openSupportModal определена:', typeof openSupportModal);
             openSupportModal();
         });
-    } else {
-        console.log('[DEBUG] Кнопка open-chat-btn НЕ НАЙДЕНА!');
     }
 }
 
 async function openSupportModal() {
-    console.log('[DEBUG] openSupportModal() вызвана');
-    
     const modal = document.getElementById('chatModal');
-    console.log('[DEBUG] chatModal найден:', modal);
     
     if (!initChatSupabase()) {
-        console.log('[DEBUG] initChatSupabase() вернул false');
         showNotification('Ошибка загрузки', 'error');
         return;
     }
     
-    console.log('[DEBUG] initChatSupabase() вернул true');
-    
     if (!modal) {
-        console.log('[DEBUG] chatModal НЕ НАЙДЕН!');
         showNotification('Ошибка: модальное окно не найдено', 'error');
         return;
     }
     
     modal.style.display = 'block';
-    console.log('[DEBUG] modal.style.display = block');
     
     const { data: tickets } = await supabase
         .from('tickets')

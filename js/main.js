@@ -120,6 +120,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     loadAuthScripts();
-
-    console.log('СЦТО "Правка Дисков" - Сайт загружен');
 });
