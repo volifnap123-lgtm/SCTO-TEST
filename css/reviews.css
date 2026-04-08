@@ -293,3 +293,33 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
 }
+
+.review-photos {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.review-photo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.review-photo:hover {
+    transform: scale(1.1);
+}
+
+.review-manager-response {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+    border-left: 3px solid #2e7d32;
+}

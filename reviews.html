@@ -486,6 +486,20 @@
                     const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                     const linkBtn = r.review_link ? `<a href="${r.review_link}" target="_blank" class="review-link-btn">🔗 Перейти к отзыву</a>` : '';
                     
+                    let photosHtml = '';
+                    if (r.photos) {
+                        const photos = r.photos.split(',').filter(p => p.trim());
+                        if (photos.length > 0) {
+                            photosHtml = `
+                                <div class="review-photos">
+                                    ${photos.map(photo => `<img src="${photo}" alt="Фото" class="review-photo">`).join('')}
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    const managerBadge = r.manager_response ? `<div class="review-manager-response">✓ В отзыве был получен ответ от менеджера. Просмотреть можно в 2ГИС.</div>` : '';
+                    
                     return `
                         <div class="review-card">
                             <div class="review-top">
@@ -499,6 +513,8 @@
                                 <div class="review-rating">${stars}</div>
                             </div>
                             <p class="review-text">${r.text}</p>
+                            ${photosHtml}
+                            ${managerBadge}
                             <div class="review-footer">
                                 <span class="review-source">📍 Источник: 2ГИС</span>
                                 ${linkBtn}
