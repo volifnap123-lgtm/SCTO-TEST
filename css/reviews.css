@@ -59,6 +59,36 @@ body {
     width: 100% !important;
 }
 
+/* Фото - фреймы */
+.review-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 45px);
+    gap: 5px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed #ccc;
+}
+
+.review-photo-frame {
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid #999;
+}
+
+.review-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.review-photo-frame img:hover {
+    transform: scale(1.1);
+}
+
 .review-photo-wrap {
     width: 40px !important;
     height: 40px !important;
