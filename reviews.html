@@ -496,7 +496,7 @@
                         const photos = r.photos.split(',').filter(p => p.trim());
                         if (photos.length > 0) {
                             photosHtml = `
-                                <div class="review-photos">
+                                <div class="review-photos" style="margin-top: auto; padding-top: 10px;">
                                     ${photos.map(photo => `<img src="${photo}" alt="Фото" class="review-photo" onclick="document.getElementById('modalImage').src='${photo}'; document.getElementById('photoModal').style.display='flex'">`).join('')}
                                 </div>
                             `;
