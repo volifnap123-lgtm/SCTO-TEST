@@ -496,14 +496,14 @@
                         const photos = r.photos.split(',').filter(p => p.trim());
                         if (photos.length > 0) {
                             photosHtml = `
-                                <div class="review-photos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,40px);gap:4px;margin-top:12px;padding-top:10px;border-top:1px dashed #ccc;max-width:200px;">
-                                    ${photos.map(photo => `<div class="review-photo-frame" style="width:40px;height:40px;overflow:hidden;border-radius:4px;border:1px solid #999;"><img src="${photo}" style="width:40px;height:40px;object-fit:cover;cursor:pointer;" onclick="document.getElementById('modalImage').src='${photo}'; document.getElementById('photoModal').style.display='flex'"></div>`).join('')}
+                                <div class="review-photos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,55px);gap:6px;margin-top:12px;padding-top:10px;border-top:1px dashed #ccc;max-width:250px;">
+                                    ${photos.map(photo => `<div class="review-photo-frame" style="width:55px;height:55px;overflow:hidden;border-radius:6px;border:2px solid #999;"><img src="${photo}" style="width:55px;height:55px;object-fit:cover;cursor:pointer;" onclick="document.getElementById('modalImage').src='${photo}'; document.getElementById('photoModal').style.display='flex'"></div>`).join('')}
                                 </div>
                             `;
                         }
                     }
                     
-                    const managerBadge = r.manager_response ? `<div class="review-manager-response">✓ В отзыве был получен ответ от менеджера. Просмотреть можно в 2ГИС.</div>` : '';
+                    const managerBadge = r.manager_response ? `<div class="review-manager-response" style="background:#e8f5e9;color:#2e7d32;padding:10px 15px;border-radius:8px;margin:10px 0;font-size:14px;border-left:3px solid #2e7d32;">✓ В отзыве был получен ответ от менеджера. Просмотреть можно в 2ГИС.</div>` : '';
                     
                     return `
                         <div class="review-card">
@@ -546,7 +546,7 @@
             const day = date.getDate();
             const month = months[date.getMonth()];
             const year = date.getFullYear();
-            return `${day} ${month} ${year} года`;
+            return `${day} ${month} ${year} г.`;
         }
         
         function getReviewsWord(n) {
