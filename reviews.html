@@ -541,14 +541,18 @@
         }
         
         function formatDate(dateStr) {
+            console.log('formatDate called with:', dateStr);
             if (!dateStr) return 'Без даты';
             const date = new Date(dateStr);
+            console.log('Parsed date:', date);
             if (isNaN(date.getTime())) return dateStr;
             const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
             const day = date.getDate();
             const month = months[date.getMonth()];
             const year = date.getFullYear();
-            return `${day} ${month} ${year} г.`;
+            const result = `${day} ${month} ${year} г.`;
+            console.log('Result:', result);
+            return result;
         }
         
         function getReviewsWord(n) {
