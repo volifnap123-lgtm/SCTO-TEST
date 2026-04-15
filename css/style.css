@@ -87,10 +87,12 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
+    overflow-x: hidden;
     position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -268,8 +270,7 @@ body {
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     position: relative;
-    height: auto;
-    min-height: 300px;
+    height: 600px;
     width: 100%;
 }
 

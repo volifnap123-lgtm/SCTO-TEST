@@ -1,16 +1,77 @@
-/* MOBILE FIRST - для телефонов сначала */
+/* Responsive стили - только для планшетов и телефонов */
 
-html {
-    scroll-behavior: smooth;
+@media (max-width: 768px) {
+    .main-header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+        height: auto;
+        min-height: 120px;
+    }
+
+    .menu-left {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        display: none;
+    }
+
+    .menu-left.active {
+        display: flex;
+    }
+
+    .nav-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        margin: 5px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .profile-icon {
+        font-size: 26px;
+    }
+
+    .main-content {
+        margin-top: 130px;
+        padding: 20px 15px;
+        min-height: auto;
+    }
+
+    .map-container {
+        max-width: 100%;
+        margin: 0 10px;
+        height: 350px;
+    }
+
+    .main-footer {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 25px;
+    }
+
+    .footer-section {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .footer-section h3 {
+        font-size: 18px;
+    }
+
+    .footer-section p {
+        font-size: 14px;
+    }
+
+    .social-icon-bg {
+        width: 45px;
+        height: 45px;
+        font-size: 14px;
+    }
 }
 
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* ========== ТЕЛЕФОНЫ (до 576px) ========== */
 @media (max-width: 576px) {
     .main-header {
         display: flex !important;
@@ -18,17 +79,8 @@ body {
         justify-content: space-between !important;
         align-items: center !important;
         padding: 8px 10px !important;
-        background: var(--bg-secondary);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        border-bottom: 2px solid var(--yellow-neon);
-        min-height: 50px;
+        min-height: 55px !important;
         gap: 10px;
-        flex-wrap: nowrap !important;
     }
 
     .burger-menu {
@@ -66,44 +118,6 @@ body {
         transform: rotate(-45deg) translate(6px, -6px);
     }
 
-    .logo {
-        font-size: 15px !important;
-        font-weight: 800 !important;
-        color: var(--orange-main) !important;
-        text-shadow: 0 0 10px var(--yellow-neon-glow) !important;
-        letter-spacing: 0.5px !important;
-        flex: 0 1 auto !important;
-        text-align: center !important;
-        padding: 0 5px !important;
-        white-space: nowrap !important;
-        overflow: visible !important;
-        text-overflow: unset !important;
-        min-width: 0 !important;
-    }
-
-    .menu-right {
-        display: flex !important;
-        align-items: center;
-        gap: 8px;
-        flex-shrink: 0;
-        margin-left: auto;
-    }
-
-    .theme-toggle {
-        width: 32px;
-        height: 32px;
-        font-size: 15px;
-        margin-left: 0;
-    }
-
-    .profile-btn {
-        padding: 2px;
-    }
-
-    .profile-icon {
-        font-size: 22px;
-    }
-
     .menu-left {
         display: none;
         position: absolute;
@@ -115,12 +129,12 @@ body {
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         border-bottom: 2px solid var(--yellow-neon);
         z-index: 999;
+        flex-direction: column;
+        gap: 8px;
     }
 
     .menu-left.active {
         display: flex;
-        flex-direction: column;
-        gap: 8px;
     }
 
     .nav-btn {
@@ -135,6 +149,7 @@ body {
         width: 100%;
         text-align: center;
         transition: all 0.3s ease;
+        margin: 0;
     }
 
     .nav-btn:hover,
@@ -144,73 +159,75 @@ body {
         border-color: var(--orange-main);
     }
 
-    .main-content {
-        margin-top: 70px !important;
-        padding: 25px 12px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+    .logo {
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        color: var(--orange-main) !important;
+        text-shadow: 0 0 10px var(--yellow-neon-glow) !important;
+        letter-spacing: 0.3px !important;
+        flex: 0 1 auto !important;
+        text-align: center !important;
+        padding: 0 5px !important;
+    }
+
+    .menu-right {
+        display: flex !important;
         align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+    .theme-toggle {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .profile-icon {
+        font-size: 20px;
+    }
+
+    .main-content {
+        margin-top: 65px;
+        padding: 15px 12px;
     }
 
     .map-title {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 800;
         text-align: center;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         width: 100%;
-        margin-top: 20px;
+        margin-top: 15px;
     }
 
     .map-container {
-        width: 100%;
-        height: 250px;
+        margin: 0 5px;
         border-radius: 15px;
-        margin: 0;
+        height: 280px;
     }
 
     .neon-border::before {
         border-width: 2px;
         border-radius: 17px;
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
     }
 
     .main-footer {
-        background: var(--bg-secondary);
-        border-top: 2px solid var(--yellow-neon);
         padding: 20px 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-        margin-top: auto;
-    }
-
-    .footer-section {
-        text-align: center;
     }
 
     .footer-section h3 {
         font-size: 16px;
-        margin-bottom: 8px;
     }
 
     .footer-section p {
-        font-size: 14px;
-        margin-bottom: 5px;
-    }
-
-    .social-links {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
+        font-size: 13px;
     }
 
     .social-icon-bg {
-        width: 44px;
-        height: 44px;
+        width: 40px;
+        height: 40px;
         font-size: 12px;
     }
 
@@ -221,351 +238,148 @@ body {
     }
 
     .page-title {
-        font-size: 24px;
-        margin-bottom: 25px;
-        margin-top: 20px;
+        font-size: 22px;
+        margin-bottom: 15px;
+        margin-top: 15px;
     }
 
     .modal-content {
-        width: 92%;
-        padding: 20px 15px;
-        margin: 20% auto;
+        width: 95%;
+        padding: 25px 20px;
     }
 
-    .close-btn {
-        font-size: 24px;
-        top: 10px;
-        right: 15px;
+    .neon-curve.top-left {
+        width: 300px;
+        height: 300px;
+        top: -50px;
+        left: -50px;
+    }
+
+    .neon-curve.bottom-right {
+        width: 400px;
+        height: 400px;
+        bottom: -100px;
+        right: -100px;
     }
 }
 
-/* ========== ПЛАНШЕТЫ (577px - 767px) ========== */
-@media (min-width: 577px) and (max-width: 767px) {
+@media (max-width: 480px) {
     .main-header {
-        padding: 12px 20px;
-        min-height: 65px;
-        justify-content: space-between;
-    }
-
-    .burger-menu {
-        width: 30px;
-        height: 24px;
-    }
-
-    .burger-menu span {
-        height: 3px;
+        padding: 8px 10px;
     }
 
     .logo {
-        font-size: 18px;
-    }
-
-    .menu-left {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--bg-secondary);
-        padding: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .menu-left.active {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
+        font-size: 12px;
     }
 
     .nav-btn {
-        padding: 10px 18px;
-        font-size: 15px;
-        width: auto;
-    }
-
-    .theme-toggle {
-        width: 38px;
-        height: 38px;
+        padding: 7px 10px;
+        font-size: 12px;
     }
 
     .profile-icon {
-        font-size: 28px;
+        font-size: 20px;
     }
 
-    .menu-right {
-        margin-left: 0;
-    }
-
-    .main-content {
-        margin-top: 75px;
-        padding: 20px 20px;
-        min-height: calc(100vh - 75px - 180px);
-    }
-
-    .map-title {
-        font-size: 28px;
+    #dgismap {
+        height: 250px;
     }
 
     .map-container {
-        height: 350px;
-    }
-
-    .main-footer {
-        padding: 25px 25px;
+        height: 250px;
     }
 
     .footer-section h3 {
-        font-size: 17px;
+        font-size: 15px;
     }
 
     .footer-section p {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .social-icon-bg {
-        width: 46px;
-        height: 46px;
+        width: 35px;
+        height: 35px;
+        font-size: 11px;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        padding: 20px 15px;
     }
 
     .neon-curve.top-left,
     .neon-curve.bottom-right {
         display: none;
     }
-
-    .page-title {
-        font-size: 26px;
-    }
 }
 
-/* ========== НОУТБУКИ (768px - 991px) ========== */
-@media (min-width: 768px) and (max-width: 991px) {
+@media (max-width: 375px) {
     .main-header {
-        padding: 15px 30px;
-        min-height: 75px;
-        justify-content: space-between;
-    }
-
-    .burger-menu {
-        display: none;
-    }
-
-    .menu-left {
-        display: flex;
-        position: static;
-        width: auto;
-        background: none;
-        padding: 0;
-        box-shadow: none;
-        flex-direction: row;
-        gap: 12px;
-    }
-
-    .nav-btn {
-        padding: 10px 18px;
-        font-size: 15px;
-        width: auto;
-        border: none;
-    }
-
-    .nav-btn:hover {
-        background: transparent;
-        color: var(--orange-main);
-    }
-
-    .nav-btn.active {
-        background: transparent;
-        color: var(--orange-dark);
+        padding: 8px 10px;
     }
 
     .logo {
-        font-size: 22px;
-        text-align: center;
+        font-size: 11px;
     }
 
-    .menu-right {
-        margin-left: 0;
-    }
-
-    .theme-toggle {
-        width: 40px;
-        height: 40px;
-        margin-left: 15px;
+    .nav-btn {
+        padding: 6px 8px;
+        font-size: 11px;
     }
 
     .profile-icon {
-        font-size: 30px;
-    }
-
-    .main-content {
-        margin-top: 90px;
-        padding: 25px 30px;
-    }
-
-    .map-title {
-        font-size: 30px;
-    }
-
-    .map-container {
-        height: 450px;
-        max-width: 100%;
-    }
-
-    .main-footer {
-        padding: 30px 35px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .footer-section {
-        min-width: 45%;
-        text-align: left;
-    }
-
-    .footer-section h3 {
         font-size: 18px;
     }
 
-    .social-icon-bg {
-        width: 48px;
-        height: 48px;
-    }
-
-    .neon-curve.top-left,
-    .neon-curve.bottom-right {
-        display: block;
-    }
-
-    .page-title {
-        font-size: 28px;
-    }
-}
-
-/* ========== ДЕСКТОП (992px+) ========== */
-@media (min-width: 992px) {
-    .main-header {
-        padding: 18px 40px;
-        min-height: 85px;
-        justify-content: space-between;
-    }
-
-    .burger-menu {
-        display: none;
-    }
-
-    .menu-left {
-        display: flex;
-        position: static;
-        width: auto;
-        background: none;
-        padding: 0;
-        box-shadow: none;
-        flex-direction: row;
-        gap: 15px;
-    }
-
-    .nav-btn {
-        padding: 12px 20px;
-        font-size: 16px;
-        width: auto;
-        border: none;
-    }
-
-    .logo {
-        font-size: 26px;
-        text-align: center;
-    }
-
-    .menu-right {
-        margin-left: 0;
-    }
-
-    .theme-toggle {
-        width: 42px;
-        height: 42px;
-        margin-left: 15px;
-    }
-
-    .profile-icon {
-        font-size: 32px;
-    }
-
-    .main-content {
-        margin-top: 100px;
-        padding: 30px 40px;
-    }
-
-    .map-title {
-        font-size: 32px;
-    }
-
-    .map-container {
-        height: 500px;
-        max-width: 1100px;
-    }
-
-    .neon-border::before {
-        border-width: 3px;
-        border-radius: 23px;
-    }
-
     .main-footer {
-        padding: 30px 50px;
-    }
-
-    .footer-section {
-        min-width: auto;
-        max-width: 280px;
+        padding: 15px 10px;
     }
 
     .footer-section h3 {
-        font-size: 19px;
+        font-size: 14px;
+    }
+
+    .footer-section p {
+        font-size: 11px;
     }
 
     .social-icon-bg {
-        width: 50px;
-        height: 50px;
-        font-size: 13px;
-    }
-
-    .page-title {
-        font-size: 32px;
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
     }
 }
 
-/* ========== БОЛЬШИЕ ЭКРАНЫ (1200px+) ========== */
-@media (min-width: 1200px) {
+@media (max-width: 320px) {
     .main-header {
-        padding: 20px 50px;
-        min-height: 90px;
-        justify-content: space-between;
+        padding: 6px 8px;
     }
 
     .logo {
-        font-size: 28px;
-        text-align: center;
+        font-size: 10px;
     }
 
-    .menu-right {
-        margin-left: 0;
+    .nav-btn {
+        padding: 5px 7px;
+        font-size: 10px;
     }
 
-    .main-content {
-        padding: 35px 50px;
+    .profile-icon {
+        font-size: 16px;
     }
 
-    .map-container {
-        height: 600px;
-        max-width: 1200px;
+    .footer-section h3 {
+        font-size: 13px;
     }
 
-    .main-footer {
-        padding: 35px 60px;
+    .footer-section p {
+        font-size: 10px;
     }
 
-    .footer-section {
-        max-width: 320px;
+    .social-icon-bg {
+        width: 28px;
+        height: 28px;
+        font-size: 9px;
     }
 }
