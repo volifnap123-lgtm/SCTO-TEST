@@ -7,6 +7,17 @@ body {
     padding: 0;
 }
 
+/* Desktop header стили */
+@media (min-width: 769px) {
+    .burger-menu {
+        display: none !important;
+    }
+    
+    .menu-left {
+        display: flex !important;
+    }
+}
+
 /* Заголовок "Каталог услуг" */
 .page-title {
     text-align: center;
