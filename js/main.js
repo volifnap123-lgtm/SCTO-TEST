@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const navBtns = document.querySelectorAll('.nav-btn');
+    const burgerMenu = document.getElementById('burgerMenu');
+    const menuLeft = document.getElementById('menuLeft');
     const profileBtn = document.getElementById('profileBtn');
     const profileModal = document.getElementById('profileModal');
     const closeProfileModal = document.getElementById('closeProfileModal');
@@ -15,6 +17,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
+        });
+    }
+
+    if (burgerMenu && menuLeft) {
+        burgerMenu.addEventListener('click', function() {
+            burgerMenu.classList.toggle('active');
+            menuLeft.classList.toggle('active');
+        });
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                burgerMenu.classList.remove('active');
+                menuLeft.classList.remove('active');
+            });
         });
     }
 
