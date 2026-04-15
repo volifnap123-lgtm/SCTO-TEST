@@ -12,11 +12,11 @@
     <meta property="og:description" content="Фотографии работ по правке автомобильных дисков">
     <meta property="og:type" content="website">
     
-    <link rel="stylesheet" href="css/style.css?v=14">
+    <link rel="stylesheet" href="css/style.css?v=16">
     <link rel="stylesheet" href="css/neon.css">
-    <link rel="stylesheet" href="css/responsive.css?v=14">
+    <link rel="stylesheet" href="css/responsive.css?v=16">
     <link rel="stylesheet" href="css/auth.css">
-    <link rel="stylesheet" href="css/gallery.css?v=8">
+    <link rel="stylesheet" href="css/gallery.css?v=9">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -70,8 +70,13 @@
         </div>
     </div>
 
+    <div class="photo-modal" id="photoModal">
+        <span class="photo-modal-close" id="closePhotoModal">&times;</span>
+        <img class="photo-modal-img" id="photoModalImg" src="" alt="Фото">
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js?v=2"></script>
     <script src="js/main.js?v=20"></script>
-    <script src="js/gallery.js"></script>
+    <script src="js/gallery.js?v=2"></script>
 </body>
 </html>

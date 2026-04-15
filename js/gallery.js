@@ -1,8 +1,30 @@
 document.addEventListener('DOMContentLoaded', function() {
     const galleryContainer = document.getElementById('gallery-container');
+    const photoModal = document.getElementById('photoModal');
+    const photoModalImg = document.getElementById('photoModalImg');
+    const closePhotoModal = document.getElementById('closePhotoModal');
     let currentIndex = 0;
     let galleryItems = [];
     const VISIBLE_THUMBS = 5;
+
+    if (photoModal && photoModalImg) {
+        photoModal.addEventListener('click', function(e) {
+            if (e.target === photoModal) {
+                photoModal.classList.remove('active');
+            }
+        });
+
+        closePhotoModal.addEventListener('click', function() {
+            photoModal.classList.remove('active');
+        });
+    }
+
+    window.openPhotoFullscreen = function(url) {
+        if (photoModal && photoModalImg) {
+            photoModalImg.src = url;
+            photoModal.classList.add('active');
+        }
+    };
 
     function showEmptyState() {
         galleryContainer.innerHTML = `
@@ -63,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         galleryContainer.innerHTML = `
             <button class="gallery-nav prev" onclick="prevPhoto()">‹</button>
             <div class="gallery-main">
-                <img src="${item.url}" alt="Работа СЦТО" class="gallery-main-img" id="main-img" onerror="this.src='images/placeholder.jpg'">
+                <img src="${item.url}" alt="Работа СЦТО" class="gallery-main-img" id="main-img" onerror="this.src='images/placeholder.jpg'" onclick="openPhotoFullscreen('${item.url}')">
                 <div class="gallery-caption" id="caption">${item.caption || 'Фотография работы'}</div>
             </div>
             <button class="gallery-nav next" onclick="nextPhoto()">›</button>
