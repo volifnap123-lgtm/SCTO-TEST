@@ -87,7 +87,6 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
-    overflow-x: hidden;
     position: relative;
     min-height: 100vh;
     display: flex;
@@ -542,4 +541,9 @@ body {
 
 ::-webkit-scrollbar-thumb:hover{    
     background: var(--orange-dark);
+}
+
+.menu-left {
+    display: flex;
+    gap: 15px;
 }

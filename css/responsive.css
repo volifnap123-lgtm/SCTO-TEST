@@ -1,299 +1,295 @@
-/* MOBILE FIRST - базовые стили для телефонов */
+/* MOBILE FIRST - для телефонов сначала */
+
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
 
 body {
     overflow-x: hidden;
-}
-
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    background: var(--bg-secondary);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    border-bottom: 2px solid var(--yellow-neon);
-    height: auto;
-    min-height: 60px;
-}
-
-.menu-left {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--bg-secondary);
-    padding: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    gap: 10px;
-}
-
-.menu-left.active {
-    display: flex;
-}
-
-.nav-btn {
-    background: none;
-    border: 1px solid var(--border-color);
-    padding: 12px 15px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    color: var(--text-secondary);
-    border-radius: 8px;
-    width: 100%;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.nav-btn:hover,
-.nav-btn.active {
-    background: var(--orange-main);
-    color: var(--white);
-    border-color: var(--orange-main);
-}
-
-.burger-menu {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 10px;
 }
 
-.burger-menu span {
-    display: block;
-    width: 100%;
-    height: 3px;
-    background: var(--orange-main);
-    border-radius: 2px;
-    transition: all 0.3s ease;
-}
-
-.burger-menu.active span:nth-child(1) {
-    transform: rotate(45deg) translate(6px, 6px);
-}
-
-.burger-menu.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.burger-menu.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
-}
-
-.logo {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--orange-main);
-    text-shadow: 0 0 10px var(--yellow-neon-glow);
-    letter-spacing: 1px;
-    animation: logo-glow 3s ease-in-out infinite;
-    flex: 1;
-    text-align: center;
-}
-
-.menu-right {
-    display: flex;
-    align-items: center;
-}
-
-.theme-toggle {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-    margin-left: 5px;
-}
-
-.profile-icon {
-    font-size: 26px;
-}
-
-.main-content {
-    margin-top: 70px;
-    padding: 15px 10px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: auto;
-}
-
-.map-title {
-    font-size: 22px;
-    margin-bottom: 15px;
-}
-
-.map-container {
-    width: calc(100% - 20px);
-    height: 300px;
-    border-radius: 15px;
-    margin: 0 10px;
-}
-
-.neon-border::before {
-    border-width: 2px;
-    border-radius: 17px;
-}
-
-.main-footer {
-    background: var(--bg-secondary);
-    border-top: 2px solid var(--yellow-neon);
-    padding: 20px 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 15px;
-}
-
-.footer-section {
-    text-align: center;
-    min-width: 100%;
-}
-
-.footer-section h3 {
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.footer-section p {
-    font-size: 13px;
-    margin-bottom: 5px;
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.social-icon-bg {
-    width: 40px;
-    height: 40px;
-    font-size: 11px;
-}
-
-.neon-curve.top-left,
-.neon-curve.bottom-right {
-    display: none;
-}
-
-/* Планшеты */
-@media (min-width: 576px) {
+/* ========== ТЕЛЕФОНЫ (до 576px) ========== */
+@media (max-width: 576px) {
     .main-header {
-        padding: 15px 20px;
-        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        background: var(--bg-secondary);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        border-bottom: 2px solid var(--yellow-neon);
+        min-height: 55px;
     }
 
-    .logo {
-        font-size: 20px;
+    .burger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 28px;
+        height: 22px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    .burger-menu span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: var(--orange-main);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .burger-menu.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .burger-menu.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .burger-menu.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
     }
 
     .menu-left {
         display: none;
-        flex-direction: row;
-        position: static;
-        width: auto;
-        background: none;
-        padding: 0;
-        box-shadow: none;
-        gap: 10px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-secondary);
+        padding: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border-bottom: 2px solid var(--yellow-neon);
     }
 
     .menu-left.active {
         display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     .nav-btn {
-        padding: 10px 15px;
-        font-size: 14px;
-        width: auto;
+        background: none;
+        border: 1px solid var(--border-color);
+        padding: 12px 15px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--text-secondary);
+        border-radius: 8px;
+        width: 100%;
+        text-align: center;
+        transition: all 0.3s ease;
     }
 
-    .burger-menu {
+    .nav-btn:hover,
+    .nav-btn.active {
+        background: var(--orange-main);
+        color: var(--white);
+        border-color: var(--orange-main);
+    }
+
+    .logo {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--orange-main);
+        text-shadow: 0 0 10px var(--yellow-neon-glow);
+        letter-spacing: 0.5px;
+        flex: 1;
+        text-align: center;
+        padding: 0 8px;
+        word-break: break-word;
+    }
+
+    .menu-right {
         display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .theme-toggle {
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
+        margin-left: 0;
+    }
+
+    .profile-btn {
+        padding: 2px;
+    }
+
+    .profile-icon {
+        font-size: 24px;
     }
 
     .main-content {
-        margin-top: 90px;
-        padding: 20px 15px;
+        margin-top: 60px;
+        padding: 15px 12px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: calc(100vh - 60px - 200px);
     }
 
     .map-title {
-        font-size: 26px;
+        font-size: 24px;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 20px;
+        width: 100%;
     }
 
     .map-container {
-        height: 400px;
-        width: calc(100% - 40px);
+        width: 100%;
+        height: 280px;
+        border-radius: 15px;
+        margin: 0;
+    }
+
+    .neon-border::before {
+        border-width: 2px;
+        border-radius: 17px;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
     }
 
     .main-footer {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        padding: 25px 20px;
+        background: var(--bg-secondary);
+        border-top: 2px solid var(--yellow-neon);
+        padding: 20px 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin-top: auto;
     }
 
     .footer-section {
-        min-width: 45%;
-        text-align: left;
+        text-align: center;
+    }
+
+    .footer-section h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .footer-section p {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .social-icon-bg {
+        width: 44px;
+        height: 44px;
+        font-size: 12px;
+    }
+
+    .neon-curve.top-left,
+    .neon-curve.bottom-right,
+    .bg-decoration {
+        display: none !important;
+    }
+
+    .page-title {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .modal-content {
+        width: 92%;
+        padding: 20px 15px;
+        margin: 20% auto;
+    }
+
+    .close-btn {
+        font-size: 24px;
+        top: 10px;
+        right: 15px;
     }
 }
 
-/* Ноутбуки */
-@media (min-width: 768px) {
+/* ========== ПЛАНШЕТЫ (577px - 767px) ========== */
+@media (min-width: 577px) and (max-width: 767px) {
     .main-header {
-        padding: 15px 30px;
-        height: 90px;
+        padding: 12px 20px;
+        min-height: 65px;
     }
 
     .burger-menu {
-        display: none;
+        width: 30px;
+        height: 24px;
+    }
+
+    .burger-menu span {
+        height: 3px;
+    }
+
+    .logo {
+        font-size: 18px;
     }
 
     .menu-left {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-secondary);
+        padding: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu-left.active {
         display: flex;
-        position: static;
-        width: auto;
-        background: none;
-        padding: 0;
-        box-shadow: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
     }
 
     .nav-btn {
         padding: 10px 18px;
         font-size: 15px;
-    }
-
-    .logo {
-        font-size: 24px;
+        width: auto;
     }
 
     .theme-toggle {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
+        width: 38px;
+        height: 38px;
     }
 
     .profile-icon {
-        font-size: 30px;
+        font-size: 28px;
     }
 
     .main-content {
-        margin-top: 100px;
-        padding: 25px 30px;
+        margin-top: 75px;
+        padding: 20px 20px;
+        min-height: calc(100vh - 75px - 180px);
     }
 
     .map-title {
@@ -301,10 +297,189 @@ body {
     }
 
     .map-container {
+        height: 350px;
+    }
+
+    .main-footer {
+        padding: 25px 25px;
+    }
+
+    .footer-section h3 {
+        font-size: 17px;
+    }
+
+    .footer-section p {
+        font-size: 14px;
+    }
+
+    .social-icon-bg {
+        width: 46px;
+        height: 46px;
+    }
+
+    .neon-curve.top-left,
+    .neon-curve.bottom-right {
+        display: none;
+    }
+
+    .page-title {
+        font-size: 26px;
+    }
+}
+
+/* ========== НОУТБУКИ (768px - 991px) ========== */
+@media (min-width: 768px) and (max-width: 991px) {
+    .main-header {
+        padding: 15px 30px;
+        min-height: 75px;
+    }
+
+    .burger-menu {
+        display: none;
+    }
+
+    .menu-left {
+        display: flex;
+        position: static;
+        width: auto;
+        background: none;
+        padding: 0;
+        box-shadow: none;
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    .nav-btn {
+        padding: 10px 18px;
+        font-size: 15px;
+        width: auto;
+        border: none;
+    }
+
+    .nav-btn:hover {
+        background: transparent;
+        color: var(--orange-main);
+    }
+
+    .nav-btn.active {
+        background: transparent;
+        color: var(--orange-dark);
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        margin-left: 15px;
+    }
+
+    .profile-icon {
+        font-size: 30px;
+    }
+
+    .main-content {
+        margin-top: 90px;
+        padding: 25px 30px;
+    }
+
+    .map-title {
+        font-size: 30px;
+    }
+
+    .map-container {
+        height: 450px;
+        max-width: 100%;
+    }
+
+    .main-footer {
+        padding: 30px 35px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .footer-section {
+        min-width: 45%;
+        text-align: left;
+    }
+
+    .footer-section h3 {
+        font-size: 18px;
+    }
+
+    .social-icon-bg {
+        width: 48px;
+        height: 48px;
+    }
+
+    .neon-curve.top-left,
+    .neon-curve.bottom-right {
+        display: block;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+}
+
+/* ========== ДЕСКТОП (992px+) ========== */
+@media (min-width: 992px) {
+    .main-header {
+        padding: 18px 40px;
+        min-height: 85px;
+    }
+
+    .burger-menu {
+        display: none;
+    }
+
+    .menu-left {
+        display: flex;
+        position: static;
+        width: auto;
+        background: none;
+        padding: 0;
+        box-shadow: none;
+        flex-direction: row;
+        gap: 15px;
+    }
+
+    .nav-btn {
+        padding: 12px 20px;
+        font-size: 16px;
+        width: auto;
+        border: none;
+    }
+
+    .logo {
+        font-size: 26px;
+    }
+
+    .theme-toggle {
+        width: 42px;
+        height: 42px;
+        margin-left: 15px;
+    }
+
+    .profile-icon {
+        font-size: 32px;
+    }
+
+    .main-content {
+        margin-top: 100px;
+        padding: 30px 40px;
+    }
+
+    .map-title {
+        font-size: 32px;
+    }
+
+    .map-container {
         height: 500px;
-        width: 100%;
-        max-width: 1000px;
-        border-radius: 20px;
+        max-width: 1100px;
     }
 
     .neon-border::before {
@@ -313,85 +488,34 @@ body {
     }
 
     .main-footer {
-        padding: 30px 40px;
+        padding: 30px 50px;
     }
 
     .footer-section {
         min-width: auto;
-        max-width: 250px;
+        max-width: 280px;
     }
 
     .footer-section h3 {
-        font-size: 18px;
-    }
-
-    .footer-section p {
-        font-size: 14px;
+        font-size: 19px;
     }
 
     .social-icon-bg {
-        width: 45px;
-        height: 45px;
-        font-size: 12px;
+        width: 50px;
+        height: 50px;
+        font-size: 13px;
     }
 
-    .neon-curve.top-left,
-    .neon-curve.bottom-right {
-        display: block;
-    }
-}
-
-/* Десктоп */
-@media (min-width: 992px) {
-    .main-header {
-        padding: 18px 40px;
-        height: 100px;
-    }
-
-    .logo {
-        font-size: 26px;
-    }
-
-    .menu-left {
-        gap: 15px;
-    }
-
-    .nav-btn {
-        padding: 12px 20px;
-        font-size: 16px;
-    }
-
-    .theme-toggle {
-        margin-left: 15px;
-    }
-
-    .main-content {
-        padding: 30px 40px;
-    }
-
-    .map-title {
-        font-size: 30px;
-        margin-bottom: 20px;
-    }
-
-    .map-container {
-        height: 550px;
-        max-width: 1100px;
-    }
-
-    .main-footer {
-        padding: 30px 50px;
-    }
-
-    .footer-section h3 {
-        font-size: 20px;
+    .page-title {
+        font-size: 32px;
     }
 }
 
-/* Большие экраны */
+/* ========== БОЛЬШИЕ ЭКРАНЫ (1200px+) ========== */
 @media (min-width: 1200px) {
     .main-header {
         padding: 20px 50px;
+        min-height: 90px;
     }
 
     .logo {
@@ -399,7 +523,7 @@ body {
     }
 
     .main-content {
-        padding: 30px 50px;
+        padding: 35px 50px;
     }
 
     .map-container {
@@ -408,10 +532,10 @@ body {
     }
 
     .main-footer {
-        padding: 30px 60px;
+        padding: 35px 60px;
     }
 
     .footer-section {
-        max-width: 300px;
+        max-width: 320px;
     }
 }
