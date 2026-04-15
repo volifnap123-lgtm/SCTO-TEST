@@ -1,15 +1,10 @@
 /* Глобальные стили для страницы каталога */
-html {
-    overflow-x: hidden !important;
-}
-
 body {
     background: var(--bg-primary) !important;
     background-attachment: fixed;
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
 }
 
 /* Заголовок "Каталог услуг" */
