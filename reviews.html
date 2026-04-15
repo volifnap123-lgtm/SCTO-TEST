@@ -12,12 +12,80 @@
     <meta property="og:description" content="Реальные отзывы клиентов">
     <meta property="og:type" content="website">
     
-    <link rel="stylesheet" href="css/style.css?v=7">
+    <link rel="stylesheet" href="css/style.css?v=8">
     <link rel="stylesheet" href="css/neon.css">
-    <link rel="stylesheet" href="css/responsive.css?v=7">
+    <link rel="stylesheet" href="css/responsive.css?v=8">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <style>
+        /* Header для мобильных */
+        @media (max-width: 576px) {
+            .main-header {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                padding: 8px 10px !important;
+                min-height: 50px !important;
+                gap: 10px !important;
+            }
+            .burger-menu {
+                display: flex !important;
+                width: 26px;
+                height: 20px;
+            }
+            .burger-menu span {
+                height: 3px;
+                background: var(--orange-main);
+            }
+            .logo {
+                font-size: 15px !important;
+                font-weight: 800 !important;
+                color: var(--orange-main) !important;
+                text-align: center !important;
+                flex: 0 1 auto !important;
+            }
+            .menu-right {
+                display: flex !important;
+                gap: 8px !important;
+                flex-shrink: 0 !important;
+                margin-left: auto !important;
+            }
+            .theme-toggle {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 15px !important;
+            }
+            .profile-icon {
+                font-size: 22px !important;
+            }
+            .menu-left {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-secondary);
+                padding: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                border-bottom: 2px solid var(--yellow-neon);
+                z-index: 999;
+            }
+            .menu-left.active {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .nav-btn {
+                padding: 12px 15px;
+                font-size: 15px;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
         .reviews-page {
             display: grid;
             grid-template-columns: 350px 1fr;
