@@ -1,5 +1,39 @@
 /* Responsive стили - только для планшетов и телефонов */
 
+/* Desktop стили - возвращаем оригинальный layout */
+@media (min-width: 769px) {
+    .main-header {
+        justify-content: space-between !important;
+    }
+
+    .burger-menu {
+        display: none !important;
+    }
+
+    .menu-left {
+        display: flex !important;
+        position: static !important;
+        width: auto !important;
+        background: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border-bottom: none !important;
+    }
+
+    .menu-left.active {
+        display: flex !important;
+    }
+
+    .logo {
+        text-align: center !important;
+        flex: 0 0 auto !important;
+    }
+
+    .menu-right {
+        margin-left: 0 !important;
+    }
+}
+
 @media (max-width: 768px) {
     .main-header {
         padding: 15px 20px;
