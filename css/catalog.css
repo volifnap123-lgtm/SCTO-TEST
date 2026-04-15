@@ -193,8 +193,8 @@ html {
 @media (max-width: 576px) {
     .page-title {
         font-size: 24px;
-        margin-bottom: 20px;
-        margin-top: 10px;
+        margin-bottom: 25px;
+        margin-top: 20px;
     }
 
     .catalog-grid {

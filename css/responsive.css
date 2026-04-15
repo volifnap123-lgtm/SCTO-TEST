@@ -17,7 +17,7 @@ body {
     .main-header {
         display: flex !important;
         flex-direction: row !important;
-        justify-content: flex-start !important;
+        justify-content: space-between !important;
         align-items: center !important;
         padding: 8px 10px !important;
         background: var(--bg-secondary);
@@ -29,7 +29,7 @@ body {
         z-index: 1000;
         border-bottom: 2px solid var(--yellow-neon);
         min-height: 50px;
-        gap: 8px;
+        gap: 10px;
         flex-wrap: nowrap !important;
     }
 
@@ -37,8 +37,8 @@ body {
         display: flex !important;
         flex-direction: column;
         justify-content: space-between;
-        width: 24px;
-        height: 18px;
+        width: 26px;
+        height: 20px;
         background: none;
         border: none;
         cursor: pointer;
@@ -50,14 +50,14 @@ body {
     .burger-menu span {
         display: block;
         width: 100%;
-        height: 2.5px;
+        height: 3px;
         background: var(--orange-main);
-        border-radius: 1px;
+        border-radius: 2px;
         transition: all 0.3s ease;
     }
 
     .burger-menu.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
+        transform: rotate(45deg) translate(6px, 6px);
     }
 
     .burger-menu.active span:nth-child(2) {
@@ -65,18 +65,18 @@ body {
     }
 
     .burger-menu.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -5px);
+        transform: rotate(-45deg) translate(6px, -6px);
     }
 
     .logo {
-        font-size: 12px !important;
+        font-size: 13px !important;
         font-weight: 800;
         color: var(--orange-main);
         text-shadow: 0 0 10px var(--yellow-neon-glow);
         letter-spacing: 0.3px;
         flex: 0 1 auto !important;
-        text-align: left !important;
-        padding: 0 !important;
+        text-align: center !important;
+        padding: 0 5px !important;
         white-space: nowrap;
         overflow: visible;
         text-overflow: unset;
@@ -86,14 +86,15 @@ body {
     .menu-right {
         display: flex !important;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         flex-shrink: 0;
+        margin-left: auto;
     }
 
     .theme-toggle {
-        width: 30px;
-        height: 30px;
-        font-size: 14px;
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
         margin-left: 0;
     }
 
@@ -102,7 +103,7 @@ body {
     }
 
     .profile-icon {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .menu-left {
@@ -115,6 +116,7 @@ body {
         padding: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         border-bottom: 2px solid var(--yellow-neon);
+        z-index: 999;
     }
 
     .menu-left.active {
@@ -145,8 +147,8 @@ body {
     }
 
     .main-content {
-        margin-top: 60px !important;
-        padding: 20px 12px;
+        margin-top: 70px !important;
+        padding: 25px 12px;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -154,12 +156,12 @@ body {
     }
 
     .map-title {
-        font-size: 22px;
+        font-size: 24px;
         font-weight: 800;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         width: 100%;
-        margin-top: 15px;
+        margin-top: 20px;
     }
 
     .map-container {
@@ -221,9 +223,9 @@ body {
     }
 
     .page-title {
-        font-size: 22px;
-        margin-bottom: 15px;
-        margin-top: 15px;
+        font-size: 24px;
+        margin-bottom: 25px;
+        margin-top: 20px;
     }
 
     .modal-content {
