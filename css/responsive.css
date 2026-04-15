@@ -69,18 +69,18 @@ body {
     }
 
     .logo {
-        font-size: 14px !important;
-        font-weight: 800;
-        color: var(--orange-main);
-        text-shadow: 0 0 10px var(--yellow-neon-glow);
-        letter-spacing: 0.5px;
+        font-size: 15px !important;
+        font-weight: 800 !important;
+        color: var(--orange-main) !important;
+        text-shadow: 0 0 10px var(--yellow-neon-glow) !important;
+        letter-spacing: 0.5px !important;
         flex: 0 1 auto !important;
         text-align: center !important;
         padding: 0 5px !important;
-        white-space: nowrap;
-        overflow: visible;
-        text-overflow: unset;
-        min-width: 0;
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        min-width: 0 !important;
     }
 
     .menu-right {
