@@ -8,6 +8,10 @@ body {
     overflow-x: hidden;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 /* Заголовок "Каталог услуг" */
 .page-title {
     text-align: center;
@@ -186,6 +190,46 @@ body {
 }
 
 /* Адаптивность */
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+        margin-top: 10px;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px;
+    }
+    
+    .catalog-card {
+        height: auto;
+        min-height: 380px;
+        margin: 0;
+    }
+    
+    .card-image {
+        height: 200px;
+    }
+    
+    .card-content h3 {
+        font-size: 15px;
+        min-height: auto;
+        padding: 10px 12px;
+    }
+    
+    .card-price {
+        font-size: 18px;
+        padding: 8px;
+    }
+    
+    .card-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
 @media (max-width: 1200px) {
     .catalog-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -224,23 +268,10 @@ body {
 @media (max-width: 480px) {
     .catalog-card {
         height: auto;
-        min-height: 400px;
+        min-height: 350px;
     }
     
     .card-image {
-        height: 200px;
-    }
-    
-    .card-content h3 {
-        font-size: 15px;
-    }
-    
-    .card-price {
-        font-size: 18px;
-    }
-    
-    .card-btn {
-        padding: 10px;
-        font-size: 15px;
+        height: 180px;
     }
 }
